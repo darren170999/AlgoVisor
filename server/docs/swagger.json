@@ -1,0 +1,108 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "A Tag service API in Go using Gin framework",
+        "title": "Tag Service API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/api",
+    "paths": {
+        "/user": {
+            "post": {
+                "description": "Save User data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create User",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/user/{userId}": {
+            "get": {
+                "description": "get user data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create tags",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Save tags data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create tags",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Save tags data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create tags",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "description": "Save tags data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Create tags",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "responses.Response": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "integer"
+                },
+                "data": {},
+                "status": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}
