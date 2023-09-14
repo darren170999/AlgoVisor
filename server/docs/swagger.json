@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "A Tag service API in Go using Gin framework",
-        "title": "Tag Service API",
+        "description": "Service API in Go using Gin framework",
+        "title": "Service API",
         "contact": {},
         "version": "1.0"
     },
@@ -16,6 +16,17 @@
                     "application/json"
                 ],
                 "summary": "Create User",
+                "parameters": [
+                    {
+                        "description": "user",
+                        "name": "User",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.CreateUsersRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -28,11 +39,11 @@
         },
         "/user/{userId}": {
             "get": {
-                "description": "get user data in Db.",
+                "description": "get a user data from Db.",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create tags",
+                "summary": "Get User",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -43,11 +54,11 @@
                 }
             },
             "put": {
-                "description": "Save tags data in Db.",
+                "description": "Edit user's data in Db.",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create tags",
+                "summary": "Edit User",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -58,11 +69,11 @@
                 }
             },
             "delete": {
-                "description": "Save tags data in Db.",
+                "description": "Delete User from Db.",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create tags",
+                "summary": "Delete User",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -79,7 +90,7 @@
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create tags",
+                "summary": "Get all Users",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -92,6 +103,27 @@
         }
     },
     "definitions": {
+        "requests.CreateUsersRequest": {
+            "type": "object",
+            "required": [
+                "location",
+                "name",
+                "title"
+            ],
+            "properties": {
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "responses.Response": {
             "type": "object",
             "properties": {

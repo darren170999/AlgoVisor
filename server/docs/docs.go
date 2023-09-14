@@ -22,6 +22,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "summary": "Create User",
+                "parameters": [
+                    {
+                        "description": "user",
+                        "name": "User",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.CreateUsersRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -34,11 +45,11 @@ const docTemplate = `{
         },
         "/user/{userId}": {
             "get": {
-                "description": "get user data in Db.",
+                "description": "get a user data from Db.",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create tags",
+                "summary": "Get User",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -49,11 +60,11 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "Save tags data in Db.",
+                "description": "Edit user's data in Db.",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create tags",
+                "summary": "Edit User",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -64,11 +75,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Save tags data in Db.",
+                "description": "Delete User from Db.",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create tags",
+                "summary": "Delete User",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -85,7 +96,7 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create tags",
+                "summary": "Get all Users",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -98,6 +109,27 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "requests.CreateUsersRequest": {
+            "type": "object",
+            "required": [
+                "location",
+                "name",
+                "title"
+            ],
+            "properties": {
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "responses.Response": {
             "type": "object",
             "properties": {
@@ -119,8 +151,8 @@ var SwaggerInfo = &swag.Spec{
 	Host:             "localhost:8080",
 	BasePath:         "/api",
 	Schemes:          []string{},
-	Title:            "Tag Service API",
-	Description:      "A Tag service API in Go using Gin framework",
+	Title:            "Service API",
+	Description:      "Service API in Go using Gin framework",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",

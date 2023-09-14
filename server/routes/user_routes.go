@@ -13,4 +13,10 @@ func UserRoute(router *gin.Engine) {
 	router.PUT("/user/:userId", controllers.EditAUser())
 	router.DELETE("/user/:userId", controllers.DeleteAUser())
 	router.GET("/users", controllers.GetAllUsers())
+	// Swagger API testing
+	router.POST("/api/user", controllers.CreateUser())
+	router.GET("/api/user/:userId", controllers.GetAUser())
+	router.PUT("/api/user/:userId", controllers.EditAUser())
+	router.DELETE("/api/user/:userId", controllers.DeleteAUser())
+	router.GET("/api/users", controllers.GetAllUsers())
 }

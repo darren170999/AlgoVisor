@@ -12,10 +12,9 @@ import (
 	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-// @title 	Tag Service API
+// @title 	Service API
 // @version	1.0
-// @description A Tag service API in Go using Gin framework
-
+// @description Service API in Go using Gin framework
 // @host 	localhost:8080
 // @BasePath /api
 func main() {

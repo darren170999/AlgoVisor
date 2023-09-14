@@ -6,6 +6,7 @@ import (
 	"server/configs"
 	"server/data/responses"
 	"server/models"
+	"server/service"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -15,12 +16,25 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
+type UsersController struct {
+	usersService service.UsersService
+}
+
+func NewUsersController(service service.UsersService) *UsersController {
+	return &UsersController{
+		usersService: service,
+	}
+}
+
 var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
 var validate = validator.New()
+
 // CreateTags		godoc
 // @Summary			Create User
 // @Description		Save User data in Db.
+// @Param			User body requests.CreateUsersRequest true "user"
 // @Produce			application/json
+// @User			users
 // @Success			200 {object} responses.Response{}
 // @Router			/user [post]
 func CreateUser() gin.HandlerFunc {
@@ -40,7 +54,9 @@ func CreateUser() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
 		}
-
+		// createUsersRequest := request.CreateUsersRequest{}
+		// // err := ctx.ShouldBindJSON(&createUsersRequest)
+		// // controller.usersService.Create(createUsersRequest)
 		newUser := models.User{
 			Id:       primitive.NewObjectID(),
 			Name:     user.Name,
@@ -57,9 +73,10 @@ func CreateUser() gin.HandlerFunc {
 		c.JSON(http.StatusCreated, responses.UserResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": result}})
 	}
 }
+
 // CreateTags		godoc
-// @Summary			Create tags
-// @Description		get user data in Db.
+// @Summary			Get User
+// @Description		get a user data from Db.
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
 // @Router			/user/{userId} [get]
@@ -81,9 +98,10 @@ func GetAUser() gin.HandlerFunc {
 		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
 	}
 }
+
 // CreateTags		godoc
-// @Summary			Create tags
-// @Description		Save tags data in Db.
+// @Summary			Edit User
+// @Description		Edit user's data in Db.
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
 // @Router			/user/{userId} [put]
@@ -127,9 +145,10 @@ func EditAUser() gin.HandlerFunc {
 		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": updatedUser}})
 	}
 }
+
 // CreateTags		godoc
-// @Summary			Create tags
-// @Description		Save tags data in Db.
+// @Summary			Delete User
+// @Description		Delete User from Db.
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
 // @Router			/user/{userId} [delete]
@@ -159,8 +178,9 @@ func DeleteAUser() gin.HandlerFunc {
 		)
 	}
 }
+
 // CreateTags		godoc
-// @Summary			Create tags
+// @Summary			Get all Users
 // @Description		Save tags data in Db.
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}

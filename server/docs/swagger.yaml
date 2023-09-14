@@ -1,5 +1,20 @@
 basePath: /api
 definitions:
+  requests.CreateUsersRequest:
+    properties:
+      location:
+        type: string
+      name:
+        maxLength: 200
+        minLength: 1
+        type: string
+      title:
+        type: string
+    required:
+    - location
+    - name
+    - title
+    type: object
   responses.Response:
     properties:
       code:
@@ -11,13 +26,20 @@ definitions:
 host: localhost:8080
 info:
   contact: {}
-  description: A Tag service API in Go using Gin framework
-  title: Tag Service API
+  description: Service API in Go using Gin framework
+  title: Service API
   version: "1.0"
 paths:
   /user:
     post:
       description: Save User data in Db.
+      parameters:
+      - description: user
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateUsersRequest'
       produces:
       - application/json
       responses:
@@ -28,7 +50,7 @@ paths:
       summary: Create User
   /user/{userId}:
     delete:
-      description: Save tags data in Db.
+      description: Delete User from Db.
       produces:
       - application/json
       responses:
@@ -36,9 +58,9 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/responses.Response'
-      summary: Create tags
+      summary: Delete User
     get:
-      description: get user data in Db.
+      description: get a user data from Db.
       produces:
       - application/json
       responses:
@@ -46,9 +68,9 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/responses.Response'
-      summary: Create tags
+      summary: Get User
     put:
-      description: Save tags data in Db.
+      description: Edit user's data in Db.
       produces:
       - application/json
       responses:
@@ -56,7 +78,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/responses.Response'
-      summary: Create tags
+      summary: Edit User
   /users:
     get:
       description: Save tags data in Db.
@@ -67,5 +89,5 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/responses.Response'
-      summary: Create tags
+      summary: Get all Users
 swagger: "2.0"
