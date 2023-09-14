@@ -1,27 +1,18 @@
 package main
+
 import (
-	"os"
-	"server/configs"
-	// "server/routes"
-	"github.com/gin-gonic/gin"
-    // "github.com/gin-contrib/cors"
+    "server/configs" //add this
+	"server/routes"
+    "github.com/gin-gonic/gin"
 )
+
 func main() {
+    router := gin.Default()
 
-	port := os.Getenv("PORT")
+    //run database
+    configs.ConnectDB()
 
-	if port == "" {
-		port = "8000"
-	}
+	routes.UserRoute(router)
 
-	router := gin.Default()
-	configs.ConnectDB()
-	
-	router.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-				"data": "Hello from Gin-gonic & mongoDB",
-		})
-	})
-
-	router.Run("localhost:8080")
+    router.Run("localhost:8080")
 }
