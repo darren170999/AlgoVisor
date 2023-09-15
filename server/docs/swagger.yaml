@@ -15,6 +15,28 @@ definitions:
     - name
     - title
     type: object
+  requests.EditUserRequest:
+    properties:
+      id:
+        type: string
+      location:
+        type: string
+      name:
+        maxLength: 200
+        minLength: 1
+        type: string
+      title:
+        type: string
+    required:
+    - location
+    - name
+    - title
+    type: object
+  requests.GetUserRequest:
+    properties:
+      id:
+        type: string
+    type: object
   responses.Response:
     properties:
       code:
@@ -32,7 +54,7 @@ info:
 paths:
   /user:
     post:
-      description: Save User data in Db.
+      description: Create a User data in Db.
       parameters:
       - description: user
         in: body
@@ -51,6 +73,13 @@ paths:
   /user/{userId}:
     delete:
       description: Delete User from Db.
+      parameters:
+      - description: userId
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/requests.GetUserRequest'
       produces:
       - application/json
       responses:
@@ -61,6 +90,13 @@ paths:
       summary: Delete User
     get:
       description: get a user data from Db.
+      parameters:
+      - description: userId
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/requests.GetUserRequest'
       produces:
       - application/json
       responses:
@@ -71,6 +107,13 @@ paths:
       summary: Get User
     put:
       description: Edit user's data in Db.
+      parameters:
+      - description: user
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/requests.EditUserRequest'
       produces:
       - application/json
       responses:
@@ -81,7 +124,7 @@ paths:
       summary: Edit User
   /users:
     get:
-      description: Save tags data in Db.
+      description: Get all current users in my Database.
       produces:
       - application/json
       responses:

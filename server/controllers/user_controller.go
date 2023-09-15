@@ -31,7 +31,7 @@ var validate = validator.New()
 
 // CreateTags		godoc
 // @Summary			Create User
-// @Description		Save User data in Db.
+// @Description		Create a User data in Db.
 // @Param			User body requests.CreateUsersRequest true "user"
 // @Produce			application/json
 // @User			users
@@ -77,6 +77,7 @@ func CreateUser() gin.HandlerFunc {
 // CreateTags		godoc
 // @Summary			Get User
 // @Description		get a user data from Db.
+// @Param			User body requests.GetUserRequest true "userId"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
 // @Router			/user/{userId} [get]
@@ -102,6 +103,7 @@ func GetAUser() gin.HandlerFunc {
 // CreateTags		godoc
 // @Summary			Edit User
 // @Description		Edit user's data in Db.
+// @Param 			User body requests.EditUserRequest true "user"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
 // @Router			/user/{userId} [put]
@@ -149,6 +151,7 @@ func EditAUser() gin.HandlerFunc {
 // CreateTags		godoc
 // @Summary			Delete User
 // @Description		Delete User from Db.
+// @Param			User body requests.GetUserRequest true "userId"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
 // @Router			/user/{userId} [delete]
@@ -181,7 +184,7 @@ func DeleteAUser() gin.HandlerFunc {
 
 // CreateTags		godoc
 // @Summary			Get all Users
-// @Description		Save tags data in Db.
+// @Description		Get all current users in my Database.
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
 // @Router			/users [get]

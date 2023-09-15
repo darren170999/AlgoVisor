@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/user": {
             "post": {
-                "description": "Save User data in Db.",
+                "description": "Create a User data in Db.",
                 "produces": [
                     "application/json"
                 ],
@@ -50,6 +50,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "summary": "Get User",
+                "parameters": [
+                    {
+                        "description": "userId",
+                        "name": "User",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.GetUserRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -65,6 +76,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "summary": "Edit User",
+                "parameters": [
+                    {
+                        "description": "user",
+                        "name": "User",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.EditUserRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -80,6 +102,17 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "summary": "Delete User",
+                "parameters": [
+                    {
+                        "description": "userId",
+                        "name": "User",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.GetUserRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -92,7 +125,7 @@ const docTemplate = `{
         },
         "/users": {
             "get": {
-                "description": "Save tags data in Db.",
+                "description": "Get all current users in my Database.",
                 "produces": [
                     "application/json"
                 ],
@@ -126,6 +159,38 @@ const docTemplate = `{
                     "minLength": 1
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.EditUserRequest": {
+            "type": "object",
+            "required": [
+                "location",
+                "name",
+                "title"
+            ],
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "location": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.GetUserRequest": {
+            "type": "object",
+            "properties": {
+                "id": {
                     "type": "string"
                 }
             }
