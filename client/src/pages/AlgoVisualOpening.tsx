@@ -1,9 +1,11 @@
 import { VStack } from "@chakra-ui/react";
-import {useState, useEffect} from "react";
+import {useState, useEffect, useCallback} from "react";
+import RedirectToHome from "../components/RedirectToHome";
+// import { useNavigate } from "react-router-dom";
 function AlgoVisualOpening() {
-    
     return (
     <>
+    <RedirectToHome/>
         <VStack 
         justifyContent="center"
         alignItems="center"

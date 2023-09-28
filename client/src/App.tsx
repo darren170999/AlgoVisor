@@ -4,6 +4,7 @@ import {
   theme,
 } from "@chakra-ui/react";
 import AlgoVisualOpening from "./pages/AlgoVisualOpening";
+import Home from "./pages/Home";
 
 export default function App() {
 
@@ -12,6 +13,10 @@ export default function App() {
       <Router>
         <Routes>
           <Route path="/" element={<AlgoVisualOpening/>}/>
+          <Route path="/home" element={<Home/>}/>
+          <Route path="/concepts" element={<></>}/>
+          <Route path="/tutorials" element={<></>}/>
+          <Route path="/concepts" element={<></>}/>
         </Routes>
       </Router>
 
