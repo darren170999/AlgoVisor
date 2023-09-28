@@ -30,7 +30,7 @@ var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "users"
 var validate = validator.New()
 
 // CreateTags		godoc
-// @Summary			Create User
+// @Summary			Create User/ Sign Up for account
 // @Description		Create a User data in Db.
 // @Param			User body requests.CreateUsersRequest true "user"
 // @Produce			application/json
@@ -63,6 +63,7 @@ func CreateUser() gin.HandlerFunc {
 			Email: user.Email,
 			Title:    user.Title,
 			MatricNum: user.MatricNum,
+			Password: user.Password,
 		}
 
 		result, err := userCollection.InsertOne(ctx, newUser)
@@ -76,7 +77,7 @@ func CreateUser() gin.HandlerFunc {
 }
 
 // CreateTags		godoc
-// @Summary			Get User
+// @Summary			Get User / login
 // @Description		get a user data from Db.
 // @Param			User body requests.GetUserRequest true "userId"
 // @Produce			application/json
