@@ -1,12 +1,14 @@
 package models
 
-import "go.mongodb.org/mongo-driver/bson/primitive"
+import (
+	"go.mongodb.org/mongo-driver/bson/primitive"
+)
 
 type User struct {
-	Id       primitive.ObjectID `json:"id,omitempty"`
-	Name     string             `json:"name,omitempty" validate:"required"`
-	Title    string             `json:"title,omitempty" validate:"required"`
-	Email	 string 			`json:"email,omitempty" validate:"required"`
-	MatricNum string 			`json:"marticNum,omitempty" validate:"required"`
-	Password string `json:"password,omitempty" validate:"required"`
+	Id        primitive.ObjectID `json:"id,omitempty"`
+	Name      string             `json:"name,omitempty" validate:"required"`
+	Email     string             `json:"email,omitempty" validate:"required"`
+	Title     string             `json:"title,omitempty" validate:"required"`
+	MatricNum string             `json:"matricNum,omitempty" validate:"required"`
+	Password  string             `json:"password,omitempty" validate:"required"`
 }

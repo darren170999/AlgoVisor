@@ -58,12 +58,12 @@ func CreateUser() gin.HandlerFunc {
 		// // err := ctx.ShouldBindJSON(&createUsersRequest)
 		// // controller.usersService.Create(createUsersRequest)
 		newUser := models.User{
-			Id:       primitive.NewObjectID(),
-			Name:     user.Name,
-			Email: user.Email,
-			Title:    user.Title,
+			Id:        primitive.NewObjectID(),
+			Name:      user.Name,
+			Email:     user.Email,
+			Title:     user.Title,
 			MatricNum: user.MatricNum,
-			Password: user.Password,
+			Password:  user.Password,
 		}
 
 		result, err := userCollection.InsertOne(ctx, newUser)
@@ -79,20 +79,20 @@ func CreateUser() gin.HandlerFunc {
 // CreateTags		godoc
 // @Summary			Get User / login
 // @Description		get a user data from Db.
-// @Param			User body requests.GetUserRequest true "userId"
+// @Param			User body requests.GetUserRequest true "matricNum, password"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/user/{userId} [get]
+// @Router			/user/{matricNum} [get]
 func GetAUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		userId := c.Param("userId")
+		// matricNum := c.Param("matricNum")
 		var user models.User
 		defer cancel()
 
-		objId, _ := primitive.ObjectIDFromHex(userId)
-
-		err := userCollection.FindOne(ctx, bson.M{"id": objId}).Decode(&user)
+		// objId, _ := primitive.ObjectIDFromHex(userId)
+		// matricNum :=
+		err := userCollection.FindOne(ctx, user.MatricNum).Decode(&user)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return

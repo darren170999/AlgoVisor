@@ -29,19 +29,23 @@ function Accounts(){
     const handleLoginForm = (event: { target: { name: any; value: any; }; }) => {
         const {name, value} = event.target;
         setLoginFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-        // console.log(loginFormData)
     }
 
     const handleSignUpForm = (event: { target: { name: any; value: any; }; }) => {
         const {name, value} = event.target;
         setSignUpFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-        // console.log(signUpFormData)
     }
 
     const handleLogin = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         console.log("Logging in");
         console.log(loginFormData);
+        try{
+            const response = await fetch("https://localhost:8080/")
+        } catch {
+
+        }
+
         
     };
     const handleSignUp = async (e: { preventDefault: () => void; }) => {
@@ -112,12 +116,12 @@ function Accounts(){
                 <CardFooter>   
                     {isLogging && <Stack>
                         <Button variant={"ghost"} colorScheme={"blue"} onClick={handleToggle}>
-                            New? Sign Up here!
+                            New to Algo Visual? Sign Up here!
                         </Button>
                     </Stack>}
                     {!isLogging && <Stack>
                         <Button variant={"ghost"} colorScheme={"blue"} onClick={handleToggle}>
-                            New? Sign Up here!
+                            Already have an account? Login!
                         </Button>
                     </Stack>}
                 </CardFooter>  

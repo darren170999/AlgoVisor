@@ -2,40 +2,53 @@ basePath: /api
 definitions:
   requests.CreateUsersRequest:
     properties:
-      location:
+      email:
+        type: string
+      matricNum:
         type: string
       name:
-        maxLength: 200
-        minLength: 1
+        description: Id        primitive.ObjectID `json:"id,omitempty"`
+        type: string
+      password:
         type: string
       title:
         type: string
     required:
-    - location
+    - email
     - name
+    - password
     - title
     type: object
   requests.EditUserRequest:
     properties:
-      id:
+      email:
         type: string
-      location:
+      id:
         type: string
       name:
         maxLength: 200
         minLength: 1
         type: string
+      password:
+        type: string
       title:
         type: string
     required:
-    - location
+    - email
     - name
+    - password
     - title
     type: object
   requests.GetUserRequest:
     properties:
-      id:
+      matricNum:
+        description: Id primitive.ObjectID `json:"id,omitempty"`
         type: string
+      password:
+        type: string
+    required:
+    - matricNum
+    - password
     type: object
   responses.Response:
     properties:
@@ -69,7 +82,25 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/responses.Response'
-      summary: Create User
+      summary: Create User/ Sign Up for account
+  /user/{matricNum}:
+    get:
+      description: get a user data from Db.
+      parameters:
+      - description: matricNum, password
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/requests.GetUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get User / login
   /user/{userId}:
     delete:
       description: Delete User from Db.
@@ -88,23 +119,6 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Delete User
-    get:
-      description: get a user data from Db.
-      parameters:
-      - description: userId
-        in: body
-        name: User
-        required: true
-        schema:
-          $ref: '#/definitions/requests.GetUserRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/responses.Response'
-      summary: Get User
     put:
       description: Edit user's data in Db.
       parameters:

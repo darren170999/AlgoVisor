@@ -21,7 +21,7 @@ const docTemplate = `{
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Create User",
+                "summary": "Create User/ Sign Up for account",
                 "parameters": [
                     {
                         "description": "user",
@@ -43,16 +43,16 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/{userId}": {
+        "/user/{matricNum}": {
             "get": {
                 "description": "get a user data from Db.",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Get User",
+                "summary": "Get User / login",
                 "parameters": [
                     {
-                        "description": "userId",
+                        "description": "matricNum, password",
                         "name": "User",
                         "in": "body",
                         "required": true,
@@ -69,7 +69,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/user/{userId}": {
             "put": {
                 "description": "Edit user's data in Db.",
                 "produces": [
@@ -145,18 +147,24 @@ const docTemplate = `{
         "requests.CreateUsersRequest": {
             "type": "object",
             "required": [
-                "location",
+                "email",
                 "name",
+                "password",
                 "title"
             ],
             "properties": {
-                "location": {
+                "email": {
+                    "type": "string"
+                },
+                "matricNum": {
                     "type": "string"
                 },
                 "name": {
-                    "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
+                    "description": "Id        primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
                 },
                 "title": {
                     "type": "string"
@@ -166,21 +174,25 @@ const docTemplate = `{
         "requests.EditUserRequest": {
             "type": "object",
             "required": [
-                "location",
+                "email",
                 "name",
+                "password",
                 "title"
             ],
             "properties": {
-                "id": {
+                "email": {
                     "type": "string"
                 },
-                "location": {
+                "id": {
                     "type": "string"
                 },
                 "name": {
                     "type": "string",
                     "maxLength": 200,
                     "minLength": 1
+                },
+                "password": {
+                    "type": "string"
                 },
                 "title": {
                     "type": "string"
@@ -189,8 +201,16 @@ const docTemplate = `{
         },
         "requests.GetUserRequest": {
             "type": "object",
+            "required": [
+                "matricNum",
+                "password"
+            ],
             "properties": {
-                "id": {
+                "matricNum": {
+                    "description": "Id primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 }
             }
