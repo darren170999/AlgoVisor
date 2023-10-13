@@ -31,7 +31,7 @@ var validate = validator.New()
 
 // CreateTags		godoc
 // @Summary			Create User/ Sign Up for account
-// @Description		Create a User data in Db.
+// @Description		Creating a User Data in MongoDB. UserName as Key
 // @Param			User body requests.CreateUsersRequest true "user"
 // @Produce			application/json
 // @User			users
@@ -58,12 +58,12 @@ func CreateUser() gin.HandlerFunc {
 		// // err := ctx.ShouldBindJSON(&createUsersRequest)
 		// // controller.usersService.Create(createUsersRequest)
 		newUser := models.User{
-			Id:        primitive.NewObjectID(),
-			Name:      user.Name,
-			Email:     user.Email,
-			Title:     user.Title,
-			MatricNum: user.MatricNum,
-			Password:  user.Password,
+			Id:       primitive.NewObjectID(),
+			Name:     user.Name,
+			Email:    user.Email,
+			Title:    user.Title,
+			UserName: user.UserName,
+			Password: user.Password,
 		}
 
 		result, err := userCollection.InsertOne(ctx, newUser)
@@ -78,11 +78,11 @@ func CreateUser() gin.HandlerFunc {
 
 // CreateTags		godoc
 // @Summary			Get User / login
-// @Description		get a user data from Db.
+// @Description		get a user data from Db. Checks both matricNum and Password
 // @Param			User body requests.GetUserRequest true "matricNum, password"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/user/{matricNum} [get]
+// @Router			/user/{userName} [get]
 func GetAUser() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -92,7 +92,7 @@ func GetAUser() gin.HandlerFunc {
 
 		// objId, _ := primitive.ObjectIDFromHex(userId)
 		// matricNum :=
-		err := userCollection.FindOne(ctx, user.MatricNum).Decode(&user)
+		err := userCollection.FindOne(ctx, user.UserName).Decode(&user)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return

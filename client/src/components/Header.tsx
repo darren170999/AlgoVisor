@@ -4,7 +4,8 @@ import { Link as ChakraLink, LinkProps } from '@chakra-ui/react'
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faDroplet, faEye } from '@fortawesome/free-solid-svg-icons';
-import LoginSignUpButton from "./loginSignUpButton";
+import LogOutButton from "./LogOutButton";
+import LoginSignUpButton from "./LoginButton";
 interface DataItem {
 id: string;
 library: string;
@@ -29,6 +30,7 @@ function Header() {
                                     <a> <FontAwesomeIcon icon={faEye} size="2x" /> </a>
                                     <a> <FontAwesomeIcon icon={faBook} size="2x"/> </a>
                                     <a> <FontAwesomeIcon icon={faDroplet} size="2x"/> </a>
+                                    <a> <LogOutButton/></a>
                                 </HStack>
                             </nav>}
                     </HStack>

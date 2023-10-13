@@ -17,7 +17,7 @@ const docTemplate = `{
     "paths": {
         "/user": {
             "post": {
-                "description": "Create a User data in Db.",
+                "description": "Creating a User Data in MongoDB. UserName as Key",
                 "produces": [
                     "application/json"
                 ],

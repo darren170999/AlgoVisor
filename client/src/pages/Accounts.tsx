@@ -7,10 +7,10 @@ type signUpFormDataProps = {
     password: string;
     title: string;
     email: string;
-    matricNum: string;
+    userName: string;
 }
 type loginFormDataProps = {
-    matricNum: string;
+    userName: string;
     password: string;
 }
 
@@ -20,10 +20,10 @@ function Accounts(){
         password: "",
         title: "",
         email: "",
-        matricNum: ""
+        userName: ""
     })
     const [loginFormData, setLoginFormData] = useState<loginFormDataProps>({
-        matricNum: "",
+        userName: "",
         password: ""
     })
     const handleLoginForm = (event: { target: { name: any; value: any; }; }) => {
@@ -72,8 +72,8 @@ function Accounts(){
                     <form onSubmit={handleLogin}>
 
                         <FormControl>
-                            <FormLabel>Matric Number</FormLabel>
-                            <Input type='string' name="matricNum" value={loginFormData.matricNum} onChange={handleLoginForm}/>
+                            <FormLabel>User Name</FormLabel>
+                            <Input type='string' name="userName" value={loginFormData.userName} onChange={handleLoginForm}/>
                             
                             <FormLabel>Password</FormLabel>
                             <Input type='password' name="password" value={loginFormData.password} onChange={handleLoginForm} />
@@ -102,8 +102,8 @@ function Accounts(){
                             <Input type='string' name="title" value={signUpFormData.title} onChange={handleSignUpForm} />
                             <FormLabel>Email</FormLabel>
                             <Input type='email' name="email" value={signUpFormData.email} onChange={handleSignUpForm} />
-                            <FormLabel>Matric Number</FormLabel>
-                            <Input type='string' name="matricNum" value={signUpFormData.matricNum} onChange={handleSignUpForm}/>
+                            <FormLabel>User Name</FormLabel>
+                            <Input type='string' name="userName" value={signUpFormData.userName} onChange={handleSignUpForm}/>
                         </FormControl>
                         <br></br>
                         <Stack>

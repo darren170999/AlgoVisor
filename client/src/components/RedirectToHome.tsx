@@ -16,7 +16,7 @@ const RedirectToHome: FC = () => {
 
     return (
         <div>
-        <p>Redirecting in 3 seconds...</p>
+        {/* <p>Redirecting in 3 seconds...</p> */}
         </div>
     );
 };
