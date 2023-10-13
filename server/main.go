@@ -1,12 +1,13 @@
 package main
 
 import (
-	"server/configs" //add this
+	"server/configs"
 	_ "server/docs"
 	"server/routes"
 
 	// "server/controllers"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
@@ -19,12 +20,20 @@ import (
 // @BasePath /api
 func main() {
 	router := gin.Default()
-	//run database
+
+	// Initialize the database
 	configs.ConnectDB()
-	//add swagger
+
+	// CORS configuration
+	config := cors.DefaultConfig()
+	config.AllowOrigins = []string{"http://localhost:3000"} // Opening a port hole for everything in this ""
+	router.Use(cors.New(config))
+
+	// Add Swagger documentation
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	//Router
+
+	// Define your routes
 	routes.UserRoute(router)
 
-	router.Run("localhost:8080")
+	router.Run(":8080")
 }

@@ -2,8 +2,10 @@ package controllers
 
 import (
 	"context"
+	"log"
 	"net/http"
 	"server/configs"
+	"server/data/requests"
 	"server/data/responses"
 	"server/models"
 	"server/service"
@@ -14,6 +16,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	// "golang.org/x/crypto/bcrypt"
 )
 
 type UsersController struct {
@@ -78,8 +81,8 @@ func CreateUser() gin.HandlerFunc {
 
 // CreateTags		godoc
 // @Summary			Get User / login
-// @Description		get a user data from Db. Checks both matricNum and Password
-// @Param			User body requests.GetUserRequest true "matricNum, password"
+// @Description		get a user data from Db. Checks both username and Password
+// @Param			User body requests.GetUserRequest true "username, password"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
 // @Router			/user/{userName} [get]
@@ -99,6 +102,44 @@ func GetAUser() gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": user}})
+	}
+}
+
+// @Summary     User Login
+// @Description   Authenticate a user by username and password
+// @Param       User body requests.LoginRequest true "username, password"
+// @Produce     application/json
+// @Success     200 {object} responses.UserResponse{}
+// @Router      /user/login [post]
+func UserLogin() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var loginReq requests.LoginRequest
+		if err := c.ShouldBindJSON(&loginReq); err != nil {
+			c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "Bad Request", Data: nil})
+			return
+		}
+
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		var user models.User
+		err := userCollection.FindOne(ctx, bson.M{"username": loginReq.UserName}).Decode(&user)
+		if err != nil {
+			log.Println("User not found:", err)
+			c.JSON(http.StatusUnauthorized, responses.UserResponse{Status: http.StatusUnauthorized, Message: "Invalid credentials", Data: nil})
+			return
+		}
+
+		// Compare the hashed password
+		// err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginReq.Password))
+		if err != nil {
+			log.Println("Password comparison failed:", err)
+			c.JSON(http.StatusUnauthorized, responses.UserResponse{Status: http.StatusUnauthorized, Message: "Invalid credentials", Data: nil})
+			return
+		}
+
+		// Successful login
+		c.JSON(http.StatusOK, responses.UserResponse{Status: http.StatusOK, Message: "Login successful", Data: map[string]interface{}{"data": user}})
 	}
 }
 

@@ -43,21 +43,21 @@ const docTemplate = `{
                 }
             }
         },
-        "/user/{matricNum}": {
-            "get": {
-                "description": "get a user data from Db.",
+        "/user/login": {
+            "post": {
+                "description": "Authenticate a user by username and password",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Get User / login",
+                "summary": "User Login",
                 "parameters": [
                     {
-                        "description": "matricNum, password",
+                        "description": "username, password",
                         "name": "User",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/requests.GetUserRequest"
+                            "$ref": "#/definitions/requests.LoginRequest"
                         }
                     }
                 ],
@@ -65,7 +65,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/responses.Response"
+                            "$ref": "#/definitions/responses.UserResponse"
                         }
                     }
                 }
@@ -125,6 +125,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/user/{userName}": {
+            "get": {
+                "description": "get a user data from Db. Checks both username and Password",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get User / login",
+                "parameters": [
+                    {
+                        "description": "username, password",
+                        "name": "User",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.GetUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "description": "Get all current users in my Database.",
@@ -156,9 +184,6 @@ const docTemplate = `{
                 "email": {
                     "type": "string"
                 },
-                "matricNum": {
-                    "type": "string"
-                },
                 "name": {
                     "description": "Id        primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
                     "type": "string"
@@ -167,6 +192,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                },
+                "userName": {
                     "type": "string"
                 }
             }
@@ -202,15 +230,31 @@ const docTemplate = `{
         "requests.GetUserRequest": {
             "type": "object",
             "required": [
-                "matricNum",
-                "password"
+                "password",
+                "userName"
             ],
             "properties": {
-                "matricNum": {
-                    "description": "Id primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
+                "password": {
                     "type": "string"
                 },
+                "userName": {
+                    "description": "Id primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
+                    "type": "string"
+                }
+            }
+        },
+        "requests.LoginRequest": {
+            "type": "object",
+            "required": [
+                "password",
+                "userName"
+            ],
+            "properties": {
                 "password": {
+                    "type": "string"
+                },
+                "userName": {
+                    "description": "Id primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
                     "type": "string"
                 }
             }
@@ -224,6 +268,21 @@ const docTemplate = `{
                 "data": {},
                 "status": {
                     "type": "string"
+                }
+            }
+        },
+        "responses.UserResponse": {
+            "type": "object",
+            "properties": {
+                "data": {
+                    "type": "object",
+                    "additionalProperties": true
+                },
+                "message": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
                 }
             }
         }

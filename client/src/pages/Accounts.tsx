@@ -41,7 +41,7 @@ function Accounts(){
         console.log("Logging in");
         console.log(loginFormData);
         try{
-            const response = await fetch("https://localhost:8080/")
+            const response = await fetch("https://localhost:8080/user/login")
         } catch {
 
         }
@@ -50,11 +50,33 @@ function Accounts(){
     };
     const handleSignUp = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        console.log("Signed up");
         console.log(signUpFormData);
+        try{
+            // if (!signUpFormData.email.endsWith('@e.ntu.edu.sg')) {
+            //     throw Error("Please enter a valid NTU email")
+            // }
+            const response = await fetch("http://localhost:8080/user" , {
+                    method: "POST",
+                    headers : {
+                    "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(signUpFormData),
+                });
+            if(response.ok){
+            console.log("Form data posted successfully!");
+            response.json().then((data) => {
+                console.log(data);
+            });
+            } else {
+            console.log(response);
+            }
+        } catch (err) {
+            console.log("Dk wtf happen: ", err)
+          }
         
     };
-    const [isLogging, setIsLogging] = useState(true); //if false means sign up
+    //if false means sign up, This is for checking if the user wants to login or sign up
+    const [isLogging, setIsLogging] = useState(true); 
     const handleToggle = () => {
         // console.log(isLogging);
         setIsLogging(!isLogging);
