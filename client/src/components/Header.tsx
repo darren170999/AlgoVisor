@@ -1,7 +1,7 @@
 import { Menu, MenuButton, MenuList, MenuItem, Box, HStack, Button, Icon, Img, Avatar,  } from "@chakra-ui/react";
 import { Link as ReactRouterLink } from 'react-router-dom'
 import { Link as ChakraLink, LinkProps } from '@chakra-ui/react'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faDroplet, faEye } from '@fortawesome/free-solid-svg-icons';
 import LogOutButton from "./LogOutButton";
@@ -14,7 +14,37 @@ test: string;
 }
 function Header() {
     const [loggedIn, setLoggedIn] = useState<Boolean>(false);
+    const [isSuperAdmin, setIsSuperAdmin] = useState<Boolean>(false);
+    const checkSuperAdmin = () => {
+        if(localStorage.getItem("isSuperAdmin") == 'true'){
+          setIsSuperAdmin(true);
+          return;
+        }
+        else{
+          setIsSuperAdmin(false);
+        }
+        return;    
+    };
+    const checkLoggedIn = () => {
+        console.log(localStorage)
+        if(localStorage.getItem("user") === 'true'){
+            setLoggedIn(true);
+          return;
+        }
+        else{
+            setLoggedIn(false);
+        }
+        return;    
+    };
+    useEffect(()=>{
+        checkSuperAdmin();
+        checkLoggedIn();
+    },[isSuperAdmin, loggedIn])
 
+    const handleLogout = () => {
+        localStorage.setItem('user','false');
+        localStorage.setItem('isSuperAdmin', 'false');
+    };
     return (
         <>
         
@@ -30,7 +60,7 @@ function Header() {
                                     <a> <FontAwesomeIcon icon={faEye} size="2x" /> </a>
                                     <a> <FontAwesomeIcon icon={faBook} size="2x"/> </a>
                                     <a> <FontAwesomeIcon icon={faDroplet} size="2x"/> </a>
-                                    <a> <LogOutButton/></a>
+                                    <a> <LogOutButton onClick={handleLogout}/></a>
                                 </HStack>
                             </nav>}
                     </HStack>

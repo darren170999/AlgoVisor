@@ -1,13 +1,14 @@
 import { Button, Link as ChakraLink } from "@chakra-ui/react";
-// type LoginSignUpButtonProps = {
-//     props: string;
-//     text: string;
-// }
-const LogOutButton = () => {
+import { MouseEvent } from "react"; // Import MouseEvent
+type LogOutButtonProps = {
+  onClick: (event: MouseEvent<HTMLElement>) => void; // Define the onClick prop
+};
+const LogOutButton: React.FC<LogOutButtonProps> = ({ onClick }) => {
   return (
-    <ChakraLink href={'/accounts'}>
+    <ChakraLink href={'/accounts'} onClick={onClick}>
       <Button size='md'>{"LogOut"}</Button>
     </ChakraLink>
   );
-}
+};
+
 export default LogOutButton;

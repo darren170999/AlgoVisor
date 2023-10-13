@@ -41,9 +41,28 @@ function Accounts(){
         console.log("Logging in");
         console.log(loginFormData);
         try{
-            const response = await fetch("https://localhost:8080/user/login")
-        } catch {
-
+            const response = await fetch("http://localhost:8080/user/login", {
+                method: "POST",
+                headers : {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(loginFormData),
+            });
+            if(response.ok){
+                console.log("Logged in successfully!");
+                const data = await response.json();
+                console.log(data)
+                localStorage.setItem('user', "true");
+                localStorage.setItem('username', loginFormData.userName);
+                if(loginFormData.userName === "SuperAdmin"){
+                    localStorage.setItem('isSuperAdmin', 'true');
+                }
+                console.log(localStorage)
+            } else {
+            console.error("Error")
+            }
+        } catch (error) {
+            console.log("Dk wtf happen: ", error)
         }
 
         
@@ -69,6 +88,7 @@ function Accounts(){
             });
             } else {
             console.log(response);
+            window.location.replace("/accounts");
             }
         } catch (err) {
             console.log("Dk wtf happen: ", err)
