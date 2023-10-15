@@ -1,7 +1,7 @@
 import FullScreenSection from "../components/FullScreenSection";
 import Header from "../components/Header";
 
-function Home(){
+function Landing(){
     return(
         <>
         <Header/>
@@ -13,4 +13,4 @@ function Home(){
         </>
     );
 }
-export default Home;
+export default Landing;

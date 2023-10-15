@@ -1,6 +1,6 @@
 import FullScreenSection from "../components/FullScreenSection";
 
-function Basic(){
+function Code(){
     return(
         <>
         {/* <FullScreenSection children={undefined} isDarkBackground={false}/> */}
@@ -8,4 +8,4 @@ function Basic(){
         </>
     );
 }
-export default Basic;
+export default Code;

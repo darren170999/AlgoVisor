@@ -12,7 +12,7 @@ type FullScreenSectionProps = {
 const FullScreenSection = ({ children, isDarkBackground, ...boxProps }: FullScreenSectionProps) => {
   return (
     <>
-      <Header/>
+      {/* <Header/> */}
       <VStack
       backgroundColor={boxProps.backgroundColor}
       color={isDarkBackground ? "white" : "black"}

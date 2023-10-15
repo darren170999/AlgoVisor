@@ -1,6 +1,7 @@
 import { useState } from "react";
 import FullScreenSection from "../components/FullScreenSection";
 import { Button, Card, CardBody, CardFooter, Divider, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, Stack, VStack } from "@chakra-ui/react";
+import Header from "../components/Header";
 
 type signUpFormDataProps = {
     name: string;
@@ -57,7 +58,8 @@ function Accounts(){
                 if(loginFormData.userName === "SuperAdmin"){
                     localStorage.setItem('isSuperAdmin', 'true');
                 }
-                console.log(localStorage)
+                console.log(localStorage);
+                window.location.replace("/home");
             } else {
             console.error("Error")
             }
@@ -104,6 +106,7 @@ function Accounts(){
 
     return(
         <>
+        <Header/>
         <FullScreenSection backgroundColor="#fc7313" isDarkBackground p={8} alignItems="flex-start" spacing={8}>
             <Card maxW="sm">
                 {isLogging && <CardBody>
