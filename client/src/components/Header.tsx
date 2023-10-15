@@ -1,9 +1,10 @@
-import { Avatar, Box, HStack, Link } from "@chakra-ui/react";
+import { Avatar, Box, HStack } from "@chakra-ui/react";
 import { faBook, faDroplet, faEye } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import LogOutButton from "./LogOutButton";
 import LoginSignUpButton from "./LoginButton";
+import { Link } from "react-router-dom";
 // interface DataItem {
 // id: string;
 // library: string;
@@ -48,19 +49,21 @@ function Header() {
             <Box position="relative" backgroundColor="#fffae5">
                 <Box color="black" maxWidth="1280px" margin="0 auto" >
                     <HStack px={18} py={2} justifyContent="space-between" alignItems="center">
-                        <Avatar name="Home" src="apple-touch-icon.png" />
+                        <Link to="/home">
+                            <Avatar name="Home" src="apple-touch-icon.png" />
+                        </Link>
                         <HStack>
                             {!loggedIn && <LoginSignUpButton />}
                         </HStack>
                             {loggedIn && <nav>
                                 <HStack spacing={24} >
-                                    <Link href="/home/visualizer">
+                                    <Link to="/visualizer">
                                         <FontAwesomeIcon icon={faEye} size="2x" />
                                     </Link>
-                                    <Link href="/home/concepts">
+                                    <Link to="/concepts">
                                         <FontAwesomeIcon icon={faBook} size="2x" />
                                     </Link>
-                                    <Link href="/home/code">
+                                    <Link to="/code">
                                         <FontAwesomeIcon icon={faDroplet} size="2x" />
                                     </Link>
                                     <a> <LogOutButton onClick={handleLogout}/></a>

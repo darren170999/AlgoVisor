@@ -6,7 +6,7 @@ function Home(){
         <>
         <Header/>
         
-        <FullScreenSection backgroundColor="#FFFFFF" isDarkBackground p={8} alignItems="flex-start" spacing={8}>
+        <FullScreenSection backgroundColor="#4a4a4a" isDarkBackground p={8} alignItems="flex-start" spacing={8}>
 
         </FullScreenSection>
 

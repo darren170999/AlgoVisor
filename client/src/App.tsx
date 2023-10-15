@@ -22,11 +22,11 @@ export default function App() {
           <Route path="/" element={<AlgoVisualOpening/>}/>
           <Route path="/landing" element={<Landing/>}/>
           <Route path="/accounts" element={<Accounts/>}/>
-          <Route path="/home" element={<Home/>}>
-            <Route path="visualizer" element={<Visualizer/>}/>
-            <Route path="concepts" element={<Concepts/>}/>
-            <Route path="code" element={<Code/>}/>
-          </Route>
+          <Route path="/home" element={<Home/>}/>
+          <Route path="/visualizer" element={<Visualizer/>}/>
+          <Route path="/concepts" element={<Concepts/>}/>
+          <Route path="/code" element={<Code/>}/>
+          
           <Route path='*' element={<Navigate to='/404'/>}/>
           <Route path='/404'element={<Error404/>}/>
         </Routes>
