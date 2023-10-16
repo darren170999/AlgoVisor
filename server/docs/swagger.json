@@ -9,6 +9,51 @@
     "host": "localhost:8080",
     "basePath": "/api",
     "paths": {
+        "/course": {
+            "post": {
+                "description": "Creating a Course",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "By Admin only: Create Course",
+                "parameters": [
+                    {
+                        "description": "course",
+                        "name": "Course",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.CreateCoursesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/courses": {
+            "get": {
+                "description": "Get all current courses in the Database.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all Courses",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "post": {
                 "description": "Creating a User Data in MongoDB. UserName as Key",
@@ -166,6 +211,46 @@
         }
     },
     "definitions": {
+        "requests.CreateCoursesRequest": {
+            "type": "object",
+            "required": [
+                "duration",
+                "materialDescription",
+                "materialSrc",
+                "name",
+                "status",
+                "sypnopsis",
+                "videoDescription",
+                "videoSrc"
+            ],
+            "properties": {
+                "duration": {
+                    "type": "string"
+                },
+                "materialDescription": {
+                    "type": "string"
+                },
+                "materialSrc": {
+                    "type": "string"
+                },
+                "name": {
+                    "description": "Id        primitive.ObjectID `json:\"id,omitempty\"`",
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "sypnopsis": {
+                    "type": "string"
+                },
+                "videoDescription": {
+                    "type": "string"
+                },
+                "videoSrc": {
+                    "type": "string"
+                }
+            }
+        },
         "requests.CreateUsersRequest": {
             "type": "object",
             "required": [

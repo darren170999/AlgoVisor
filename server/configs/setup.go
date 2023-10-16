@@ -27,8 +27,14 @@ func ConnectDB() *mongo.Client {
 // Client instance
 var DB *mongo.Client = ConnectDB()
 
-// getting database collections
-func GetCollection(client *mongo.Client, collectionName string) *mongo.Collection {
+// getting database users
+func GetUsersCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 	collection := client.Database("Dev-AlgoVisor").Collection(collectionName)
+	return collection
+}
+
+// getting database courses
+func GetCoursesCollection(client *mongo.Client, collectionName string) *mongo.Collection {
+	collection := client.Database("Dev-Concepts").Collection(collectionName)
 	return collection
 }

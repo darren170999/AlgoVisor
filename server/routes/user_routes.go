@@ -21,4 +21,5 @@ func UserRoute(router *gin.Engine) {
 	router.PUT("/api/user/:userId", controllers.EditAUser())
 	router.DELETE("/api/user/:userId", controllers.DeleteAUser())
 	router.GET("/api/users", controllers.GetAllUsers())
+	
 }

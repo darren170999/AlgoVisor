@@ -1,5 +1,34 @@
 basePath: /api
 definitions:
+  requests.CreateCoursesRequest:
+    properties:
+      duration:
+        type: string
+      materialDescription:
+        type: string
+      materialSrc:
+        type: string
+      name:
+        description: Id        primitive.ObjectID `json:"id,omitempty"`
+        type: string
+      status:
+        type: string
+      sypnopsis:
+        type: string
+      videoDescription:
+        type: string
+      videoSrc:
+        type: string
+    required:
+    - duration
+    - materialDescription
+    - materialSrc
+    - name
+    - status
+    - sypnopsis
+    - videoDescription
+    - videoSrc
+    type: object
   requests.CreateUsersRequest:
     properties:
       email:
@@ -86,6 +115,35 @@ info:
   title: Service API
   version: "1.0"
 paths:
+  /course:
+    post:
+      description: Creating a Course
+      parameters:
+      - description: course
+        in: body
+        name: Course
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateCoursesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: 'By Admin only: Create Course'
+  /courses:
+    get:
+      description: Get all current courses in the Database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get all Courses
   /user:
     post:
       description: Creating a User Data in MongoDB. UserName as Key

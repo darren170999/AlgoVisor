@@ -34,7 +34,7 @@ function Concepts(){
         <FullScreenSection isDarkBackground alignItems="center" backgroundColor="#4a4a4a">
         <br></br>
             <Card>
-            <TableContainer minWidth={"1200px"}>
+            <TableContainer minWidth={"1200px"} bgColor="#fffae5">
                 <Table variant='striped'>
                     <Thead>
                     <Tr alignContent={"center"}>
@@ -47,7 +47,6 @@ function Concepts(){
                 </Table>
             </TableContainer>
             {/* Everything in this have to be saved in the DB */}
-            {}
             <Accordion allowToggle colorScheme="blue">
                 {items.map((item) => (
                 <AccordionRows 

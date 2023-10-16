@@ -29,7 +29,7 @@ func NewUsersController(service service.UsersService) *UsersController {
 	}
 }
 
-var userCollection *mongo.Collection = configs.GetCollection(configs.DB, "users")
+var userCollection *mongo.Collection = configs.GetUsersCollection(configs.DB, "users")
 var validate = validator.New()
 
 // CreateTags		godoc
