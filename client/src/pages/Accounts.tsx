@@ -39,8 +39,8 @@ function Accounts(){
 
     const handleLogin = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        console.log("Logging in");
-        console.log(loginFormData);
+        // console.log("Logging in");
+        // console.log(loginFormData);
         try{
             const response = await fetch("http://localhost:8080/user/login", {
                 method: "POST",
@@ -50,18 +50,18 @@ function Accounts(){
                 body: JSON.stringify(loginFormData),
             });
             if(response.ok){
-                console.log("Logged in successfully!");
+                // console.log("Logged in successfully!"); 
                 const data = await response.json();
-                console.log(data)
+                // console.log(data)
                 localStorage.setItem('user', "true");
                 localStorage.setItem('username', loginFormData.userName);
                 if(loginFormData.userName === "SuperAdmin"){
                     localStorage.setItem('isSuperAdmin', 'true');
                 }
-                console.log(localStorage);
+                // console.log(localStorage);
                 window.location.replace("/home");
             } else {
-            console.error("Error")
+                console.error("Error")
             }
         } catch (error) {
             console.log("Dk wtf happen: ", error)
