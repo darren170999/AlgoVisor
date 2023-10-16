@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FullScreenSection from "../components/FullScreenSection";
 import { Button, Card, CardBody, CardFooter, Divider, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, Stack, VStack } from "@chakra-ui/react";
 import Header from "../components/Header";
@@ -84,10 +84,11 @@ function Accounts(){
                     body: JSON.stringify(signUpFormData),
                 });
             if(response.ok){
-            console.log("Form data posted successfully!");
+            // console.log("Form data posted successfully!");
             response.json().then((data) => {
                 console.log(data);
             });
+            setIsLogging(!isLogging);
             } else {
             console.log(response);
             window.location.replace("/accounts");
@@ -100,7 +101,6 @@ function Accounts(){
     //if false means sign up, This is for checking if the user wants to login or sign up
     const [isLogging, setIsLogging] = useState(true); 
     const handleToggle = () => {
-        // console.log(isLogging);
         setIsLogging(!isLogging);
     }
 
@@ -152,7 +152,7 @@ function Accounts(){
                         </FormControl>
                         <br></br>
                         <Stack>
-                            <Button type='submit'>Sign Up</Button>
+                            <Button type='submit' >Sign Up</Button>
                         </Stack>
                     </form>
                     
