@@ -25,7 +25,7 @@ function Header() {
         return;    
     };
     const checkLoggedIn = () => {
-        console.log(localStorage)
+        // console.log(localStorage)
         if(localStorage.getItem("user") === 'true'){
             setLoggedIn(true);
           return;
@@ -63,7 +63,7 @@ function Header() {
                                     <Link to="/concepts">
                                         <FontAwesomeIcon icon={faBook} size="2x" />
                                     </Link>
-                                    <Link to="/code">
+                                    <Link to="/tutorials">
                                         <FontAwesomeIcon icon={faDroplet} size="2x" />
                                     </Link>
                                     <a> <LogOutButton onClick={handleLogout}/></a>

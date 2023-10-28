@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Navigate } from "react-router-dom";
 import {
   ChakraProvider,
-  Code,
   theme,
 } from "@chakra-ui/react";
 import AlgoVisualOpening from "./pages/AlgoVisualOpening";
@@ -12,6 +11,8 @@ import Home from "./pages/Home";
 import Concepts from "./pages/Concepts";
 import Visualizer from "./pages/Visualizer";
 import Error404 from "./pages/Error404";
+import MonacoCode from "./pages/MonacoCode";
+import Tutorials from "./pages/Tutorials";
 
 export default function App() {
 
@@ -25,8 +26,9 @@ export default function App() {
           <Route path="/home" element={<Home/>}/>
           <Route path="/visualizer" element={<Visualizer/>}/>
           <Route path="/concepts" element={<Concepts/>}/>
-          <Route path="/code" element={<Code/>}/>
-          
+          <Route path="/tutorials" element={<Tutorials/>}>
+            <Route path="code" element={<MonacoCode/>}/>
+          </Route>
           <Route path='*' element={<Navigate to='/404'/>}/>
           <Route path='/404'element={<Error404/>}/>
         </Routes>
