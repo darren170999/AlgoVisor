@@ -27,8 +27,10 @@ export default function App() {
           <Route path="/visualizer" element={<Visualizer/>}/>
           <Route path="/concepts" element={<Concepts/>}/>
           <Route path="/tutorials" element={<Tutorials/>}>
-            <Route path="code" element={<MonacoCode/>}/>
+            {/* <Route path="code" element={<MonacoCode/>}/> */}
+            {/* <Route path="question/:questionId" element={<MonacoCode />} /> */}
           </Route>
+          <Route path="/tutorials/code" element={<MonacoCode />} />
           <Route path='*' element={<Navigate to='/404'/>}/>
           <Route path='/404'element={<Error404/>}/>
         </Routes>
