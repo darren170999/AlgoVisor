@@ -5,7 +5,7 @@ import { Outlet } from "react-router-dom";
 import CodeQuestion from "../components/CodeQuestion";
 
 function MonacoCode(){
-    const data = [
+    const data = [ // this data should be passed into MonacoCode then it displays a one time code thing.
         { id: 'T1Q1', name: 'Two Sum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'new', tags: 'basic' },
         // { id: 'T1Q2', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
         // Add more question data as needed
