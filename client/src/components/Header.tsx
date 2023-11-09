@@ -46,7 +46,7 @@ function Header() {
     };
     return (
         <>
-            <Box position="relative" backgroundColor="#fffae5">
+            <Box position="relative" backgroundColor="#fcc015">
                 <Box color="black" maxWidth="1280px" margin="0 auto" >
                     <HStack px={18} py={2} justifyContent="space-between" alignItems="center">
                         <Link to="/home">

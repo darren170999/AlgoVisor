@@ -107,7 +107,7 @@ function Accounts(){
     return(
         <>
         <Header/>
-        <FullScreenSection backgroundColor="#fc7313" isDarkBackground p={8} alignItems="flex-start" spacing={8}>
+        <FullScreenSection backgroundColor="#1a1f71" isDarkBackground p={8} alignItems="flex-start" spacing={8}>
             <Card maxW="sm">
                 {isLogging && <CardBody>
                     <Heading as="h1">

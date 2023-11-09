@@ -14,7 +14,7 @@ function Tutorials(){
     return(
         <>
         <Header></Header>
-        <FullScreenSection backgroundColor="#4a4a4a" alignItems="center" flex-direction="row"
+        <FullScreenSection backgroundColor="#1a1f71" alignItems="center" flex-direction="row"
         isDarkBackground p={8}  spacing={8}>
         <VStack>
           {" "}

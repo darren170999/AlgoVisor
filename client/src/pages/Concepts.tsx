@@ -42,7 +42,7 @@ function Concepts(){
     return(
         <>
         <Header/>
-        <FullScreenSection isDarkBackground alignItems="center" backgroundColor="#4a4a4a">
+        <FullScreenSection isDarkBackground alignItems="center" backgroundColor="#1a1f71">
         <br></br>
             <Card>
             <TableContainer minWidth={"1200px"} bgColor="#fffae5">
