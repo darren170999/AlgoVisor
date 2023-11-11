@@ -2,6 +2,7 @@
 Final Year Project for Information Engineering and Media
 By Darren Soh
 # Current Tech Stacks:
+
 Golang, Gin Framework, React, MongoDB, GraphQL, Typescript, Redis, Docker, Docker compose,
 
 # Findings:
@@ -15,3 +16,9 @@ Dev(Me) -> QA(Prof Shao) -> Production(Live)
 
 # Installations:
 Install Docker and Docker Compose
+
+Gin Framework, ReactJS, MongoDB, GraphQL
+
+## Bash Scripting for development: 
+export PATH=$(go env GOPATH)/bin:$PATH
+
