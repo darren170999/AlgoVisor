@@ -1,0 +1,247 @@
+basePath: /api
+definitions:
+  requests.CreateCoursesRequest:
+    properties:
+      duration:
+        type: string
+      materialDescription:
+        type: string
+      materialSrc:
+        type: string
+      name:
+        description: Id        primitive.ObjectID `json:"id,omitempty"`
+        type: string
+      status:
+        type: string
+      sypnopsis:
+        type: string
+      videoDescription:
+        type: string
+      videoSrc:
+        type: string
+    required:
+    - duration
+    - materialDescription
+    - materialSrc
+    - name
+    - status
+    - sypnopsis
+    - videoDescription
+    - videoSrc
+    type: object
+  requests.CreateUsersRequest:
+    properties:
+      email:
+        type: string
+      name:
+        description: Id        primitive.ObjectID `json:"id,omitempty"`
+        type: string
+      password:
+        type: string
+      title:
+        type: string
+      userName:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - title
+    type: object
+  requests.EditUserRequest:
+    properties:
+      email:
+        type: string
+      id:
+        type: string
+      name:
+        maxLength: 200
+        minLength: 1
+        type: string
+      password:
+        type: string
+      title:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - title
+    type: object
+  requests.GetUserRequest:
+    properties:
+      password:
+        type: string
+      userName:
+        description: Id primitive.ObjectID `json:"id,omitempty"`
+        type: string
+    required:
+    - password
+    - userName
+    type: object
+  requests.LoginRequest:
+    properties:
+      password:
+        type: string
+      userName:
+        description: Id primitive.ObjectID `json:"id,omitempty"`
+        type: string
+    required:
+    - password
+    - userName
+    type: object
+  responses.Response:
+    properties:
+      code:
+        type: integer
+      data: {}
+      status:
+        type: string
+    type: object
+  responses.UserResponse:
+    properties:
+      data:
+        additionalProperties: true
+        type: object
+      message:
+        type: string
+      status:
+        type: integer
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Service API in Go using Gin framework
+  title: Service API
+  version: "1.0"
+paths:
+  /course:
+    post:
+      description: Creating a Course
+      parameters:
+      - description: course
+        in: body
+        name: Course
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateCoursesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: 'By Admin only: Create Course'
+  /courses:
+    get:
+      description: Get all current courses in the Database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get all Courses
+  /user:
+    post:
+      description: Creating a User Data in MongoDB. UserName as Key
+      parameters:
+      - description: user
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateUsersRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Create User/ Sign Up for account
+  /user/{userId}:
+    delete:
+      description: Delete User from Db.
+      parameters:
+      - description: userId
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/requests.GetUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Delete User
+    put:
+      description: Edit user's data in Db.
+      parameters:
+      - description: user
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/requests.EditUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Edit User
+  /user/{userName}:
+    get:
+      description: get a user data from Db. Checks both username and Password
+      parameters:
+      - description: username, password
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/requests.GetUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get User / login
+  /user/login:
+    post:
+      description: Authenticate a user by username and password
+      parameters:
+      - description: username, password
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/requests.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.UserResponse'
+      summary: User Login
+  /users:
+    get:
+      description: Get all current users in my Database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get all Users
+swagger: "2.0"
