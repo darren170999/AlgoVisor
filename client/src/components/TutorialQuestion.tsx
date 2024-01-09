@@ -13,7 +13,7 @@ function TutorialQuestion(data: QnType) {
     // const [items, setItems] = useState<QnType[]>([]);
     return (
         <>
-        <Card maxW='sm'>
+        <Card minW='300px'>
             <CardBody>
                 <Stack mt='6' spacing='3'>
                 <Heading size='md'>{data.id}</Heading>

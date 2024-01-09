@@ -1,13 +1,15 @@
 import FullScreenSection from "../components/FullScreenSection";
 import { Outlet } from 'react-router-dom';
 import Header from "../components/Header";
-import { Text, Avatar, Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, VStack, HStack } from "@chakra-ui/react";
+import { Text, Avatar, Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, VStack, HStack, Box } from "@chakra-ui/react";
 import AccordionRows from "../components/AccordionRows";
 import TutorialQuestion from "../components/TutorialQuestion";
 function Tutorials(){
     //PUT IN DB, Call everything in Tutorials one time and filter. Status is all uncompleted. 
     const data = [
         { id: 'T1Q1', name: 'TwoSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'new', tags: 'basic' },
+        { id: 'T1Q2', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
+        { id: 'T1Q2', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
         { id: 'T1Q2', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
         // Add more question data as needed
       ];
@@ -46,17 +48,19 @@ function Tutorials(){
                 <Tab>Tut 12</Tab>
             </TabList>
             <TabPanels>
-                <TabPanel>
-                <HStack spacing={4}>
-                {data.map((question) => (
-                    <TutorialQuestion key={question.id} id ={question.id} status={question.status} tags={question.tags}
-                     description={question.description} name={question.name}/>
-                ))}
-                </HStack>
-                </TabPanel>
-                <TabPanel>
+              <TabPanel>
+                <Box overflowX='auto' w= '100%' maxWidth='900px'> 
+                  <HStack spacing={4}  style={{ flexWrap: 'nowrap' }}>
+                  {data.map((question) => (
+                      <TutorialQuestion key={question.id} id ={question.id} status={question.status} tags={question.tags}
+                      description={question.description} name={question.name}/>
+                  ))}
+                  </HStack>                 
+                </Box>
+              </TabPanel>
+              <TabPanel>
                 <p>two!</p>
-                </TabPanel>
+              </TabPanel>
             </TabPanels>
         </Tabs>
         </VStack>
