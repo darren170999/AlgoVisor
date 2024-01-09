@@ -7,10 +7,10 @@ import TutorialQuestion from "../components/TutorialQuestion";
 function Tutorials(){
     //PUT IN DB, Call everything in Tutorials one time and filter. Status is all uncompleted. 
     const data = [
-        { id: 'T1Q1', name: 'TwoSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'new', tags: 'basic' },
-        { id: 'T1Q2', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
-        { id: 'T1Q2', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
-        { id: 'T1Q2', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
+        { id: '1', name: 'TwoSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'new', tags: 'basic' },
+        { id: '2', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
+        { id: '3', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
+        { id: '4', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
         // Add more question data as needed
       ];
     return(
@@ -32,7 +32,7 @@ function Tutorials(){
           </Heading>
         </VStack>
         <VStack>
-        <Tabs variant='enclosed' color={"yellow"}>
+        <Tabs variant='enclosed' color={"yellow"} maxWidth=''>
             <TabList>
                 <Tab>Tut 1</Tab>
                 <Tab>Tut 2</Tab>

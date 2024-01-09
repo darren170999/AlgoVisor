@@ -1,12 +1,13 @@
 import { Box, Card, Grid, GridItem } from "@chakra-ui/react";
 import Header from "../components/Header";
 import MonacoEditor from "../components/MonacoEditor";
-import { Outlet } from "react-router-dom";
+import { Outlet, useParams } from "react-router-dom";
 import CodeQuestion from "../components/CodeQuestion";
 
 function MonacoCode(){
+    const { id } = useParams(); // from URL then pull request from DB to get the data to populate into this page.
     const data = [ // this data should be passed into MonacoCode then it displays a one time code thing.
-        { id: 'T1Q1', name: 'Tutorial Question 1: Two Sum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'new', tags: 'basic' },
+        { id: 'T1Q1', name: 'Tutorial Question 1: Two Sum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: '', tags: 'basic' },
         // { id: 'T1Q2', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
         // Add more question data as needed
     ];

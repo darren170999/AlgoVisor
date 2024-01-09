@@ -28,7 +28,7 @@ function TutorialQuestion(data: QnType) {
             <Divider />
             <CardFooter>
                 <ButtonGroup spacing='2'>
-                    <Link to="/tutorials/code">
+                    <Link to={`/tutorials/code/${data.id}`}>
                         <Button variant='solid' colorScheme='blue' >
                             Start Attempt
                         </Button>
