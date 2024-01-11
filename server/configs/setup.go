@@ -39,7 +39,7 @@ func GetCoursesCollection(client *mongo.Client, collectionName string) *mongo.Co
 	return collection
 }
 
-// getting database courses
+// getting database tutorials
 func GetTutorialCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 	collection := client.Database("Dev-Tutorial").Collection(collectionName)
 	return collection
