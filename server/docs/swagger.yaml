@@ -29,6 +29,26 @@ definitions:
     - videoDescription
     - videoSrc
     type: object
+  requests.CreateQuestionRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      qnid:
+        description: Id        primitive.ObjectID `json:"id,omitempty"`
+        type: string
+      status:
+        type: string
+      tags:
+        type: string
+    required:
+    - description
+    - name
+    - qnid
+    - status
+    - tags
+    type: object
   requests.CreateUsersRequest:
     properties:
       email:
@@ -47,6 +67,35 @@ definitions:
     - name
     - password
     - title
+    type: object
+  requests.DeleteQuestionRequest:
+    properties:
+      qnid:
+        maxLength: 200
+        minLength: 1
+        type: string
+    required:
+    - qnid
+    type: object
+  requests.EditAQuestionRequest:
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+      qnid:
+        description: Id        primitive.ObjectID `json:"id,omitempty"`
+        type: string
+      status:
+        type: string
+      tags:
+        type: string
+    required:
+    - description
+    - name
+    - qnid
+    - status
+    - tags
     type: object
   requests.EditUserRequest:
     properties:
@@ -67,6 +116,17 @@ definitions:
     - name
     - password
     - title
+    type: object
+  requests.GetQuestionRequest:
+    properties:
+      name:
+        type: string
+      qnId:
+        description: Id primitive.ObjectID `json:"id,omitempty"`
+        type: string
+    required:
+    - name
+    - qnId
     type: object
   requests.GetUserRequest:
     properties:
@@ -144,6 +204,87 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Get all Courses
+  /tutorials:
+    get:
+      description: Get all current questions in the Database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get all Tutorial Questions
+  /tutorials/code/{qnId}:
+    delete:
+      description: Delete Question from Db.
+      parameters:
+      - description: qnId
+        in: body
+        name: Tutorial
+        required: true
+        schema:
+          $ref: '#/definitions/requests.DeleteQuestionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Delete Question, Only Admin can delete
+    get:
+      description: get a question from Db
+      parameters:
+      - description: qnId, name
+        in: body
+        name: Tutorial
+        required: true
+        schema:
+          $ref: '#/definitions/requests.GetQuestionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get Question
+    put:
+      description: Edit question's data in Db.
+      parameters:
+      - description: tutorial
+        in: body
+        name: Question
+        required: true
+        schema:
+          $ref: '#/definitions/requests.EditAQuestionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Edit Question
+  /tutorials/code/create:
+    post:
+      description: Creating a Question
+      parameters:
+      - description: question
+        in: body
+        name: Question
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateQuestionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: 'By Admin only: Create Tutorial Question'
   /user:
     post:
       description: Creating a User Data in MongoDB. UserName as Key

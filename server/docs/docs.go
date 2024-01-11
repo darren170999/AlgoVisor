@@ -60,6 +60,131 @@ const docTemplate = `{
                 }
             }
         },
+        "/tutorials": {
+            "get": {
+                "description": "Get all current questions in the Database.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all Tutorial Questions",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/tutorials/code/create": {
+            "post": {
+                "description": "Creating a Question",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "By Admin only: Create Tutorial Question",
+                "parameters": [
+                    {
+                        "description": "question",
+                        "name": "Question",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.CreateQuestionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/tutorials/code/{qnId}": {
+            "get": {
+                "description": "get a question from Db",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get Question",
+                "parameters": [
+                    {
+                        "description": "qnId, name",
+                        "name": "Tutorial",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.GetQuestionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit question's data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Edit Question",
+                "parameters": [
+                    {
+                        "description": "tutorial",
+                        "name": "Question",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.EditAQuestionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete Question from Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete Question, Only Admin can delete",
+                "parameters": [
+                    {
+                        "description": "qnId",
+                        "name": "Tutorial",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.DeleteQuestionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "post": {
                 "description": "Creating a User Data in MongoDB. UserName as Key",
@@ -257,6 +382,34 @@ const docTemplate = `{
                 }
             }
         },
+        "requests.CreateQuestionRequest": {
+            "type": "object",
+            "required": [
+                "description",
+                "name",
+                "qnid",
+                "status",
+                "tags"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "qnid": {
+                    "description": "Id        primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "tags": {
+                    "type": "string"
+                }
+            }
+        },
         "requests.CreateUsersRequest": {
             "type": "object",
             "required": [
@@ -280,6 +433,47 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.DeleteQuestionRequest": {
+            "type": "object",
+            "required": [
+                "qnid"
+            ],
+            "properties": {
+                "qnid": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                }
+            }
+        },
+        "requests.EditAQuestionRequest": {
+            "type": "object",
+            "required": [
+                "description",
+                "name",
+                "qnid",
+                "status",
+                "tags"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "qnid": {
+                    "description": "Id        primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "tags": {
                     "type": "string"
                 }
             }
@@ -308,6 +502,22 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.GetQuestionRequest": {
+            "type": "object",
+            "required": [
+                "name",
+                "qnId"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "qnId": {
+                    "description": "Id primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
                     "type": "string"
                 }
             }
