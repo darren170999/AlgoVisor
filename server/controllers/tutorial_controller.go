@@ -31,13 +31,13 @@ var tutorialCollection *mongo.Collection = configs.GetTutorialCollection(configs
 // var validate = validator.New()
 
 // CreateTags		godoc
-// @Summary			By Admin only: Create Course
-// @Description		Creating a Course
-// @Param			Course body requests.CreateCoursesRequest true "course"
+// @Summary			By Admin only: Create Tutorial Question
+// @Description		Creating a Question
+// @Param			Question body requests.CreateQuestionRequest true "question"
 // @Produce			application/json
-// @Course			courses
+// @Tutorial		tutorial
 // @Success			200 {object} responses.Response{}
-// @Router			/course [post]
+// @Router			/tutorials/code/create [post]
 func CreateQuestion() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -79,7 +79,7 @@ func CreateQuestion() gin.HandlerFunc {
 // @Description		Get all current questions in the Database.
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/courses [get]
+// @Router			/tutorials [get]
 func GetAllQn() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -92,7 +92,6 @@ func GetAllQn() gin.HandlerFunc {
 			return
 		}
 
-		//reading from the db in an optimal way
 		defer results.Close(ctx)
 		for results.Next(ctx) {
 			var singleTutorial models.Tutorial
@@ -110,12 +109,12 @@ func GetAllQn() gin.HandlerFunc {
 }
 
 // CreateTags		godoc
-// @Summary			Delete User
-// @Description		Delete User from Db.
-// @Param			User body requests.GetUserRequest true "userId"
+// @Summary			Delete Question, Only Admin can delete
+// @Description		Delete Question from Db.
+// @Param			Tutorial body requests.DeleteQuestionRequest true "qnId"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/user/{userId} [delete]
+// @Router			/tutorials/code/{qnId} [delete]
 func DeleteAQuestion() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -144,12 +143,12 @@ func DeleteAQuestion() gin.HandlerFunc {
 }
 
 // CreateTags		godoc
-// @Summary			Get User / login
-// @Description		get a user data from Db. Checks both username and Password
-// @Param			User body requests.GetUserRequest true "username, password"
+// @Summary			Get Question
+// @Description		get a question from Db
+// @Param			Tutorial body requests.GetQuestionRequest true "qnId, name"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/user/{userName} [get]
+// @Router			/tutorials/code/{qnId} [get]
 func GetAQuestion() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -166,12 +165,12 @@ func GetAQuestion() gin.HandlerFunc {
 }
 
 // CreateTags		godoc
-// @Summary			Edit User
-// @Description		Edit user's data in Db.
-// @Param 			User body requests.EditUserRequest true "user"
+// @Summary			Edit Question
+// @Description		Edit question's data in Db.
+// @Param 			Question body requests.EditAQuestionRequest true "tutorial"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/user/{userId} [put]
+// @Router			/tutorials/code/{qnId} [put]
 func EditAQuestion() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
