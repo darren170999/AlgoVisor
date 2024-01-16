@@ -4,15 +4,42 @@ import Header from "../components/Header";
 import { Text, Avatar, Button, ButtonGroup, Card, CardBody, CardFooter, Divider, Heading, Stack, Tab, TabList, TabPanel, TabPanels, Tabs, VStack, HStack, Box } from "@chakra-ui/react";
 import AccordionRows from "../components/AccordionRows";
 import TutorialQuestion from "../components/TutorialQuestion";
+import { useEffect, useState } from "react";
+type QnType = {
+  name: string;
+  description:string;
+  status: string;
+  tags: string;
+  qnid: string;
+};
 function Tutorials(){
     //PUT IN DB, Call everything in Tutorials one time and filter. Status is all uncompleted. 
-    const data = [
-        { id: '1', name: 'TwoSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'new', tags: 'basic' },
-        { id: '2', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
-        { id: '3', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
-        { id: '4', name: 'ThreeSum', description: 'Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.', status: 'completed', tags: 'advanced' },
-        // Add more question data as needed
-      ];
+    const [questions, setQuestions] = useState<QnType[]>([]);
+    const getCourses = async() => {
+
+      console.log("accessing");
+      try{
+          const response = await fetch("http://localhost:8080/tutorials", {
+              method: "GET",
+              headers: {
+                  "Content-Type": "application/json",
+              }
+          });
+          if(response.ok){
+              console.log(response);
+              var res = await response.json();
+              // console.log(res)
+              setQuestions(res.data.data)
+              
+          }
+      } catch {
+          console.log("Failed")
+      }
+  }
+  useEffect(()=>{
+      getCourses()
+      // console.log(questions[0].qnid)
+  },[])
     return(
         <>
         <Header></Header>
@@ -51,10 +78,11 @@ function Tutorials(){
               <TabPanel>
                 <Box overflowX='auto' w= '100%' maxWidth='900px'> 
                   <HStack spacing={4}  style={{ flexWrap: 'nowrap' }}>
-                  {data.map((question) => (
-                      <TutorialQuestion key={question.id} id ={question.id} status={question.status} tags={question.tags}
+                  {questions.map((question) => (
+                      <TutorialQuestion key={question.qnid} qnid ={question.qnid} status={question.status} tags={question.tags}
                       description={question.description} name={question.name}/>
                   ))}
+                  {/* Write some logic to allow the tags to flow properly,  */}
                   </HStack>                 
                 </Box>
               </TabPanel>

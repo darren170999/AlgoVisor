@@ -2,21 +2,22 @@ import { Card, CardBody, Heading, Text, Button, ButtonGroup, CardFooter, Divider
 import { CloseIcon, CheckIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 type QnType = {
-    id: string; // eg T1Q1
     name: string;
     description: string;
     status: string;
     tags: string;
+    qnid: string;
 }
 
 function TutorialQuestion(data: QnType) {
     // const [items, setItems] = useState<QnType[]>([]);
+    console.log(data)
     return (
         <>
-        <Card minW='300px'>
+        <Card w='400px' h='400px'>
             <CardBody>
                 <Stack mt='6' spacing='3'>
-                <Heading size='md'>{data.id}</Heading>
+                <Heading size='md'>{data.name}</Heading>
                 <Text>
                     {data.name}
                 </Text>
@@ -28,12 +29,13 @@ function TutorialQuestion(data: QnType) {
             <Divider />
             <CardFooter>
                 <ButtonGroup spacing='2'>
-                    <Link to={`/tutorials/code/${data.id}`}>
+                    <Link to={`/tutorials/code/${data.qnid}`}>
                         <Button variant='solid' colorScheme='blue' >
                             Start Attempt
                         </Button>
                     </Link>
                     <Button>
+                        {/* To change this icon to make more sense */}
                         {data.status === "completed" ? <CheckIcon color={"green"}/> : <CloseIcon color={"red"}/>}
                     </Button>
                 </ButtonGroup>

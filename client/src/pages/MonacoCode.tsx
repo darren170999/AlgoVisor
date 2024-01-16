@@ -23,7 +23,7 @@ function MonacoCode(){
             </Card> */}
             {data.map((question) => (
             <CodeQuestion key={question.id} id ={question.id} status={question.status} tags={question.tags}
-                description={question.description} name={question.name}/>
+                description={question.description} name={question.name} />
             ))}
         </GridItem>
         <GridItem>
