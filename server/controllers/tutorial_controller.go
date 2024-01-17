@@ -114,7 +114,7 @@ func GetAllQn() gin.HandlerFunc {
 // @Param			Tutorial body requests.DeleteQuestionRequest true "qnId"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/tutorials/code/{qnId} [delete]
+// @Router			/tutorials/code/{qnid} [delete]
 func DeleteAQuestion() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -145,21 +145,23 @@ func DeleteAQuestion() gin.HandlerFunc {
 // CreateTags		godoc
 // @Summary			Get Question
 // @Description		get a question from Db
-// @Param			Tutorial body requests.GetQuestionRequest true "qnId, name"
+// @Param qnid path string true "qnid"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/tutorials/code/{qnId} [get]
+// @Router			/tutorials/code/{qnid} [get]
 func GetAQuestion() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		qnid := c.Param("qnid")
+		filter := bson.M{"qnid": qnid}
+		// fmt.Println(filter)
 		var tutorial models.Tutorial
 		defer cancel()
-		err := tutorialCollection.FindOne(ctx, tutorial.QnId).Decode(&tutorial)
+		err := tutorialCollection.FindOne(ctx, filter).Decode(&tutorial)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.TutorialResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-
 		c.JSON(http.StatusOK, responses.TutorialResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": tutorial}})
 	}
 }
@@ -170,7 +172,7 @@ func GetAQuestion() gin.HandlerFunc {
 // @Param 			Question body requests.EditAQuestionRequest true "tutorial"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/tutorials/code/{qnId} [put]
+// @Router			/tutorials/code/{qnid} [put]
 func EditAQuestion() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

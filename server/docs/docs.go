@@ -105,7 +105,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/tutorials/code/{qnId}": {
+        "/tutorials/code/{qnid}": {
             "get": {
                 "description": "get a question from Db",
                 "produces": [
@@ -114,13 +114,11 @@ const docTemplate = `{
                 "summary": "Get Question",
                 "parameters": [
                     {
-                        "description": "qnId, name",
-                        "name": "Tutorial",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/requests.GetQuestionRequest"
-                        }
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -502,22 +500,6 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
-                    "type": "string"
-                }
-            }
-        },
-        "requests.GetQuestionRequest": {
-            "type": "object",
-            "required": [
-                "name",
-                "qnId"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "qnId": {
-                    "description": "Id primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
                     "type": "string"
                 }
             }

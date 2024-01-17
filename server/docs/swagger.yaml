@@ -117,17 +117,6 @@ definitions:
     - password
     - title
     type: object
-  requests.GetQuestionRequest:
-    properties:
-      name:
-        type: string
-      qnId:
-        description: Id primitive.ObjectID `json:"id,omitempty"`
-        type: string
-    required:
-    - name
-    - qnId
-    type: object
   requests.GetUserRequest:
     properties:
       password:
@@ -215,7 +204,7 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Get all Tutorial Questions
-  /tutorials/code/{qnId}:
+  /tutorials/code/{qnid}:
     delete:
       description: Delete Question from Db.
       parameters:
@@ -236,12 +225,11 @@ paths:
     get:
       description: get a question from Db
       parameters:
-      - description: qnId, name
-        in: body
-        name: Tutorial
+      - description: qnid
+        in: path
+        name: qnid
         required: true
-        schema:
-          $ref: '#/definitions/requests.GetQuestionRequest'
+        type: string
       produces:
       - application/json
       responses:
