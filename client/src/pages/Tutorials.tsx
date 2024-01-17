@@ -13,9 +13,9 @@ type QnType = {
   qnid: string;
 };
 function Tutorials(){
-    //PUT IN DB, Call everything in Tutorials one time and filter. Status is all uncompleted. 
+    //PUT IN DB, Call everything in Tutorials one time and filter. Status is all new. 
     const [questions, setQuestions] = useState<QnType[]>([]);
-    const getCourses = async() => {
+    const getQuestions = async() => {
 
       console.log("accessing");
       try{
@@ -28,7 +28,6 @@ function Tutorials(){
           if(response.ok){
               console.log(response);
               var res = await response.json();
-              // console.log(res)
               setQuestions(res.data.data)
               
           }
@@ -37,8 +36,7 @@ function Tutorials(){
       }
   }
   useEffect(()=>{
-      getCourses()
-      // console.log(questions[0].qnid)
+      getQuestions()
   },[])
     return(
         <>

@@ -1,6 +1,6 @@
 import { Card, CardBody, CardHeader, Heading } from "@chakra-ui/react";
 type QnType = {
-    id: string; // eg T1Q1
+    qnid: string;
     name: string;
     description: string;
     status: string;
