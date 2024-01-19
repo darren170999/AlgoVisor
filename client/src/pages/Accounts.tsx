@@ -39,8 +39,6 @@ function Accounts(){
 
     const handleLogin = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        // console.log("Logging in");
-        // console.log(loginFormData);
         try{
             const response = await fetch("http://localhost:8080/user/login", {
                 method: "POST",
@@ -51,15 +49,21 @@ function Accounts(){
             });
             if(response.ok){
                 // console.log("Logged in successfully!"); 
+                
                 const data = await response.json();
-                // console.log(data)
-                localStorage.setItem('user', "true");
-                localStorage.setItem('username', loginFormData.userName);
-                if(loginFormData.userName === "SuperAdmin"){
-                    localStorage.setItem('isSuperAdmin', 'true');
+                if(data.message === "Login successful"){
+                    localStorage.setItem('user', "true");
+                    localStorage.setItem('username', loginFormData.userName);
+                    if(loginFormData.userName === "SuperAdmin"){
+                        localStorage.setItem('isSuperAdmin', 'true');
+                    }
+                    // console.log(localStorage);
+                    window.location.replace("/home");
+                } else {
+                    console.log(data)
+                    console.error("Invalid username or password");
+                    // You can add logic here to display an error message to the user
                 }
-                // console.log(localStorage);
-                window.location.replace("/home");
             } else {
                 console.error("Error")
             }

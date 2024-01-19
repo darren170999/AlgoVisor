@@ -13,6 +13,7 @@ import Visualizer from "./pages/Visualizer";
 import Error404 from "./pages/Error404";
 import MonacoCode from "./pages/MonacoCode";
 import Tutorials from "./pages/Tutorials";
+import Admin from "./pages/Admin";
 
 export default function App() {
 
@@ -21,6 +22,7 @@ export default function App() {
       <Router>
         <Routes>
           <Route path="/" element={<AlgoVisualOpening/>}/>
+          <Route path="/admin" element={<Admin/>}></Route>
           <Route path="/landing" element={<Landing/>}/>
           <Route path="/accounts" element={<Accounts/>}/>
           <Route path="/home" element={<Home/>}/>

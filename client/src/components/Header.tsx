@@ -1,5 +1,5 @@
 import { Avatar, Box, HStack } from "@chakra-ui/react";
-import { faBook, faDroplet, faEye } from '@fortawesome/free-solid-svg-icons';
+import { faBook, faDroplet, faEye, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import LogOutButton from "./LogOutButton";
@@ -25,7 +25,7 @@ function Header() {
         return;    
     };
     const checkLoggedIn = () => {
-        // console.log(localStorage)
+        console.log(localStorage)
         if(localStorage.getItem("user") === 'true'){
             setLoggedIn(true);
           return;
@@ -36,7 +36,7 @@ function Header() {
         return;    
     };
     useEffect(()=>{
-        // checkSuperAdmin();
+        checkSuperAdmin();
         checkLoggedIn();
     },[loggedIn])
 
@@ -66,6 +66,10 @@ function Header() {
                                     <Link to="/tutorials">
                                         <FontAwesomeIcon icon={faDroplet} size="2x" />
                                     </Link>
+                                    {isSuperAdmin ? <Link to="/admin">
+                                        <FontAwesomeIcon icon={faLockOpen} size="2x" />
+                                    </Link> : <FontAwesomeIcon icon={faLock} size="2x" />}
+
                                     <a> <LogOutButton onClick={handleLogout}/></a>
                                 </HStack>
                             </nav>}
