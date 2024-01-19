@@ -16,7 +16,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
-	// "golang.org/x/crypto/bcrypt"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type UsersController struct {
@@ -57,6 +57,13 @@ func CreateUser() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, responses.UserResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
 		}
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+
+
 		// createUsersRequest := request.CreateUsersRequest{}
 		// // err := ctx.ShouldBindJSON(&createUsersRequest)
 		// // controller.usersService.Create(createUsersRequest)
@@ -66,7 +73,7 @@ func CreateUser() gin.HandlerFunc {
 			Email:    user.Email,
 			Title:    user.Title,
 			UserName: user.UserName,
-			Password: user.Password,
+			Password: string(hashedPassword),
 		}
 
 		result, err := userCollection.InsertOne(ctx, newUser)
@@ -131,7 +138,7 @@ func UserLogin() gin.HandlerFunc {
 		}
 
 		// Compare the hashed password
-		// err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginReq.Password))
+		err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginReq.Password))
 		if err != nil {
 			log.Println("Password comparison failed:", err)
 			c.JSON(http.StatusUnauthorized, responses.UserResponse{Status: http.StatusUnauthorized, Message: "Invalid credentials", Data: nil})
