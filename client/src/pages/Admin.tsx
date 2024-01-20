@@ -40,7 +40,6 @@ function Admin(){
 
     useEffect(() => {
         callDB();
-        // console.log(lastQnID)
     }, []);
     useEffect(() => {
         // Update the qnid in createQuestionFormData whenever lastQnID changes
@@ -55,7 +54,7 @@ function Admin(){
         qnid: lastQnID!,
     })
     const [tagsValidationMessage, setTagsValidationMessage] = useState<string | null>(null);
-    // const [emptyFieldsValidationMessage, setEmptyFieldsValidationMessage] = useState<boolean>(true);
+    const [isEmpty, setIsEmpty] = useState<boolean>(true);
     const validateTags = (event: { target: { value: string } }) => {
         const { value } = event.target;
         const regex = /^Tut\d+$/;
@@ -72,13 +71,18 @@ function Admin(){
             validateTags({target: {value}})
         }
         setCreateQuestionFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-        console.log(createQuestionFormData);
     }
 
     const handleCreation = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        // console.log(createQuestionFormData);
-        
+        console.log(createQuestionFormData);
+        // Check if any of the fields are empty
+        if (Object.values(createQuestionFormData).some((value) => value === "")) {
+            setIsEmpty(false);
+            return;
+        } else {
+            setIsEmpty(true);
+        }
         if(tagsValidationMessage === "Valid format" ){
             try{
                 const response = await fetch("http://localhost:8080/tutorials/code/create" , {
@@ -100,7 +104,6 @@ function Admin(){
             } catch (err) {
                 console.log("Dk wtf happen: ", err)
             }     
-
         } else {
             console.log("Not working")
         }
@@ -142,7 +145,7 @@ function Admin(){
                             )}
                         </FormControl>
                         <br></br>
-                        {tagsValidationMessage === "Valid format"?<Stack>
+                        {(tagsValidationMessage === "Valid format" && !isEmpty) ?<Stack>
                             <Button type='submit' color="black" >Create</Button>
                         </Stack> : <Stack><Button color="gray"> Create</Button></Stack>}
                     </form>
