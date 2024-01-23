@@ -80,24 +80,6 @@ definitions:
     - password
     - title
     type: object
-  requests.DeleteQuestionRequest:
-    properties:
-      qnid:
-        maxLength: 200
-        minLength: 1
-        type: string
-    required:
-    - qnid
-    type: object
-  requests.DeleteTestCasesRequest:
-    properties:
-      qnid:
-        maxLength: 200
-        minLength: 1
-        type: string
-    required:
-    - qnid
-    type: object
   requests.EditAQuestionRequest:
     properties:
       description:
@@ -237,14 +219,13 @@ paths:
       summary: Get all TestCases
   /testcase/{qnid}:
     delete:
-      description: Delete TestCase from Db.
+      description: Delete TestCase from Db based on qnid.
       parameters:
-      - description: qnId
-        in: body
-        name: TestCases
+      - description: qnid
+        in: path
+        name: qnid
         required: true
-        schema:
-          $ref: '#/definitions/requests.DeleteTestCasesRequest'
+        type: string
       produces:
       - application/json
       responses:
@@ -252,7 +233,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/responses.Response'
-      summary: Delete TestCase, Only Admin can delete
+      summary: Delete TestCase based on qnid
     get:
       description: get a testCase from Db
       parameters:
@@ -300,14 +281,13 @@ paths:
       summary: Get all Tutorial Questions
   /tutorials/code/{qnid}:
     delete:
-      description: Delete Question from Db.
+      description: Delete Question from Db based on qnid.
       parameters:
-      - description: qnId
-        in: body
-        name: Tutorial
+      - description: qnid
+        in: path
+        name: qnid
         required: true
-        schema:
-          $ref: '#/definitions/requests.DeleteQuestionRequest'
+        type: string
       produces:
       - application/json
       responses:
@@ -315,7 +295,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/responses.Response'
-      summary: Delete Question, Only Admin can delete
+      summary: Delete Question based on qnid
     get:
       description: get a question from Db
       parameters:

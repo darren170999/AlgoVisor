@@ -105,40 +105,39 @@ func GetAllTestCases() gin.HandlerFunc {
 	}
 }
 
-// CreateTags		godoc
-// @Summary			Delete TestCase, Only Admin can delete
-// @Description		Delete TestCase from Db.
-// @Param			TestCases body requests.DeleteTestCasesRequest true "qnId"
+// DeleteTags		godoc
+// @Summary			Delete TestCase based on qnid
+// @Description		Delete TestCase from Db based on qnid.
+// @Param			qnid path string true "qnid"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
 // @Router			/testcase/{qnid} [delete]
 func DeleteATestCase() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		qnId := c.Param("qnId")
+		qnID := c.Param("qnid")
 		defer cancel()
 
-        objId, err := primitive.ObjectIDFromHex(qnId)
-        if err != nil {
-            c.JSON(http.StatusBadRequest, responses.TestCasesResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": "Invalid qnId"}})
-            return
-        }
+		// Create a filter to match the document with the given qnid
+		filter := bson.M{"qnid": qnID}
 
-		result, err := testCaseCollection.DeleteOne(ctx, bson.M{"_id": objId})
+		// Delete the document based on the filter
+		result, err := testCaseCollection.DeleteOne(ctx, filter)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.TestCasesResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
-		if result.DeletedCount < 1 {
+		// Check if any document was deleted
+		if result.DeletedCount == 0 {
 			c.JSON(http.StatusNotFound,
-				responses.TestCasesResponse{Status: http.StatusNotFound, Message: "error", Data: map[string]interface{}{"data": "TestCase with specified ID not found!"}},
+				responses.TestCasesResponse{Status: http.StatusNotFound, Message: "error", Data: map[string]interface{}{"data": "Test case with specified qnid not found!"}},
 			)
 			return
 		}
 
 		c.JSON(http.StatusOK,
-			responses.TestCasesResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "TestCase successfully deleted!"}},
+			responses.TestCasesResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "Test case successfully deleted!"}},
 		)
 	}
 }

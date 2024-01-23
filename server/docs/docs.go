@@ -131,20 +131,18 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Delete TestCase from Db.",
+                "description": "Delete TestCase from Db based on qnid.",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Delete TestCase, Only Admin can delete",
+                "summary": "Delete TestCase based on qnid",
                 "parameters": [
                     {
-                        "description": "qnId",
-                        "name": "TestCases",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/requests.DeleteTestCasesRequest"
-                        }
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -254,20 +252,18 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Delete Question from Db.",
+                "description": "Delete Question from Db based on qnid.",
                 "produces": [
                     "application/json"
                 ],
-                "summary": "Delete Question, Only Admin can delete",
+                "summary": "Delete Question based on qnid",
                 "parameters": [
                     {
-                        "description": "qnId",
-                        "name": "Tutorial",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/requests.DeleteQuestionRequest"
-                        }
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -547,32 +543,6 @@ const docTemplate = `{
                 },
                 "userName": {
                     "type": "string"
-                }
-            }
-        },
-        "requests.DeleteQuestionRequest": {
-            "type": "object",
-            "required": [
-                "qnid"
-            ],
-            "properties": {
-                "qnid": {
-                    "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
-                }
-            }
-        },
-        "requests.DeleteTestCasesRequest": {
-            "type": "object",
-            "required": [
-                "qnid"
-            ],
-            "properties": {
-                "qnid": {
-                    "type": "string",
-                    "maxLength": 200,
-                    "minLength": 1
                 }
             }
         },

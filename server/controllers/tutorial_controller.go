@@ -108,36 +108,33 @@ func GetAllQn() gin.HandlerFunc {
 	}
 }
 
-// CreateTags		godoc
-// @Summary			Delete Question, Only Admin can delete
-// @Description		Delete Question from Db.
-// @Param			Tutorial body requests.DeleteQuestionRequest true "qnId"
+// DeleteTags		godoc
+// @Summary			Delete Question based on qnid
+// @Description		Delete Question from Db based on qnid.
+// @Param			qnid path string true "qnid"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
 // @Router			/tutorials/code/{qnid} [delete]
 func DeleteAQuestion() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		qnId := c.Param("qnId")
+		qnID := c.Param("qnid")
 		defer cancel()
-
-		objId, _ := primitive.ObjectIDFromHex(qnId)
-
-		result, err := tutorialCollection.DeleteOne(ctx, bson.M{"id": objId})
+		filter := bson.M{"qnid": qnID}
+		result, err := tutorialCollection.DeleteOne(ctx, filter)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.TutorialResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-
-		if result.DeletedCount < 1 {
+		if result.DeletedCount == 0 {
 			c.JSON(http.StatusNotFound,
-				responses.TutorialResponse{Status: http.StatusNotFound, Message: "error", Data: map[string]interface{}{"data": "User with specified ID not found!"}},
+				responses.TutorialResponse{Status: http.StatusNotFound, Message: "error", Data: map[string]interface{}{"data": "Question with specified qnid not found!"}},
 			)
 			return
 		}
 
 		c.JSON(http.StatusOK,
-			responses.TutorialResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "User successfully deleted!"}},
+			responses.TutorialResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "Question successfully deleted!"}},
 		)
 	}
 }
