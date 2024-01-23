@@ -54,6 +54,103 @@
                 }
             }
         },
+        "/testcase": {
+            "get": {
+                "description": "Get all current testCases in the Database.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all TestCases",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/testcase/create": {
+            "post": {
+                "description": "Creating a TestCase",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "By Admin only: Create TestCase",
+                "parameters": [
+                    {
+                        "description": "testCase",
+                        "name": "TestCases",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.CreateTestCasesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/testcase/{qnid}": {
+            "get": {
+                "description": "get a testCase from Db",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get testCase",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete TestCase from Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete TestCase, Only Admin can delete",
+                "parameters": [
+                    {
+                        "description": "qnId",
+                        "name": "TestCases",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.DeleteTestCasesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/tutorials": {
             "get": {
                 "description": "Get all current questions in the Database.",
@@ -402,6 +499,24 @@
                 }
             }
         },
+        "requests.CreateTestCasesRequest": {
+            "type": "object",
+            "required": [
+                "qnid",
+                "testcases"
+            ],
+            "properties": {
+                "qnid": {
+                    "type": "string"
+                },
+                "testcases": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/requests.SingleTestCase"
+                    }
+                }
+            }
+        },
         "requests.CreateUsersRequest": {
             "type": "object",
             "required": [
@@ -430,6 +545,19 @@
             }
         },
         "requests.DeleteQuestionRequest": {
+            "type": "object",
+            "required": [
+                "qnid"
+            ],
+            "properties": {
+                "qnid": {
+                    "type": "string",
+                    "maxLength": 200,
+                    "minLength": 1
+                }
+            }
+        },
+        "requests.DeleteTestCasesRequest": {
             "type": "object",
             "required": [
                 "qnid"
@@ -526,6 +654,18 @@
                 },
                 "userName": {
                     "description": "Id primitive.ObjectID `json:\"id,omitempty\"`",
+                    "type": "string"
+                }
+            }
+        },
+        "requests.SingleTestCase": {
+            "type": "object",
+            "properties": {
+                "input": {
+                    "description": "Define fields for each test case\nFor example:",
+                    "type": "string"
+                },
+                "output": {
                     "type": "string"
                 }
             }

@@ -36,6 +36,7 @@ func main() {
 	routes.UserRoute(router)
 	routes.CourseRoute(router)
 	routes.TutorialRoute(router)
+	routes.TestCasesRoute(router)
 
 	router.Run(":8080")
 }
