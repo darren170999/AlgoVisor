@@ -60,6 +60,8 @@ func CreateQuestion() gin.HandlerFunc {
 			QnId:        tutorial.QnId,
 			Name:        tutorial.Name,
 			Description: tutorial.Description,
+			Examples:    tutorial.Examples,
+			Constraints: tutorial.Constraints,
 			Status:      tutorial.Status,
 			Tags:        tutorial.Tags,
 		}
@@ -151,7 +153,6 @@ func GetAQuestion() gin.HandlerFunc {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		qnid := c.Param("qnid")
 		filter := bson.M{"qnid": qnid}
-		// fmt.Println(filter)
 		var tutorial models.Tutorial
 		defer cancel()
 		err := tutorialCollection.FindOne(ctx, filter).Decode(&tutorial)
@@ -188,7 +189,8 @@ func EditAQuestion() gin.HandlerFunc {
 			return
 		}
 
-		update := bson.M{"name": tutorial.Name, "description": tutorial.Description, "status": tutorial.Status, "tags": tutorial.Tags}
+		update := bson.M{"name": tutorial.Name, "description": tutorial.Description, "examples": tutorial.Examples, 
+		"constraints": tutorial.Constraints, "status": tutorial.Status, "tags": tutorial.Tags}
 		result, err := tutorialCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$set": update})
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.TutorialResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})

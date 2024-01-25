@@ -476,14 +476,22 @@ const docTemplate = `{
         "requests.CreateQuestionRequest": {
             "type": "object",
             "required": [
+                "constraints",
                 "description",
+                "examples",
                 "name",
                 "qnid",
                 "status",
                 "tags"
             ],
             "properties": {
+                "constraints": {
+                    "type": "string"
+                },
                 "description": {
+                    "type": "string"
+                },
+                "examples": {
                     "type": "string"
                 },
                 "name": {
@@ -549,14 +557,22 @@ const docTemplate = `{
         "requests.EditAQuestionRequest": {
             "type": "object",
             "required": [
+                "constraints",
                 "description",
+                "examples",
                 "name",
                 "qnid",
                 "status",
                 "tags"
             ],
             "properties": {
+                "constraints": {
+                    "type": "string"
+                },
                 "description": {
+                    "type": "string"
+                },
+                "examples": {
                     "type": "string"
                 },
                 "name": {

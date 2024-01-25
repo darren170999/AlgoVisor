@@ -31,7 +31,11 @@ definitions:
     type: object
   requests.CreateQuestionRequest:
     properties:
+      constraints:
+        type: string
       description:
+        type: string
+      examples:
         type: string
       name:
         type: string
@@ -43,7 +47,9 @@ definitions:
       tags:
         type: string
     required:
+    - constraints
     - description
+    - examples
     - name
     - qnid
     - status
@@ -82,7 +88,11 @@ definitions:
     type: object
   requests.EditAQuestionRequest:
     properties:
+      constraints:
+        type: string
       description:
+        type: string
+      examples:
         type: string
       name:
         type: string
@@ -94,7 +104,9 @@ definitions:
       tags:
         type: string
     required:
+    - constraints
     - description
+    - examples
     - name
     - qnid
     - status
