@@ -10,7 +10,9 @@ type createTestCaseFormDataProps = {
         output: string;
     }[];
 }
-
+// Sample format for testcases in field: 
+//  [ {"input": "inputValue1", "output": "outputValue1"},
+//   {"input": "inputValue2", "output": "outputValue2"}]
 function AdminTestcase(){
     // const [loading, setLoading] = useState(true);
 
@@ -38,10 +40,11 @@ function AdminTestcase(){
                 console.log("Form data posted successfully!");
                 response.json().then((data) => {
                     console.log(data);
+                    window.location.replace("/admin");
                 });
             } else {
                 console.log(response);
-                window.location.replace("/admin");
+                window.location.replace("/admin/testcase");
             }
         } catch (err) {
             console.log("Dk wtf happen: ", err)

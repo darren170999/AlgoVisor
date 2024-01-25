@@ -99,10 +99,11 @@ function AdminQuestion(){
                     console.log("Form data posted successfully!");
                     response.json().then((data) => {
                         console.log(data);
+                        window.location.replace("/admin");
                     });
                 } else {
                     console.log(response);
-                    window.location.replace("/admin");
+                    window.location.replace("/admin/question");
                 }
             } catch (err) {
                 console.log("Dk wtf happen: ", err)
