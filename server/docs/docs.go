@@ -60,6 +60,222 @@ const docTemplate = `{
                 }
             }
         },
+        "/testcase": {
+            "get": {
+                "description": "Get all current testCases in the Database.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all TestCases",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/testcase/create": {
+            "post": {
+                "description": "Creating a TestCase",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "By Admin only: Create TestCase",
+                "parameters": [
+                    {
+                        "description": "testCase",
+                        "name": "TestCases",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.CreateTestCasesRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/testcase/{qnid}": {
+            "get": {
+                "description": "get a testCase from Db",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get testCase",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete TestCase from Db based on qnid.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete TestCase based on qnid",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/tutorials": {
+            "get": {
+                "description": "Get all current questions in the Database.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all Tutorial Questions",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/tutorials/code/create": {
+            "post": {
+                "description": "Creating a Question",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "By Admin only: Create Tutorial Question",
+                "parameters": [
+                    {
+                        "description": "question",
+                        "name": "Question",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.CreateQuestionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/tutorials/code/{qnid}": {
+            "get": {
+                "description": "get a question from Db",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get Question",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit question's data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Edit Question",
+                "parameters": [
+                    {
+                        "description": "tutorial",
+                        "name": "Question",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.EditAQuestionRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete Question from Db based on qnid.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete Question based on qnid",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/user": {
             "post": {
                 "description": "Creating a User Data in MongoDB. UserName as Key",
@@ -257,6 +473,60 @@ const docTemplate = `{
                 }
             }
         },
+        "requests.CreateQuestionRequest": {
+            "type": "object",
+            "required": [
+                "constraints",
+                "description",
+                "examples",
+                "name",
+                "qnid",
+                "status",
+                "tags"
+            ],
+            "properties": {
+                "constraints": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "examples": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "qnid": {
+                    "description": "Id        primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "tags": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.CreateTestCasesRequest": {
+            "type": "object",
+            "required": [
+                "qnid",
+                "testcases"
+            ],
+            "properties": {
+                "qnid": {
+                    "type": "string"
+                },
+                "testcases": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/requests.SingleTestCase"
+                    }
+                }
+            }
+        },
         "requests.CreateUsersRequest": {
             "type": "object",
             "required": [
@@ -280,6 +550,42 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "userName": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.EditAQuestionRequest": {
+            "type": "object",
+            "required": [
+                "constraints",
+                "description",
+                "examples",
+                "name",
+                "qnid",
+                "status",
+                "tags"
+            ],
+            "properties": {
+                "constraints": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "examples": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "qnid": {
+                    "description": "Id        primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "tags": {
                     "type": "string"
                 }
             }
@@ -340,6 +646,18 @@ const docTemplate = `{
                 },
                 "userName": {
                     "description": "Id primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
+                    "type": "string"
+                }
+            }
+        },
+        "requests.SingleTestCase": {
+            "type": "object",
+            "properties": {
+                "input": {
+                    "description": "Define fields for each test case\nFor example:",
+                    "type": "string"
+                },
+                "output": {
                     "type": "string"
                 }
             }

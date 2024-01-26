@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import axios from "axios";
+import { Box, Button, Heading } from "@chakra-ui/react";
 
 const files: Record<string, any> = {
   "script.py": {
@@ -74,9 +75,10 @@ useEffect(()=>{
 
   return (
     <>
-      <button onClick={compileAndRunCode}>Compile and Run</button>
+    <Box p={4} borderRadius="md" boxShadow="md" bg="white">
+      <Button >Save</Button>
       <Editor
-        height="100vh"
+        height="500px"
         width="100%"
         theme="vs-dark"
         defaultLanguage={file.language}
@@ -84,10 +86,27 @@ useEffect(()=>{
         path={file.name}
         onMount={handleEditorDidMount}
       />
-      <div>
-        <h3>Output:</h3>
-        <pre>{output}</pre>
-      </div>
+      <Box mt={4}>
+        <Heading as="h3" size="md" mb={2} p={3} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>Output:</span>
+          <div>
+            <Button onClick={compileAndRunCode} style={{ marginRight: '8px' }}>Run</Button>
+            <Button style={{ marginRight: '8px' }}>Clear</Button>
+            {/* Submit is just to test code against test cases */}
+            <Button >Submit</Button>
+          </div>
+        </Heading>
+        <Box
+          p={2}
+          borderRadius="md"
+          borderWidth="1px"
+          borderColor="gray.200"
+          bg="gray.50"
+        >
+          <pre>{output}</pre>
+        </Box>
+      </Box>
+    </Box>
     </>
   );
 }

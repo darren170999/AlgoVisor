@@ -1,23 +1,68 @@
-import { Card, CardBody, CardHeader, Heading } from "@chakra-ui/react";
+import { Card, CardBody, CardHeader, Heading, Box, Text } from "@chakra-ui/react";
+
 type QnType = {
-    id: string; // eg T1Q1
-    name: string;
-    description: string;
-    status: string;
-    tags: string;
-}
-function CodeQuestion(data: QnType){
-    return(
-        <>
-        <Card bg="white" p={8} h="100%">
+  qnid: string;
+  name: string;
+  description: string;
+  examples: string;
+  constraints: string;
+  status: string;
+  tags: string;
+};
+
+type TestCaseType = {
+    testCases: {
+        input: string;
+        output: string;
+    }[];
+};
+
+function CodeQuestion({ data, tc }: { data: QnType; tc: TestCaseType | null }) {
+  return (
+    <>
+        <Card bg="white" p={5} h="100%">
             <CardHeader>
-                <Heading size='md'>{data.name}</Heading>
+                <Heading size="md">{data.name}</Heading>
             </CardHeader>
+            <Card mb={1}>
+                <CardHeader>
+                <Heading size="sm">Descriptions</Heading>
+                </CardHeader>
+                <CardBody>
+                    <Text>{data.description}</Text>
+                </CardBody>
+            </Card>
+            <Card mb={1}>
+                <CardHeader>
+                <Heading size="sm">Examples</Heading>
+                </CardHeader>
+                <CardBody>
+                    <Text>{data.examples}</Text>
+                </CardBody>
+            </Card>
+            <Card mb={1}>
+                <CardHeader>
+                <Heading size="sm">Constraints</Heading>
+                </CardHeader>
+                <CardBody>
+                    <Text>{data.constraints}</Text>
+                </CardBody>
+            </Card>
+            {tc && tc.testCases && tc.testCases.length > 0 && (
             <CardBody>
-                {data.description}
+                <Heading size="sm" mb={4}>
+                Test Cases:
+                </Heading>
+                {tc.testCases.map((testCase, index) => (
+                <Box key={index}>
+                    Input: {testCase.input}, Output: {testCase.output}
+                </Box>
+                ))}
             </CardBody>
+            )}
         </Card>
-        </>
-    )
+    </>
+  );
 }
+
 export default CodeQuestion;

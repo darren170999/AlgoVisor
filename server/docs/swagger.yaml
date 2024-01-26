@@ -29,6 +29,44 @@ definitions:
     - videoDescription
     - videoSrc
     type: object
+  requests.CreateQuestionRequest:
+    properties:
+      constraints:
+        type: string
+      description:
+        type: string
+      examples:
+        type: string
+      name:
+        type: string
+      qnid:
+        description: Id        primitive.ObjectID `json:"id,omitempty"`
+        type: string
+      status:
+        type: string
+      tags:
+        type: string
+    required:
+    - constraints
+    - description
+    - examples
+    - name
+    - qnid
+    - status
+    - tags
+    type: object
+  requests.CreateTestCasesRequest:
+    properties:
+      qnid:
+        type: string
+      testcases:
+        items:
+          $ref: '#/definitions/requests.SingleTestCase'
+        type: array
+    required:
+    - qnid
+    - testcases
+    type: object
   requests.CreateUsersRequest:
     properties:
       email:
@@ -47,6 +85,32 @@ definitions:
     - name
     - password
     - title
+    type: object
+  requests.EditAQuestionRequest:
+    properties:
+      constraints:
+        type: string
+      description:
+        type: string
+      examples:
+        type: string
+      name:
+        type: string
+      qnid:
+        description: Id        primitive.ObjectID `json:"id,omitempty"`
+        type: string
+      status:
+        type: string
+      tags:
+        type: string
+    required:
+    - constraints
+    - description
+    - examples
+    - name
+    - qnid
+    - status
+    - tags
     type: object
   requests.EditUserRequest:
     properties:
@@ -89,6 +153,16 @@ definitions:
     required:
     - password
     - userName
+    type: object
+  requests.SingleTestCase:
+    properties:
+      input:
+        description: |-
+          Define fields for each test case
+          For example:
+        type: string
+      output:
+        type: string
     type: object
   responses.Response:
     properties:
@@ -144,6 +218,147 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Get all Courses
+  /testcase:
+    get:
+      description: Get all current testCases in the Database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get all TestCases
+  /testcase/{qnid}:
+    delete:
+      description: Delete TestCase from Db based on qnid.
+      parameters:
+      - description: qnid
+        in: path
+        name: qnid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Delete TestCase based on qnid
+    get:
+      description: get a testCase from Db
+      parameters:
+      - description: qnid
+        in: path
+        name: qnid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get testCase
+  /testcase/create:
+    post:
+      description: Creating a TestCase
+      parameters:
+      - description: testCase
+        in: body
+        name: TestCases
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateTestCasesRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: 'By Admin only: Create TestCase'
+  /tutorials:
+    get:
+      description: Get all current questions in the Database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get all Tutorial Questions
+  /tutorials/code/{qnid}:
+    delete:
+      description: Delete Question from Db based on qnid.
+      parameters:
+      - description: qnid
+        in: path
+        name: qnid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Delete Question based on qnid
+    get:
+      description: get a question from Db
+      parameters:
+      - description: qnid
+        in: path
+        name: qnid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get Question
+    put:
+      description: Edit question's data in Db.
+      parameters:
+      - description: tutorial
+        in: body
+        name: Question
+        required: true
+        schema:
+          $ref: '#/definitions/requests.EditAQuestionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Edit Question
+  /tutorials/code/create:
+    post:
+      description: Creating a Question
+      parameters:
+      - description: question
+        in: body
+        name: Question
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateQuestionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: 'By Admin only: Create Tutorial Question'
   /user:
     post:
       description: Creating a User Data in MongoDB. UserName as Key
