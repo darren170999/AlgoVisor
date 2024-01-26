@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import axios from "axios";
+import { Box, Button, Heading } from "@chakra-ui/react";
 
 const files: Record<string, any> = {
   "script.py": {
@@ -22,7 +23,7 @@ function MonacoEditor() {
   const [output, setOutput] = useState<string>("");
     function waitFor3second(){
         return new Promise(resolve =>
-            setTimeout(() => resolve("result"),3000)
+            setTimeout(() => resolve("result"),100)
         );
     }
   function handleEditorDidMount(editor: any, monaco: any) {
@@ -74,20 +75,33 @@ useEffect(()=>{
 
   return (
     <>
-      <button onClick={compileAndRunCode}>Compile and Run</button>
+    <Box p={4} borderRadius="md" boxShadow="md" bg="white">
+      <Button onClick={compileAndRunCode}>Compile and Run</Button>
       <Editor
-        height="100vh"
+        height="500px"
         width="100%"
         theme="vs-dark"
+        // fontFamily="Menlo, Monaco, 'Courier New', monospace"
         defaultLanguage={file.language}
         defaultValue={file.value}
         path={file.name}
         onMount={handleEditorDidMount}
       />
-      <div>
-        <h3>Output:</h3>
-        <pre>{output}</pre>
-      </div>
+      <Box mt={4}>
+        <Heading as="h3" size="md" mb={2}>
+          Output:
+        </Heading>
+        <Box
+          p={2}
+          borderRadius="md"
+          borderWidth="1px"
+          borderColor="gray.200"
+          bg="gray.50"
+        >
+          <pre>{output}</pre>
+        </Box>
+      </Box>
+    </Box>
     </>
   );
 }

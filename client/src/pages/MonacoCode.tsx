@@ -81,7 +81,10 @@ function MonacoCode() {
           )}
         </GridItem>
         <GridItem>
-          <MonacoEditor />
+          <Card>
+            <MonacoEditor />
+            
+          </Card>
         </GridItem>
       </Grid>
     </>

@@ -5,12 +5,6 @@ import { useEffect, useState } from "react";
 import LogOutButton from "./LogOutButton";
 import LoginSignUpButton from "./LoginButton";
 import { Link } from "react-router-dom";
-// interface DataItem {
-// id: string;
-// library: string;
-// visualizer: string;
-// test: string;
-// }
 function Header() {
     const [loggedIn, setLoggedIn] = useState<Boolean>(false);
     const [isSuperAdmin, setIsSuperAdmin] = useState<Boolean>(false);
