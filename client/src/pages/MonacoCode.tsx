@@ -8,15 +8,41 @@ import { useEffect, useState } from "react";
 type QnType = {
   name: string;
   description: string;
+  examples: string;
+  constraints: string;
   status: string;
   tags: string;
   qnid: string;
 };
+
+type TestCaseType = {
+  qnid: string;
+  testCases: {
+      input: string;
+      output: string;
+  }[];
+};
+
 function MonacoCode() {
     let { qnid } = useParams();
     const [question, setQuestion] = useState<QnType | null>(null);
-
-    console.log(qnid)
+    const [testcase, setTestCase] = useState<TestCaseType | null>(null);
+    const GetTestCase = async() => {
+      try {
+        const response = await fetch(`http://localhost:8080/testcase/${qnid}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        if (response.ok) {
+            const res = await response.json();
+            setTestCase(res.data.data);
+        }
+        } catch (error) {
+        console.error("Failed to fetch question:", error);
+        }
+    }
     const GetAQuestion = async () => {
         try {
         const response = await fetch(`http://localhost:8080/tutorials/code/${qnid}`, {
@@ -36,6 +62,8 @@ function MonacoCode() {
 
   useEffect(() => {
     GetAQuestion();
+    GetTestCase();
+    console.log(testcase)
   }, [qnid]);
 
   return (
@@ -45,11 +73,8 @@ function MonacoCode() {
         <GridItem>
           {question ? (
             <CodeQuestion
-              qnid={question.qnid}
-              status={question.status}
-              tags={question.tags}
-              description={question.description}
-              name={question.name}
+              data = {question}
+              tc = {testcase}
             />
           ) : (
             <p>Loading...</p>
