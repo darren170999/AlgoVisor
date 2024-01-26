@@ -23,7 +23,7 @@ function MonacoEditor() {
   const [output, setOutput] = useState<string>("");
     function waitFor3second(){
         return new Promise(resolve =>
-            setTimeout(() => resolve("result"),100)
+            setTimeout(() => resolve("result"),3000)
         );
     }
   function handleEditorDidMount(editor: any, monaco: any) {
@@ -76,20 +76,25 @@ useEffect(()=>{
   return (
     <>
     <Box p={4} borderRadius="md" boxShadow="md" bg="white">
-      <Button onClick={compileAndRunCode}>Compile and Run</Button>
+      <Button >Save</Button>
       <Editor
         height="500px"
         width="100%"
         theme="vs-dark"
-        // fontFamily="Menlo, Monaco, 'Courier New', monospace"
         defaultLanguage={file.language}
         defaultValue={file.value}
         path={file.name}
         onMount={handleEditorDidMount}
       />
       <Box mt={4}>
-        <Heading as="h3" size="md" mb={2}>
-          Output:
+        <Heading as="h3" size="md" mb={2} p={3} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span>Output:</span>
+          <div>
+            <Button onClick={compileAndRunCode} style={{ marginRight: '8px' }}>Run</Button>
+            <Button style={{ marginRight: '8px' }}>Clear</Button>
+            {/* Submit is just to test code against test cases */}
+            <Button >Submit</Button>
+          </div>
         </Heading>
         <Box
           p={2}

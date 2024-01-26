@@ -18,7 +18,6 @@ type TestCaseType = {
 };
 
 function CodeQuestion({ data, tc }: { data: QnType; tc: TestCaseType | null }) {
-    console.log(tc)
   return (
     <>
         <Card bg="white" p={5} h="100%">
