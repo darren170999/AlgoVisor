@@ -1,5 +1,25 @@
 basePath: /api
 definitions:
+  requests.CreateAttemptRequest:
+    properties:
+      attempt:
+        type: string
+      language:
+        type: string
+      qnid:
+        description: Id        primitive.ObjectID `json:"id,omitempty"`
+        type: string
+      status:
+        type: string
+      username:
+        type: string
+    required:
+    - attempt
+    - language
+    - qnid
+    - status
+    - username
+    type: object
   requests.CreateCoursesRequest:
     properties:
       duration:
@@ -163,6 +183,26 @@ definitions:
         type: string
       output:
         type: string
+    type: object
+  requests.UpdateAttemptRequest:
+    properties:
+      attempt:
+        type: string
+      language:
+        type: string
+      qnid:
+        description: Id       primitive.ObjectID `json:"id,omitempty"`
+        type: string
+      status:
+        type: string
+      username:
+        type: string
+    required:
+    - attempt
+    - language
+    - qnid
+    - status
+    - username
     type: object
   responses.Response:
     properties:
@@ -341,6 +381,73 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Edit Question
+  /tutorials/code/attempt:
+    get:
+      description: Get all current attempts in the Database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get all Attempts
+  /tutorials/code/attempt/{qnid}:
+    get:
+      description: get Attempt from Db filtered by username and qnid
+      parameters:
+      - description: qnid
+        in: path
+        name: qnid
+        required: true
+        type: string
+      - description: username
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get Attempt
+    post:
+      description: Creating Attempt
+      parameters:
+      - description: attempt
+        in: body
+        name: Attempt
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateAttemptRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Save Attempt
+    put:
+      description: Edit attempt's data in Db.
+      parameters:
+      - description: attempt
+        in: body
+        name: Attempt
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpdateAttemptRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Edit Attempt
   /tutorials/code/create:
     post:
       description: Creating a Question

@@ -172,6 +172,108 @@ const docTemplate = `{
                 }
             }
         },
+        "/tutorials/code/attempt": {
+            "get": {
+                "description": "Get all current attempts in the Database.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all Attempts",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/tutorials/code/attempt/{qnid}": {
+            "get": {
+                "description": "get Attempt from Db filtered by username and qnid",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get Attempt",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit attempt's data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Edit Attempt",
+                "parameters": [
+                    {
+                        "description": "attempt",
+                        "name": "Attempt",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.UpdateAttemptRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Creating Attempt",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Save Attempt",
+                "parameters": [
+                    {
+                        "description": "attempt",
+                        "name": "Attempt",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.CreateAttemptRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/tutorials/code/create": {
             "post": {
                 "description": "Creating a Question",
@@ -433,6 +535,34 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "requests.CreateAttemptRequest": {
+            "type": "object",
+            "required": [
+                "attempt",
+                "language",
+                "qnid",
+                "status",
+                "username"
+            ],
+            "properties": {
+                "attempt": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "qnid": {
+                    "description": "Id        primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
         "requests.CreateCoursesRequest": {
             "type": "object",
             "required": [
@@ -658,6 +788,34 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "output": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.UpdateAttemptRequest": {
+            "type": "object",
+            "required": [
+                "attempt",
+                "language",
+                "qnid",
+                "status",
+                "username"
+            ],
+            "properties": {
+                "attempt": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "qnid": {
+                    "description": "Id       primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }
