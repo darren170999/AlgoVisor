@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"server/configs"
 	"server/data/responses"
@@ -174,31 +175,45 @@ func GetAQuestion() gin.HandlerFunc {
 func EditAQuestion() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		qnId := c.Param("QnId")
 		var tutorial models.Tutorial
 		defer cancel()
-		objId, _ := primitive.ObjectIDFromHex(qnId)
 
 		if err := c.BindJSON(&tutorial); err != nil {
 			c.JSON(http.StatusBadRequest, responses.TutorialResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
+		qnId := tutorial.QnId
+		// Use the correct field name for qnid in the filter
+		filter := bson.M{"qnid": qnId}
+
 		if validationErr := validate.Struct(&tutorial); validationErr != nil {
 			c.JSON(http.StatusBadRequest, responses.TutorialResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
 		}
 
-		update := bson.M{"name": tutorial.Name, "description": tutorial.Description, "examples": tutorial.Examples, 
-		"constraints": tutorial.Constraints, "status": tutorial.Status, "tags": tutorial.Tags}
-		result, err := tutorialCollection.UpdateOne(ctx, bson.M{"id": objId}, bson.M{"$set": update})
+		update := bson.M{
+			"name":        tutorial.Name,
+			"description": tutorial.Description,
+			"examples":    tutorial.Examples,
+			"constraints": tutorial.Constraints,
+			"status":      tutorial.Status,
+			"tags":        tutorial.Tags,
+			"qnid":        tutorial.QnId,
+		}
+
+		result, err := tutorialCollection.UpdateOne(ctx, filter, bson.M{"$set": update})
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.TutorialResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
+
+		fmt.Printf("MatchedCount: %d, ModifiedCount: %d\n", result.MatchedCount, result.ModifiedCount)
+
 		var updatedQuestion models.Tutorial
 		if result.MatchedCount == 1 {
-			err := tutorialCollection.FindOne(ctx, bson.M{"id": objId}).Decode(&updatedQuestion)
+			// Use the correct field name for qnid in the filter
+			err := tutorialCollection.FindOne(ctx, filter).Decode(&updatedQuestion)
 			if err != nil {
 				c.JSON(http.StatusInternalServerError, responses.TutorialResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 				return
