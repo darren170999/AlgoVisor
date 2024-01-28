@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import axios from "axios";
-import { Box, Button, Heading } from "@chakra-ui/react";
+import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 const files: Record<string, any> = {
   "script.py": {
@@ -15,9 +16,22 @@ const files: Record<string, any> = {
     value: "<div> </div>",
   },
 };
+const languageMapping: LanguageMapping = {
+  71: 'Python',
+  75: 'C',
+  76: 'C++',
+  91: 'Java',
+};
+interface LanguageMapping {
+  [key: number]: string;
+}
 
 function MonacoEditor() {
   const [fileName, setFileName] = useState("script.py");
+  const [langUsed, setLangUsed] = useState(71); // python is the default
+  const updateLanguageUsed = (language: number) => {
+    setLangUsed(language);
+  };
   const file = files[fileName];
   const editorRef = useRef<any>(null);
   const [output, setOutput] = useState<string>("");
@@ -34,13 +48,14 @@ useEffect(()=>{
 },[output])
   function compileAndRunCode() {
     if (editorRef.current) {
-      const codeToCompile: string = editorRef.current.getValue();
-
+      const codeToCompile: string = editorRef.current.getValue(); // what we will try to save in the future
+      console.log(codeToCompile)
       // Make a POST request to Judge0 to compile and run the code.
+      // account for C:75 and Java:91 and C++:76
       axios
         .post("http://0.0.0.0:2358/submissions", {
           source_code: codeToCompile,
-          language_id: 71,
+          language_id: langUsed,
         })
         .then((response) => {
           // Handle the response from Judge0, which will include the token.
@@ -76,7 +91,18 @@ useEffect(()=>{
   return (
     <>
     <Box p={4} borderRadius="md" boxShadow="md" bg="white">
-      <Button >Save</Button>
+      <Menu>
+        <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+          {languageMapping[langUsed] || 'Select Language'}
+        </MenuButton>
+        <MenuList>
+          <MenuItem onClick={() => updateLanguageUsed(71)}>Python</MenuItem>
+          <MenuItem onClick={() => updateLanguageUsed(75)}>C</MenuItem>
+          <MenuItem onClick={() => updateLanguageUsed(76)}>C++</MenuItem>
+          <MenuItem onClick={() => updateLanguageUsed(91)}>Java</MenuItem>
+        </MenuList>
+      </Menu>
+      <Button style={{ marginLeft: '8px' }}>Save</Button>
       <Editor
         height="500px"
         width="100%"
