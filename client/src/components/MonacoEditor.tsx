@@ -3,6 +3,7 @@ import { Editor } from "@monaco-editor/react";
 import axios from "axios";
 import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useParams } from "react-router-dom";
 
 const files: Record<string, any> = {
   "script.py": {
@@ -22,8 +23,17 @@ const languageMapping: LanguageMapping = {
   76: 'C++',
   91: 'Java',
 };
+
 interface LanguageMapping {
   [key: number]: string;
+}
+
+type saveAttemptDataProps = {
+  attempt: string;
+  language: number;
+  Qnid: string;
+  status: string;
+  username: string;
 }
 
 function MonacoEditor() {
@@ -31,25 +41,37 @@ function MonacoEditor() {
   const [langUsed, setLangUsed] = useState(71); // python is the default
   const updateLanguageUsed = (language: number) => {
     setLangUsed(language);
+    setSaveAttemptData(prevData => ({ ...prevData, language }));
   };
+  let { qnid } = useParams();
+  const [saveAttemptData, setSaveAttemptData] = useState<saveAttemptDataProps>({
+    attempt: "",// from page
+    language: 71, // from page
+    Qnid: qnid!, // get from URL
+    status: "", // If submitted is done and passed we will put Completed, in the meantime ignore
+    username: localStorage.getItem("username")!, // get from localstorage
+  })
   const file = files[fileName];
   const editorRef = useRef<any>(null);
   const [output, setOutput] = useState<string>("");
-    function waitFor3second(){
-        return new Promise(resolve =>
-            setTimeout(() => resolve("result"),3000)
-        );
-    }
+  function waitFor3second(){
+      return new Promise(resolve =>
+          setTimeout(() => resolve("result"),3000)
+      );
+  }
   function handleEditorDidMount(editor: any, monaco: any) {
     editorRef.current = editor;
   }
-useEffect(()=>{
-
-},[output])
+  useEffect(()=>{
+    // console.log(saveAttemptData)
+  },[output])
   function compileAndRunCode() {
     if (editorRef.current) {
       const codeToCompile: string = editorRef.current.getValue(); // what we will try to save in the future
-      console.log(codeToCompile)
+      // console.log(codeToCompile)
+      const updatedSave = {...saveAttemptData, attempt: codeToCompile}
+      setSaveAttemptData(updatedSave)
+      console.log(saveAttemptData)
       // Make a POST request to Judge0 to compile and run the code.
       // account for C:75 and Java:91 and C++:76
       axios
@@ -87,6 +109,28 @@ useEffect(()=>{
     //     }
       });
   }
+  const saveAttempt = async (e:{preventDefault: () => void}) => {
+    e.preventDefault();
+    try{
+      const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}` , {
+          method: "POST",
+          headers : {
+          "Content-Type": "application/json",
+          },
+          body: JSON.stringify(saveAttemptData),
+      });
+      if(response.ok){ // can remove later
+          console.log("Form data posted successfully!");
+          response.json().then((data) => {
+              console.log(data);
+          });
+      } else {
+          console.log(response);
+      }
+    } catch (err) {
+        console.log("Dk wtf happen: ", err)
+    }     
+  }
 
   return (
     <>
@@ -99,10 +143,10 @@ useEffect(()=>{
           <MenuItem onClick={() => updateLanguageUsed(71)}>Python</MenuItem>
           <MenuItem onClick={() => updateLanguageUsed(75)}>C</MenuItem>
           <MenuItem onClick={() => updateLanguageUsed(76)}>C++</MenuItem>
-          <MenuItem onClick={() => updateLanguageUsed(91)}>Java</MenuItem>
+          {/* <MenuItem onClick={() => updateLanguageUsed(91)}>Java</MenuItem> */}
         </MenuList>
       </Menu>
-      <Button style={{ marginLeft: '8px' }}>Save</Button>
+      <Button onClick={saveAttempt} style={{ marginLeft: '8px' }}>Save</Button>
       <Editor
         height="500px"
         width="100%"
@@ -117,6 +161,7 @@ useEffect(()=>{
           <span>Output:</span>
           <div>
             <Button onClick={compileAndRunCode} style={{ marginRight: '8px' }}>Run</Button>
+            {/* Clear terminal's output */}
             <Button style={{ marginRight: '8px' }}>Clear</Button>
             {/* Submit is just to test code against test cases */}
             <Button >Submit</Button>

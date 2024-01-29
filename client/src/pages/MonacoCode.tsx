@@ -63,7 +63,7 @@ function MonacoCode() {
   useEffect(() => {
     GetAQuestion();
     GetTestCase();
-    console.log(testcase)
+    // console.log(testcase)
   }, [qnid]);
 
   return (
