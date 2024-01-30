@@ -117,13 +117,14 @@ func GetAllAttempts() gin.HandlerFunc {
 // @Param username path string true "username"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/tutorials/code/attempt/{qnid}/{username} [get]
+// @Router			/tutorials/code/attempt/{qnid}/{language}/{username} [get]
 func GetAttemptByQnIdByUsername() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		qnid := c.Param("qnid")
 		username := c.Param("username")
-		filter := bson.M{"qnid": qnid, "username": username}
+		language := c.Param("language")
+		filter := bson.M{"qnid": qnid, "username": username, "language": language}
 		var attempt models.Attempt
 		defer cancel()
 		err := attemptCollection.FindOne(ctx, filter).Decode(&attempt)
