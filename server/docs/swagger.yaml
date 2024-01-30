@@ -5,7 +5,7 @@ definitions:
       attempt:
         type: string
       language:
-        type: string
+        type: integer
       qnid:
         description: Id        primitive.ObjectID `json:"id,omitempty"`
         type: string
@@ -189,7 +189,7 @@ definitions:
       attempt:
         type: string
       language:
-        type: string
+        type: integer
       qnid:
         description: Id       primitive.ObjectID `json:"id,omitempty"`
         type: string
@@ -414,23 +414,6 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Get Attempt
-    post:
-      description: Creating Attempt
-      parameters:
-      - description: attempt
-        in: body
-        name: Attempt
-        required: true
-        schema:
-          $ref: '#/definitions/requests.CreateAttemptRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/responses.Response'
-      summary: Save Attempt
     put:
       description: Edit attempt's data in Db.
       parameters:
@@ -448,6 +431,24 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Edit Attempt
+  /tutorials/code/attempt/create:
+    post:
+      description: Creating Attempt
+      parameters:
+      - description: attempt
+        in: body
+        name: Attempt
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateAttemptRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Save Attempt
   /tutorials/code/create:
     post:
       description: Creating a Question

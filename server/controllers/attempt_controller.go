@@ -9,6 +9,7 @@ import (
 	"server/service"
 	"time"
 
+	// "fmt"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -37,30 +38,32 @@ var attemptCollection *mongo.Collection = configs.GetAttemptsCollection(configs.
 // @Produce			application/json
 // @Attempt		attempt
 // @Success			200 {object} responses.Response{}
-// @Router			/tutorials/code/attempt/{qnid} [post]
+// @Router			/tutorials/code/attempt/create [post]
 func CreateAttempt() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		var attempt models.Attempt
 		defer cancel()
 
-		//validate the request body
+		// validate the request body
 		if err := c.BindJSON(&attempt); err != nil {
 			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
-		//use the validator library to validate required fields
+		// use the validator library to validate required fields
 		if validationErr := validate.Struct(&attempt); validationErr != nil {
 			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
 		}
+
 		newAttempt := models.Attempt{
 			Id:       primitive.NewObjectID(),
 			QnId:     attempt.QnId,
 			Username: attempt.Username,
 			Status:   attempt.Status,
 			Attempt:  attempt.Attempt,
+			Language: attempt.Language,
 		}
 
 		result, err := attemptCollection.InsertOne(ctx, newAttempt)

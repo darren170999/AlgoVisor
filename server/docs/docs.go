@@ -189,6 +189,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/tutorials/code/attempt/create": {
+            "post": {
+                "description": "Creating Attempt",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Save Attempt",
+                "parameters": [
+                    {
+                        "description": "attempt",
+                        "name": "Attempt",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.CreateAttemptRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/tutorials/code/attempt/{qnid}": {
             "get": {
                 "description": "get Attempt from Db filtered by username and qnid",
@@ -235,32 +263,6 @@ const docTemplate = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/requests.UpdateAttemptRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/responses.Response"
-                        }
-                    }
-                }
-            },
-            "post": {
-                "description": "Creating Attempt",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Save Attempt",
-                "parameters": [
-                    {
-                        "description": "attempt",
-                        "name": "Attempt",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/requests.CreateAttemptRequest"
                         }
                     }
                 ],
@@ -549,7 +551,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "language": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "qnid": {
                     "description": "Id        primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
@@ -806,7 +808,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "language": {
-                    "type": "string"
+                    "type": "integer"
                 },
                 "qnid": {
                     "description": "Id       primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
