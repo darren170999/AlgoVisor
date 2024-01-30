@@ -50,3 +50,8 @@ func GetTestCasesCollection(client *mongo.Client, collectionName string) *mongo.
 	collection := client.Database("Dev-Tutorial").Collection(collectionName)
 	return collection
 }
+// getting database attempts
+func GetAttemptsCollection(client *mongo.Client, collectionName string) *mongo.Collection {
+	collection := client.Database("Dev-Tutorial").Collection(collectionName)
+	return collection
+}
