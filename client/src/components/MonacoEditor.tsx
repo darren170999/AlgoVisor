@@ -44,6 +44,7 @@ function MonacoEditor() {
     setSaveAttemptData(prevData => ({ ...prevData, language }));
   };
   let { qnid } = useParams();
+  let username = localStorage.getItem("username");
   const [saveAttemptData, setSaveAttemptData] = useState<saveAttemptDataProps>({
     attempt: "",// from page
     language: 71, // from page
@@ -66,7 +67,7 @@ function MonacoEditor() {
     // console.log(saveAttemptData)
   },[output])
   useEffect(() => {
-    console.log(saveAttemptData);
+    // console.log(saveAttemptData);
   }, [saveAttemptData]);
   function compileAndRunCode() {
     if (editorRef.current) {
@@ -133,6 +134,28 @@ function MonacoEditor() {
         console.log("Dk wtf happen: ", err)
     }     
   }
+
+  useEffect(() => {
+    // Fetch the previous attempt data when the component mounts
+    const fetchPreviousAttempt = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${username}`);
+        if (response.ok) {
+          const data = await response.json();
+          const previousAttemptData: saveAttemptDataProps = data.data.data
+          console.log(previousAttemptData)
+          setSaveAttemptData(previousAttemptData);
+          setLangUsed(previousAttemptData.language);
+        } else {
+          console.log(response);
+        }
+      } catch (err) {
+        console.log("Error fetching previous attempt:", err);
+      }
+    };
+
+    fetchPreviousAttempt();
+  }, [qnid]);
 
   return (
     <>
