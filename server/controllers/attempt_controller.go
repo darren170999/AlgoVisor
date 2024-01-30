@@ -117,7 +117,7 @@ func GetAllAttempts() gin.HandlerFunc {
 // @Param username path string true "username"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/tutorials/code/attempt/{qnid} [get]
+// @Router			/tutorials/code/attempt/{qnid}/{username} [get]
 func GetAttemptByQnIdByUsername() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)

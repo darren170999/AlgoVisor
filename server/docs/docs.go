@@ -218,6 +218,34 @@ const docTemplate = `{
             }
         },
         "/tutorials/code/attempt/{qnid}": {
+            "put": {
+                "description": "Edit attempt's data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Edit Attempt",
+                "parameters": [
+                    {
+                        "description": "attempt",
+                        "name": "Attempt",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.UpdateAttemptRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/tutorials/code/attempt/{qnid}/{username}": {
             "get": {
                 "description": "get Attempt from Db filtered by username and qnid",
                 "produces": [
@@ -238,32 +266,6 @@ const docTemplate = `{
                         "name": "username",
                         "in": "path",
                         "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/responses.Response"
-                        }
-                    }
-                }
-            },
-            "put": {
-                "description": "Edit attempt's data in Db.",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Edit Attempt",
-                "parameters": [
-                    {
-                        "description": "attempt",
-                        "name": "Attempt",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/requests.UpdateAttemptRequest"
-                        }
                     }
                 ],
                 "responses": {

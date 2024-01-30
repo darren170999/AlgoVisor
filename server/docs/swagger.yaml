@@ -393,6 +393,24 @@ paths:
             $ref: '#/definitions/responses.Response'
       summary: Get all Attempts
   /tutorials/code/attempt/{qnid}:
+    put:
+      description: Edit attempt's data in Db.
+      parameters:
+      - description: attempt
+        in: body
+        name: Attempt
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpdateAttemptRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Edit Attempt
+  /tutorials/code/attempt/{qnid}/{username}:
     get:
       description: get Attempt from Db filtered by username and qnid
       parameters:
@@ -414,23 +432,6 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Get Attempt
-    put:
-      description: Edit attempt's data in Db.
-      parameters:
-      - description: attempt
-        in: body
-        name: Attempt
-        required: true
-        schema:
-          $ref: '#/definitions/requests.UpdateAttemptRequest'
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/responses.Response'
-      summary: Edit Attempt
   /tutorials/code/attempt/create:
     post:
       description: Creating Attempt
