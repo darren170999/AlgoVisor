@@ -31,7 +31,7 @@ interface LanguageMapping {
 type saveAttemptDataProps = {
   attempt: string;
   language: number;
-  Qnid: string;
+  qnid: string;
   status: string;
   username: string;
 }
@@ -47,8 +47,8 @@ function MonacoEditor() {
   const [saveAttemptData, setSaveAttemptData] = useState<saveAttemptDataProps>({
     attempt: "",// from page
     language: 71, // from page
-    Qnid: qnid!, // get from URL
-    status: "", // If submitted is done and passed we will put Completed, in the meantime ignore
+    qnid: qnid!, // get from URL
+    status: "Uncompleted", // If submitted is done and passed we will put Completed, in the meantime ignore
     username: localStorage.getItem("username")!, // get from localstorage
   })
   const file = files[fileName];
@@ -65,18 +65,19 @@ function MonacoEditor() {
   useEffect(()=>{
     // console.log(saveAttemptData)
   },[output])
+  useEffect(() => {
+    console.log(saveAttemptData);
+  }, [saveAttemptData]);
   function compileAndRunCode() {
     if (editorRef.current) {
-      const codeToCompile: string = editorRef.current.getValue(); // what we will try to save in the future
+      const attempt: string = editorRef.current.getValue(); // what we will try to save in the future
       // console.log(codeToCompile)
-      const updatedSave = {...saveAttemptData, attempt: codeToCompile}
-      setSaveAttemptData(updatedSave)
-      console.log(saveAttemptData)
+      setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
       // Make a POST request to Judge0 to compile and run the code.
       // account for C:75 and Java:91 and C++:76
       axios
         .post("http://0.0.0.0:2358/submissions", {
-          source_code: codeToCompile,
+          source_code: attempt,
           language_id: langUsed,
         })
         .then((response) => {
@@ -111,8 +112,9 @@ function MonacoEditor() {
   }
   const saveAttempt = async (e:{preventDefault: () => void}) => {
     e.preventDefault();
+    console.log(JSON.stringify(saveAttemptData))
     try{
-      const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}` , {
+      const response = await fetch("http://localhost:8080/tutorials/code/attempt/create" , {
           method: "POST",
           headers : {
           "Content-Type": "application/json",
