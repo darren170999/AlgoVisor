@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import FullScreenSection from "../components/FullScreenSection";
-import { Button, Card, CardBody, CardFooter, Divider, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, Stack, VStack } from "@chakra-ui/react";
+import { Button, Card, CardBody, CardFooter, Divider, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, Stack, Textarea, VStack, useStyleConfig, Text } from "@chakra-ui/react";
 import Header from "../components/Header";
 
 type signUpFormDataProps = {
@@ -15,6 +15,10 @@ type loginFormDataProps = {
     password: string;
 }
 
+type errorProps = {
+    errorMessage: string;
+}
+
 function Accounts(){
     const [signUpFormData, setSignUpFormData] = useState<signUpFormDataProps>({
         name: "",
@@ -27,6 +31,8 @@ function Accounts(){
         userName: "",
         password: ""
     })
+    const [err, setErr] = useState<String>("");
+    
     const handleLoginForm = (event: { target: { name: any; value: any; }; }) => {
         const {name, value} = event.target;
         setLoginFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
@@ -57,15 +63,17 @@ function Accounts(){
                     if(loginFormData.userName === "SuperAdmin"){
                         localStorage.setItem('isSuperAdmin', 'true');
                     }
-                    // console.log(localStorage);
+                    setErr("");
                     window.location.replace("/home");
                 } else {
                     console.log(data)
                     console.error("Invalid username or password");
+                    // setErr("Invalid username or password");
                     // You can add logic here to display an error message to the user
                 }
             } else {
-                console.error("Error")
+                console.error("Error");
+                setErr("Invalid username or password");
             }
         } catch (error) {
             console.log("Dk wtf happen: ", error)
@@ -88,24 +96,27 @@ function Accounts(){
                     body: JSON.stringify(signUpFormData),
                 });
             if(response.ok){
-            // console.log("Form data posted successfully!");
-            response.json().then((data) => {
-                console.log(data);
-            });
-            setIsLogging(!isLogging);
+                // console.log("Form data posted successfully!");
+                response.json().then((data) => {
+                    console.log(data);
+                });
+                setIsLogging(!isLogging);
+                setErr("");
             } else {
-            console.log(response);
-            window.location.replace("/accounts");
+                console.log(response);
+                // window.location.replace("/accounts");
+                setErr("Username or email has been used");
             }
         } catch (err) {
             console.log("Dk wtf happen: ", err)
-          }
+        }
         
     };
     //if false means sign up, This is for checking if the user wants to login or sign up
     const [isLogging, setIsLogging] = useState(true); 
     const handleToggle = () => {
         setIsLogging(!isLogging);
+        setErr("");
     }
 
     return(
@@ -133,6 +144,7 @@ function Accounts(){
                         <Stack>
                             <Button type='submit'>Login</Button>
                         </Stack>
+                        {err && <Text color="red">{err}</Text>}
                     </form>
                     
                 </CardBody>}
@@ -158,6 +170,7 @@ function Accounts(){
                         <Stack>
                             <Button type='submit' >Sign Up</Button>
                         </Stack>
+                        {err && <Text color="red">{err}</Text>}
                     </form>
                     
                 </CardBody>}

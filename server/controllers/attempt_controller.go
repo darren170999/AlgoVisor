@@ -2,11 +2,13 @@ package controllers
 
 import (
 	"context"
+	// "fmt"
 	"net/http"
 	"server/configs"
 	"server/data/responses"
 	"server/models"
 	"server/service"
+	"strconv"
 	"time"
 
 	// "fmt"
@@ -36,7 +38,7 @@ var attemptCollection *mongo.Collection = configs.GetAttemptsCollection(configs.
 // @Description		Creating Attempt
 // @Param			Attempt body requests.CreateAttemptRequest true "attempt"
 // @Produce			application/json
-// @Attempt		attempt
+// @Attempt			attempt
 // @Success			200 {object} responses.Response{}
 // @Router			/tutorials/code/attempt/create [post]
 func CreateAttempt() gin.HandlerFunc {
@@ -114,19 +116,30 @@ func GetAllAttempts() gin.HandlerFunc {
 // @Summary			Get Attempt
 // @Description		get Attempt from Db filtered by username and qnid
 // @Param qnid path string true "qnid"
+// @Param language path int true "language"
 // @Param username path string true "username"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/tutorials/code/attempt/{qnid} [get]
+// @Router			/tutorials/code/attempt/{qnid}/{language}/{username} [get]
 func GetAttemptByQnIdByUsername() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
 		qnid := c.Param("qnid")
 		username := c.Param("username")
-		filter := bson.M{"qnid": qnid, "username": username}
+		languageStr := c.Param("language")
+		language, err := strconv.Atoi(languageStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "Invalid language parameter"})
+			return
+		}
+
+		filter := bson.M{"qnid": qnid, "language": language, "username": username}
 		var attempt models.Attempt
-		defer cancel()
-		err := attemptCollection.FindOne(ctx, filter).Decode(&attempt)
+		err = attemptCollection.FindOne(ctx, filter).Decode(&attempt)
+		// fmt.Print(language)
+		// fmt.Print(filter)
+		// fmt.Print(err)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.AttemptResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
@@ -138,10 +151,13 @@ func GetAttemptByQnIdByUsername() gin.HandlerFunc {
 // CreateTags		godoc
 // @Summary			Edit Attempt
 // @Description		Edit attempt's data in Db.
+// @Param qnid path string true "qnid"
+// @Param language path int true "language"
+// @Param username path string true "username"
 // @Param 			Attempt body requests.UpdateAttemptRequest true "attempt"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/tutorials/code/attempt/{qnid} [put]
+// @Router			/tutorials/code/attempt/{qnid}/{language}/{username} [put]
 func UpdateAttempt() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -149,6 +165,14 @@ func UpdateAttempt() gin.HandlerFunc {
 		// qnId := attempt.QnId
 		// username := attempt.Username
 		defer cancel()
+		qnid := c.Param("qnid")
+		username := c.Param("username")
+		languageStr := c.Param("language")
+		language, err := strconv.Atoi(languageStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "Invalid language parameter"})
+			return
+		}
 
 		if err := c.BindJSON(&attempt); err != nil {
 			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -159,7 +183,7 @@ func UpdateAttempt() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
 		}
-		filter := bson.M{"qnid": attempt.QnId, "username": attempt.Username}
+		filter := bson.M{"qnid": qnid, "language": language, "username": username}
 		update := bson.M{"$set": bson.M{"attempt": attempt.Attempt, "status": attempt.Status}}
 
 		result, err := attemptCollection.UpdateOne(ctx, filter, update)

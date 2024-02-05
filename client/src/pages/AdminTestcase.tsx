@@ -18,12 +18,37 @@ function AdminTestcase(){
 
     const [createTestCaseFormData, setCreateTestCaseFormData] = useState<createTestCaseFormDataProps>({
         qnid: "",
-        testcases: []
+        testcases: [{ input: "", output: "" }],
     })
-    const handleCreationForm = (event: { target: { name: any; value: any; }; }) => {
+    const handleQnidForm = (event: { target: { name: any; value: any; };}) => {
         const {name, value} = event.target;
-        setCreateTestCaseFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
+        setCreateTestCaseFormData((prevFormData) => ({...prevFormData, [name]:value})) 
     }
+    const handleCreationForm = (index: number, event: { target: { name: any; value: any; }; }) => {
+        const {name, value} = event.target;
+        const updatedTestcases = [...createTestCaseFormData.testcases];
+        updatedTestcases[index] = {
+          ...updatedTestcases[index],
+          [name]: value,
+        };
+        setCreateTestCaseFormData((prevFormData) => ({ ...prevFormData, testcases: updatedTestcases, }));
+    }
+    const handleAddTestcase = () => {
+        setCreateTestCaseFormData((prevFormData) => ({
+          ...prevFormData,
+          testcases: [...prevFormData.testcases, { input: "", output: "" }],
+        }));
+      };
+    
+      const handleRemoveTestcase = (index: number) => {
+        const updatedTestcases = [...createTestCaseFormData.testcases];
+        updatedTestcases.splice(index, 1);
+    
+        setCreateTestCaseFormData((prevFormData) => ({
+          ...prevFormData,
+          testcases: updatedTestcases,
+        }));
+      };
     const handleCreation = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         // Check if any of the fields are empty
@@ -44,7 +69,7 @@ function AdminTestcase(){
                 });
             } else {
                 console.log(response);
-                window.location.replace("/admin/testcase");
+                // window.location.replace("/admin/testcase");
             }
         } catch (err) {
             console.log("Dk wtf happen: ", err)
@@ -65,27 +90,36 @@ function AdminTestcase(){
                         <FormControl>
                             <HStack paddingBottom="10px">
                                 <FormLabel minW = "100px" >Qnid</FormLabel>
-                                <Input type='string' name="qnid" value={createTestCaseFormData.qnid} onChange={handleCreationForm}/>
+                                <Input type='string' name="qnid" value={createTestCaseFormData.qnid} onChange={handleQnidForm}/>
                             </HStack>
-                            <HStack paddingBottom="10px">
-                                <FormLabel minW="100px">Test Cases</FormLabel>
-                                <Textarea
-                                    name="testcases"
-                                    value={JSON.stringify(createTestCaseFormData.testcases, null, 2)} // Indent for better readability
-                                    onChange={(e) => {
-                                    try {
-                                        console.log(createTestCaseFormData)
-                                        const parsedTestCases = JSON.parse(e.target.value);
-                                        setCreateTestCaseFormData((prevFormData) => ({
-                                        ...prevFormData,
-                                        testcases: Array.isArray(parsedTestCases) ? parsedTestCases : [],
-                                        }));
-                                    } catch (error) {
-                                        console.error("Invalid JSON format:", error);
-                                    }
-                                    }}
-                                />
-                            </HStack>
+                            {createTestCaseFormData.testcases.map((testcase, index) => (
+                            <VStack key={index} spacing={2}>
+                                <HStack paddingBottom="10px">
+                                    <FormLabel minW="100px">Input</FormLabel>
+                                    <Input
+                                        type="text"
+                                        name="input"
+                                        value={testcase.input}
+                                        onChange={(e) => handleCreationForm(index, e)}
+                                    />
+                                    <FormLabel minW="100px">Output</FormLabel>
+                                    <Input
+                                        type="text"
+                                        name="output"
+                                        value={testcase.output}
+                                        onChange={(e) => handleCreationForm(index, e)}
+                                    />
+                                    <Button onClick={() => handleRemoveTestcase(index)}>
+                                    X
+                                    </Button>
+                                </HStack>
+                            </VStack>
+                            ))}
+                            <Stack>
+                            <Button type="button" onClick={handleAddTestcase}>
+                                Add Test Case
+                            </Button>
+                            </Stack>
 
                             
                         </FormControl>

@@ -217,7 +217,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/tutorials/code/attempt/{qnid}": {
+        "/tutorials/code/attempt/{qnid}/{language}/{username}": {
             "get": {
                 "description": "get Attempt from Db filtered by username and qnid",
                 "produces": [
@@ -229,6 +229,13 @@ const docTemplate = `{
                         "type": "string",
                         "description": "qnid",
                         "name": "qnid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "language",
+                        "name": "language",
                         "in": "path",
                         "required": true
                     },
@@ -256,6 +263,27 @@ const docTemplate = `{
                 ],
                 "summary": "Edit Attempt",
                 "parameters": [
+                    {
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "language",
+                        "name": "language",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    },
                     {
                         "description": "attempt",
                         "name": "Attempt",

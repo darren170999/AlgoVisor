@@ -54,10 +54,23 @@ function CodeQuestion({ data, tc }: { data: QnType; tc: TestCaseType | null }) {
                 Test Cases:
                 </Heading>
                 {tc.testCases.map((testCase, index) => (
-                <Box key={index}>
-                    Input: {testCase.input}, Output: {testCase.output}
-                </Box>
+                    <Box
+                        key={index}
+                        bg={testCase.output === 'expectedOutput' ? 'green.200' : 'red.200'} // Adjust the condition based on your criteria
+                        p={3}
+                        mb={2}
+                        borderRadius="md"
+                        borderColor={testCase.output === 'expectedOutput' ? 'green.500' : 'red.500'}
+                        borderWidth={1}
+                    >
+                        <Text>
+                            Input: {testCase.input}, Output: {testCase.output}
+                        </Text>
+                    </Box>
                 ))}
+                <Text>
+                    Hidden test cases 0/10
+                </Text>
             </CardBody>
             )}
         </Card>
