@@ -60,7 +60,7 @@ function MonacoEditor() {
   const [output, setOutput] = useState<string>("");
   function waitFor3second(){
       return new Promise(resolve =>
-          setTimeout(() => resolve("result"),5000) // need more time if C is used
+          setTimeout(() => resolve("result"),5000) // need more time if C is used, py:3000, C:5000
       );
   }
   function handleEditorDidMount(editor: any, monaco: any) {
