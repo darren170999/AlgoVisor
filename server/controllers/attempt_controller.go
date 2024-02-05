@@ -151,10 +151,13 @@ func GetAttemptByQnIdByUsername() gin.HandlerFunc {
 // CreateTags		godoc
 // @Summary			Edit Attempt
 // @Description		Edit attempt's data in Db.
+// @Param qnid path string true "qnid"
+// @Param language path int true "language"
+// @Param username path string true "username"
 // @Param 			Attempt body requests.UpdateAttemptRequest true "attempt"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
-// @Router			/tutorials/code/attempt/{qnid} [put]
+// @Router			/tutorials/code/attempt/{qnid}/{language}/{username} [put]
 func UpdateAttempt() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -162,6 +165,14 @@ func UpdateAttempt() gin.HandlerFunc {
 		// qnId := attempt.QnId
 		// username := attempt.Username
 		defer cancel()
+		qnid := c.Param("qnid")
+		username := c.Param("username")
+		languageStr := c.Param("language")
+		language, err := strconv.Atoi(languageStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "Invalid language parameter"})
+			return
+		}
 
 		if err := c.BindJSON(&attempt); err != nil {
 			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -172,7 +183,7 @@ func UpdateAttempt() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
 		}
-		filter := bson.M{"qnid": attempt.QnId, "username": attempt.Username}
+		filter := bson.M{"qnid": qnid, "language": language, "username": username}
 		update := bson.M{"$set": bson.M{"attempt": attempt.Attempt, "status": attempt.Status}}
 
 		result, err := attemptCollection.UpdateOne(ctx, filter, update)

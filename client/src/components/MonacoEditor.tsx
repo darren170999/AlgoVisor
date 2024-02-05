@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import axios from "axios";
 import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
@@ -43,6 +43,10 @@ function MonacoEditor() {
     setLangUsed(language);
     setSaveAttemptData(prevData => ({ ...prevData, language }));
   };
+  const [isEditorMounted, setIsEditorMounted] = useState(false);
+  const fetchedAttemptData = useRef<saveAttemptDataProps | null>(null);
+  const [hasPreviousAttempt, setHasPreviousAttempt] = useState(false);
+
   let { qnid } = useParams();
   let username = localStorage.getItem("username");
   const [saveAttemptData, setSaveAttemptData] = useState<saveAttemptDataProps>({
@@ -62,6 +66,12 @@ function MonacoEditor() {
   }
   function handleEditorDidMount(editor: any, monaco: any) {
     editorRef.current = editor;
+    setIsEditorMounted(true);
+
+    // If data was fetched before mounting, set the editor value now
+    if (fetchedAttemptData.current && editorRef.current) {
+      editorRef.current.setValue(fetchedAttemptData.current.attempt);
+    }
   }
   useEffect(()=>{
     // console.log(saveAttemptData)
@@ -115,8 +125,8 @@ function MonacoEditor() {
     e.preventDefault();
     console.log(JSON.stringify(saveAttemptData))
     try{
-      const response = await fetch("http://localhost:8080/tutorials/code/attempt/create" , {
-          method: "POST",
+      const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}` , {
+          method: "PUT",
           headers : {
           "Content-Type": "application/json",
           },
@@ -159,25 +169,26 @@ function MonacoEditor() {
         console.log("Dk wtf happen: ", err)
     }     
   }
-
   useEffect(() => {
     // Fetch the previous attempt data when the component mounts
     const fetchPreviousAttempt = async () => {
       try {
         const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}`);
-        if (response.ok) {
-          const data = await response.json();
-          const previousAttemptData: saveAttemptDataProps = data.data.data
-          console.log(previousAttemptData)
-          setSaveAttemptData(previousAttemptData);
-          setLangUsed(previousAttemptData.language);
-          console.log(saveAttemptData);
-          if (editorRef.current) {
-            editorRef.current.setValue(previousAttemptData.attempt);
-          }
+        // if (response.ok) {
+        const data = await response.json();
+        const previousAttemptData: saveAttemptDataProps = data.data.data
+        console.log(previousAttemptData)
+        // If the editor is mounted, set the editor value
+        if (isEditorMounted && editorRef.current) {
+          editorRef.current.setValue(previousAttemptData.attempt);
         } else {
-          console.log(response);
+          // Otherwise, store the data to set the value when the editor mounts
+          fetchedAttemptData.current = previousAttemptData;
         }
+        setSaveAttemptData(previousAttemptData);
+        setLangUsed(previousAttemptData.language);
+        setHasPreviousAttempt(true);
+        // }
       } catch (err) {
         console.log("Error fetching previous attempt:", err);
       }
@@ -185,7 +196,7 @@ function MonacoEditor() {
 
     fetchPreviousAttempt();
     
-  }, [qnid]);
+  }, [qnid, langUsed, username, isEditorMounted]);
 
   return (
     <>
@@ -201,7 +212,7 @@ function MonacoEditor() {
           {/* <MenuItem onClick={() => updateLanguageUsed(91)}>Java</MenuItem> */}
         </MenuList>
       </Menu>
-      <Button onClick={saveAttempt} style={{ marginLeft: '8px' }}>Save</Button>
+      <Button onClick={saveAttempt } style={{ marginLeft: '8px' }}>Save</Button>
       <Editor
         height="500px"
         width="100%"

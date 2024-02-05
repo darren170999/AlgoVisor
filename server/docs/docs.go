@@ -217,34 +217,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/tutorials/code/attempt/{qnid}": {
-            "put": {
-                "description": "Edit attempt's data in Db.",
-                "produces": [
-                    "application/json"
-                ],
-                "summary": "Edit Attempt",
-                "parameters": [
-                    {
-                        "description": "attempt",
-                        "name": "Attempt",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/requests.UpdateAttemptRequest"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/responses.Response"
-                        }
-                    }
-                }
-            }
-        },
         "/tutorials/code/attempt/{qnid}/{language}/{username}": {
             "get": {
                 "description": "get Attempt from Db filtered by username and qnid",
@@ -273,6 +245,53 @@ const docTemplate = `{
                         "name": "username",
                         "in": "path",
                         "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Edit attempt's data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Edit Attempt",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "language",
+                        "name": "language",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "attempt",
+                        "name": "Attempt",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.UpdateAttemptRequest"
+                        }
                     }
                 ],
                 "responses": {
