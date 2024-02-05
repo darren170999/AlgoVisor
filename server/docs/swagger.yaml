@@ -410,7 +410,7 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Edit Attempt
-  /tutorials/code/attempt/{qnid}/{username}:
+  /tutorials/code/attempt/{qnid}/{language}/{username}:
     get:
       description: get Attempt from Db filtered by username and qnid
       parameters:
@@ -419,6 +419,11 @@ paths:
         name: qnid
         required: true
         type: string
+      - description: language
+        in: path
+        name: language
+        required: true
+        type: integer
       - description: username
         in: path
         name: username

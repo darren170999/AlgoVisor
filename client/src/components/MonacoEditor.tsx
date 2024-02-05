@@ -46,11 +46,11 @@ function MonacoEditor() {
   let { qnid } = useParams();
   let username = localStorage.getItem("username");
   const [saveAttemptData, setSaveAttemptData] = useState<saveAttemptDataProps>({
-    attempt: "",// from page
-    language: 71, // from page
-    qnid: qnid!, // get from URL
+    attempt: "",
+    language: 71,
+    qnid: qnid!,
     status: "Uncompleted", // If submitted is done and passed we will put Completed, in the meantime ignore
-    username: localStorage.getItem("username")!, // get from localstorage
+    username: localStorage.getItem("username")!,
   })
   const file = files[fileName];
   const editorRef = useRef<any>(null);
@@ -111,6 +111,31 @@ function MonacoEditor() {
     //     }
       });
   }
+  const updateAttempt = async (e:{preventDefault: () => void}) => {
+    e.preventDefault();
+    console.log(JSON.stringify(saveAttemptData))
+    try{
+      const response = await fetch("http://localhost:8080/tutorials/code/attempt/create" , {
+          method: "POST",
+          headers : {
+          "Content-Type": "application/json",
+          },
+          body: JSON.stringify(saveAttemptData),
+      });
+      if(response.ok){ // can remove later
+          console.log("Form data posted successfully!");
+          response.json().then((data) => {
+              console.log(data);
+          });
+      } else {
+          console.log(response);
+      }
+    } catch (err) {
+        console.log("Dk wtf happen: ", err)
+    }     
+  }
+
+
   const saveAttempt = async (e:{preventDefault: () => void}) => {
     e.preventDefault();
     console.log(JSON.stringify(saveAttemptData))
@@ -139,13 +164,17 @@ function MonacoEditor() {
     // Fetch the previous attempt data when the component mounts
     const fetchPreviousAttempt = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${username}`);
+        const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}`);
         if (response.ok) {
           const data = await response.json();
           const previousAttemptData: saveAttemptDataProps = data.data.data
           console.log(previousAttemptData)
           setSaveAttemptData(previousAttemptData);
           setLangUsed(previousAttemptData.language);
+          console.log(saveAttemptData);
+          if (editorRef.current) {
+            editorRef.current.setValue(previousAttemptData.attempt);
+          }
         } else {
           console.log(response);
         }
@@ -155,6 +184,7 @@ function MonacoEditor() {
     };
 
     fetchPreviousAttempt();
+    
   }, [qnid]);
 
   return (

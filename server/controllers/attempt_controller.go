@@ -2,11 +2,13 @@ package controllers
 
 import (
 	"context"
+	// "fmt"
 	"net/http"
 	"server/configs"
 	"server/data/responses"
 	"server/models"
 	"server/service"
+	"strconv"
 	"time"
 
 	// "fmt"
@@ -36,7 +38,7 @@ var attemptCollection *mongo.Collection = configs.GetAttemptsCollection(configs.
 // @Description		Creating Attempt
 // @Param			Attempt body requests.CreateAttemptRequest true "attempt"
 // @Produce			application/json
-// @Attempt		attempt
+// @Attempt			attempt
 // @Success			200 {object} responses.Response{}
 // @Router			/tutorials/code/attempt/create [post]
 func CreateAttempt() gin.HandlerFunc {
@@ -114,6 +116,7 @@ func GetAllAttempts() gin.HandlerFunc {
 // @Summary			Get Attempt
 // @Description		get Attempt from Db filtered by username and qnid
 // @Param qnid path string true "qnid"
+// @Param language path int true "language"
 // @Param username path string true "username"
 // @Produce			application/json
 // @Success			200 {object} responses.Response{}
@@ -121,13 +124,22 @@ func GetAllAttempts() gin.HandlerFunc {
 func GetAttemptByQnIdByUsername() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
 		qnid := c.Param("qnid")
 		username := c.Param("username")
-		language := c.Param("language")
-		filter := bson.M{"qnid": qnid, "username": username, "language": language}
+		languageStr := c.Param("language")
+		language, err := strconv.Atoi(languageStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "Invalid language parameter"})
+			return
+		}
+
+		filter := bson.M{"qnid": qnid, "language": language, "username": username}
 		var attempt models.Attempt
-		defer cancel()
-		err := attemptCollection.FindOne(ctx, filter).Decode(&attempt)
+		err = attemptCollection.FindOne(ctx, filter).Decode(&attempt)
+		// fmt.Print(language)
+		// fmt.Print(filter)
+		// fmt.Print(err)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.AttemptResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return

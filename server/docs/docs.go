@@ -245,7 +245,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/tutorials/code/attempt/{qnid}/{username}": {
+        "/tutorials/code/attempt/{qnid}/{language}/{username}": {
             "get": {
                 "description": "get Attempt from Db filtered by username and qnid",
                 "produces": [
@@ -257,6 +257,13 @@ const docTemplate = `{
                         "type": "string",
                         "description": "qnid",
                         "name": "qnid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "language",
+                        "name": "language",
                         "in": "path",
                         "required": true
                     },
