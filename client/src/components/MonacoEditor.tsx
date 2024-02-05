@@ -21,7 +21,6 @@ const languageMapping: LanguageMapping = {
   71: 'Python',
   75: 'C',
   76: 'C++',
-  91: 'Java',
 };
 
 interface LanguageMapping {
@@ -61,7 +60,7 @@ function MonacoEditor() {
   const [output, setOutput] = useState<string>("");
   function waitFor3second(){
       return new Promise(resolve =>
-          setTimeout(() => resolve("result"),3000)
+          setTimeout(() => resolve("result"),5000) // need more time if C is used
       );
   }
   function handleEditorDidMount(editor: any, monaco: any) {
@@ -81,11 +80,10 @@ function MonacoEditor() {
   }, [saveAttemptData]);
   function compileAndRunCode() {
     if (editorRef.current) {
-      const attempt: string = editorRef.current.getValue(); // what we will try to save in the future
-      // console.log(codeToCompile)
+      const attempt: string = editorRef.current.getValue();
+      console.log(langUsed)
       setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
-      // Make a POST request to Judge0 to compile and run the code.
-      // account for C:75 and Java:91 and C++:76
+      //fucking middleware
       axios
         .post("http://0.0.0.0:2358/submissions", {
           source_code: attempt,
@@ -93,6 +91,7 @@ function MonacoEditor() {
         })
         .then((response) => {
           // Handle the response from Judge0, which will include the token.
+          console.log(response)
           const submissionToken: string = response.data.token;
           waitFor3second().then(()=>
           // Poll Judge0 for the result (you can implement this as needed).
@@ -105,10 +104,7 @@ function MonacoEditor() {
     }
   }
 
-  function pollJudge0ForResult(submissionToken: string) {
-    // Implement a function to poll Judge0 for the result of the submission.
-    // You can use a timer or WebSocket to check the status of the submission and get the output.
-    // Example code for polling Judge0:
+  function pollJudge0ForResult(submissionToken: string) {//consider websockets
     axios
       .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
       .then((response) => {
