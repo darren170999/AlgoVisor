@@ -177,12 +177,9 @@ function MonacoEditor() {
         // if (response.ok) {
         const data = await response.json();
         const previousAttemptData: saveAttemptDataProps = data.data.data
-        console.log(previousAttemptData)
-        // If the editor is mounted, set the editor value
         if (isEditorMounted && editorRef.current) {
           editorRef.current.setValue(previousAttemptData.attempt);
         } else {
-          // Otherwise, store the data to set the value when the editor mounts
           fetchedAttemptData.current = previousAttemptData;
         }
         setSaveAttemptData(previousAttemptData);
@@ -191,13 +188,13 @@ function MonacoEditor() {
         // }
       } catch (err) {
         console.log("Error fetching previous attempt:", err);
+        setHasPreviousAttempt(false);
       }
     };
 
     fetchPreviousAttempt();
     
   }, [qnid, langUsed, username, isEditorMounted]);
-
   return (
     <>
     <Box p={4} borderRadius="md" boxShadow="md" bg="white">
@@ -212,7 +209,7 @@ function MonacoEditor() {
           {/* <MenuItem onClick={() => updateLanguageUsed(91)}>Java</MenuItem> */}
         </MenuList>
       </Menu>
-      <Button onClick={saveAttempt } style={{ marginLeft: '8px' }}>Save</Button>
+      <Button onClick={hasPreviousAttempt? updateAttempt: saveAttempt} style={{ marginLeft: '8px' }}>Save</Button>
       <Editor
         height="500px"
         width="100%"
