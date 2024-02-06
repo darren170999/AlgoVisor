@@ -22,8 +22,7 @@ type TestCaseType = {
 };
 
 function CodeQuestion({ data, tc }: { data: QnType; tc: TestCaseType | null }) {
-    // console.log(tc?.hiddentestcases)
-  return (
+    return (
     <>
         <Card bg="white" p={5} h="100%">
             <CardHeader>

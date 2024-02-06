@@ -4,12 +4,26 @@ import axios from "axios";
 import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
-
+const pythonDefault: string = `
+class Solution:
+  def main():
+    # Write code here
+`;
+const cppDefault: string = `
+class Solution:
+  def main():
+    # Write code here
+`;
+const cDefault: string = `
+class Solution:
+  def main():
+    # Write code here
+`;
 const files: Record<string, any> = {
   "script.py": {
     name: "script.py",
     language: "python",
-    value: "Here is some python text",
+    value: pythonDefault,
   },
   "default.html": {
     name: "default.html",
@@ -23,9 +37,9 @@ const languageMapping: LanguageMapping = {
   76: 'C++',
 };
 
-interface LanguageMapping {
-  [key: number]: string;
-}
+interface LanguageMapping { [key: number]: string; }
+
+type tcInputs = { inputs: string[]; }
 
 type saveAttemptDataProps = {
   attempt: string;
@@ -35,7 +49,33 @@ type saveAttemptDataProps = {
   username: string;
 }
 
-function MonacoEditor() {
+type TestCaseType = {
+  id:string;
+  qnid:string;
+  testcases: {
+      input: string;
+      output: string;
+  }[];
+  hiddentestcases: {
+      input: string;
+      output: string;
+  }[];
+};
+
+function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
+  const extractInputs = (testCase: TestCaseType | null): string[] => {
+    const allInputs: string[] = [];
+    const inputsFromTestCases = testCase?.testcases.map((tc) => tc.input);
+    const inputsFromHiddenTestCases = testCase?.hiddentestcases.map((htc) => htc.input);
+    if(inputsFromTestCases){
+      allInputs.push(...inputsFromTestCases);
+    }
+    if(inputsFromHiddenTestCases){
+      allInputs.push(...inputsFromHiddenTestCases);
+    }
+    return allInputs;
+  };
+  const allInputs = extractInputs(tc);
   const [fileName, setFileName] = useState("script.py");
   const [langUsed, setLangUsed] = useState(71); // python is the default
   const updateLanguageUsed = (language: number) => {

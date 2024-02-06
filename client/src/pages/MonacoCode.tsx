@@ -16,6 +16,7 @@ type QnType = {
 };
 
 type TestCaseType = {
+  id:string;
   qnid: string;
   testcases: {
       input: string;
@@ -67,7 +68,7 @@ function MonacoCode() {
   useEffect(() => {
     GetAQuestion();
     GetTestCase();
-    console.log(testcase)
+    // console.log(testcase)
   }, [qnid]);
 
   return (
@@ -86,7 +87,8 @@ function MonacoCode() {
         </GridItem>
         <GridItem>
           <Card>
-            <MonacoEditor />
+            <MonacoEditor 
+            tc ={testcase}/>
             
           </Card>
         </GridItem>
