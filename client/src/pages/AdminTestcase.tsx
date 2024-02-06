@@ -9,16 +9,19 @@ type createTestCaseFormDataProps = {
         input: string;
         output: string;
     }[];
+    hiddentestcases: {
+        input: string;
+        output: string;
+    }[];
 }
 // Sample format for testcases in field: 
 //  [ {"input": "inputValue1", "output": "outputValue1"},
 //   {"input": "inputValue2", "output": "outputValue2"}]
 function AdminTestcase(){
-    // const [loading, setLoading] = useState(true);
-
     const [createTestCaseFormData, setCreateTestCaseFormData] = useState<createTestCaseFormDataProps>({
         qnid: "",
         testcases: [{ input: "", output: "" }],
+        hiddentestcases: [{ input: "", output: "" }],
     })
     const handleQnidForm = (event: { target: { name: any; value: any; };}) => {
         const {name, value} = event.target;
@@ -33,14 +36,23 @@ function AdminTestcase(){
         };
         setCreateTestCaseFormData((prevFormData) => ({ ...prevFormData, testcases: updatedTestcases, }));
     }
+    const handleHiddenCreationForm = (index: number, event: { target: { name: any; value: any; }; }) => {
+        const {name, value} = event.target;
+        const updatedTestcases = [...createTestCaseFormData.hiddentestcases];
+        updatedTestcases[index] = {
+          ...updatedTestcases[index],
+          [name]: value,
+        };
+        setCreateTestCaseFormData((prevFormData) => ({ ...prevFormData, hiddentestcases: updatedTestcases, }));
+    }
     const handleAddTestcase = () => {
         setCreateTestCaseFormData((prevFormData) => ({
           ...prevFormData,
           testcases: [...prevFormData.testcases, { input: "", output: "" }],
         }));
-      };
+    };
     
-      const handleRemoveTestcase = (index: number) => {
+    const handleRemoveTestcase = (index: number) => {
         const updatedTestcases = [...createTestCaseFormData.testcases];
         updatedTestcases.splice(index, 1);
     
@@ -48,11 +60,25 @@ function AdminTestcase(){
           ...prevFormData,
           testcases: updatedTestcases,
         }));
-      };
+    };
+    const handleAddHiddenTestcase = () => {
+        setCreateTestCaseFormData((prevFormData) => ({
+          ...prevFormData,
+          hiddentestcases: [...prevFormData.hiddentestcases, { input: "", output: "" }],
+        }));
+    };
+    
+    const handleRemoveHIddenTestcase = (index: number) => {
+        const updatedTestcases = [...createTestCaseFormData.hiddentestcases];
+        updatedTestcases.splice(index, 1);
+    
+        setCreateTestCaseFormData((prevFormData) => ({
+          ...prevFormData,
+          hiddentestcases: updatedTestcases,
+        }));
+    };
     const handleCreation = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        // Check if any of the fields are empty
-        
         try{
             const response = await fetch("http://localhost:8080/testcase/create" , {
                 method: "POST",
@@ -83,7 +109,7 @@ function AdminTestcase(){
             <Card minW="xl">
                 <CardBody>
                     <Heading as="h1">
-                        Create a Test case for IE2108
+                        Create Test cases for IE2108
                     </Heading>
                     <br></br>
                     <form onSubmit={handleCreation}>
@@ -118,6 +144,37 @@ function AdminTestcase(){
                             <Stack>
                             <Button type="button" onClick={handleAddTestcase}>
                                 Add Test Case
+                            </Button>
+                            <br></br>
+                            <Divider/>
+                            <br></br>
+                            </Stack>
+                            {createTestCaseFormData.hiddentestcases.map((hiddentestcase, index) => (
+                            <VStack key={index} spacing={2}>
+                                <HStack paddingBottom="10px">
+                                    <FormLabel minW="100px">Input</FormLabel>
+                                    <Input
+                                        type="text"
+                                        name="input"
+                                        value={hiddentestcase.input}
+                                        onChange={(e) => handleHiddenCreationForm(index, e)}
+                                    />
+                                    <FormLabel minW="100px">Output</FormLabel>
+                                    <Input
+                                        type="text"
+                                        name="output"
+                                        value={hiddentestcase.output}
+                                        onChange={(e) => handleHiddenCreationForm(index, e)}
+                                    />
+                                    <Button onClick={() => handleRemoveHIddenTestcase(index)}>
+                                    X
+                                    </Button>
+                                </HStack>
+                            </VStack>
+                            ))}
+                            <Stack>
+                            <Button type="button" onClick={handleAddHiddenTestcase}>
+                                Add Hidden Test Case
                             </Button>
                             </Stack>
 
