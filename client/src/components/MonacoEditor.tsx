@@ -60,7 +60,7 @@ function MonacoEditor() {
   const [output, setOutput] = useState<string>("");
   function waitFor3second(){
       return new Promise(resolve =>
-          setTimeout(() => resolve("result"),5000) // need more time if C is used, py:3000, C:5000
+          setTimeout(() => resolve("result"),3000) // need more time if C is used, py:3000, C:5000, C++:10000
       );
   }
   function handleEditorDidMount(editor: any, monaco: any) {
@@ -170,7 +170,6 @@ function MonacoEditor() {
     const fetchPreviousAttempt = async () => {
       try {
         const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}`);
-        // if (response.ok) {
         const data = await response.json();
         const previousAttemptData: saveAttemptDataProps = data.data.data
         if (isEditorMounted && editorRef.current) {
@@ -181,7 +180,6 @@ function MonacoEditor() {
         setSaveAttemptData(previousAttemptData);
         setLangUsed(previousAttemptData.language);
         setHasPreviousAttempt(true);
-        // }
       } catch (err) {
         console.log("Error fetching previous attempt:", err);
         setHasPreviousAttempt(false);
