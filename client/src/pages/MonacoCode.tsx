@@ -17,10 +17,14 @@ type QnType = {
 
 type TestCaseType = {
   qnid: string;
-  testCases: {
+  testcases: {
       input: string;
       output: string;
   }[];
+  hiddentestcases: {
+    input: string;
+    output: string;
+}[];
 };
 
 function MonacoCode() {
@@ -63,7 +67,7 @@ function MonacoCode() {
   useEffect(() => {
     GetAQuestion();
     GetTestCase();
-    // console.log(testcase)
+    console.log(testcase)
   }, [qnid]);
 
   return (
