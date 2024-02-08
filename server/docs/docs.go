@@ -217,6 +217,55 @@ const docTemplate = `{
                 }
             }
         },
+        "/tutorials/code/attempt/status/{qnid}/{language}/{username}": {
+            "put": {
+                "description": "Update Status's data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update Status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "language",
+                        "name": "language",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "attempt",
+                        "name": "Attempt",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.UpdateAttemptRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/tutorials/code/attempt/{qnid}/{language}/{username}": {
             "get": {
                 "description": "get Attempt from Db filtered by username and qnid",

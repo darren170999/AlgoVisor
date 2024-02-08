@@ -474,6 +474,39 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Save Attempt
+  /tutorials/code/attempt/status/{qnid}/{language}/{username}:
+    put:
+      description: Update Status's data in Db.
+      parameters:
+      - description: qnid
+        in: path
+        name: qnid
+        required: true
+        type: string
+      - description: language
+        in: path
+        name: language
+        required: true
+        type: integer
+      - description: username
+        in: path
+        name: username
+        required: true
+        type: string
+      - description: attempt
+        in: body
+        name: Attempt
+        required: true
+        schema:
+          $ref: '#/definitions/requests.UpdateAttemptRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Update Status
   /tutorials/code/create:
     post:
       description: Creating a Question
