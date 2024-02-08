@@ -106,7 +106,7 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
   const updatedPythonDriver = pythonDriver.replace(/ls/, `ls= ${JSON.stringify(allInputs)}`);
   console.log(updatedPythonDriver);
   const [fileName, setFileName] = useState("script.py");
-  const [langUsed, setLangUsed] = useState(71); // python is the default
+  const [langUsed, setLangUsed] = useState(75); // python is the default
   const updateLanguageUsed = (language: number) => {
     setLangUsed(language);
     setSaveAttemptData(prevData => ({ ...prevData, language }));
@@ -119,7 +119,7 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
   let username = localStorage.getItem("username");
   const [saveAttemptData, setSaveAttemptData] = useState<saveAttemptDataProps>({
     attempt: "",
-    language: 71,
+    language: 75,
     qnid: qnid!,
     status: "Uncompleted", // If submitted is done and passed we will put Completed, in the meantime ignore
     username: localStorage.getItem("username")!,
