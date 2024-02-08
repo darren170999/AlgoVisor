@@ -5,9 +5,10 @@ import (
 )
 
 type TestCases struct {
-	Id        primitive.ObjectID `json:"id,omitempty"`
-	QnId      string             `json:"qnid,omitempty" validate:"required"`
-	TestCases []SingleTestCase   `json:"testCases,omitempty"`
+	Id              primitive.ObjectID `json:"id,omitempty"`
+	QnId            string             `json:"qnid,omitempty" validate:"required"`
+	TestCases       []SingleTestCase   `json:"testcases,omitempty"`
+	HiddenTestCases []SingleTestCase   `json:"hiddentestcases,omitempty"`
 }
 
 type SingleTestCase struct {

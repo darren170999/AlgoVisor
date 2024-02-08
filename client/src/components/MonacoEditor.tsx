@@ -1,15 +1,42 @@
 import { useEffect, useRef, useState } from "react";
 import { Editor } from "@monaco-editor/react";
-import axios from "axios";
+import axios, { all } from "axios";
 import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
+import { stringify } from "querystring";
+const pythonDefault: string = `
+class Solution:
+  def main(input):
+    # Write code here, do not rename main
+`;
+const pythonDriver : string = `
+  output = []
+  ls
+  for i in ls:
+  # function should return output of format specified
+    output.append(main(i))
+  for o in output:
+    print(o)
+`;
+
+const cppDefault: string = `
+class Solution:
+  def main():
+    # Write code here
+`;
+
+const cDefault: string = `
+class Solution:
+  def main():
+    # Write code here
+`;
 
 const files: Record<string, any> = {
   "script.py": {
     name: "script.py",
     language: "python",
-    value: "Here is some python text",
+    value: pythonDefault,
   },
   "default.html": {
     name: "default.html",
@@ -17,16 +44,14 @@ const files: Record<string, any> = {
     value: "<div> </div>",
   },
 };
+
 const languageMapping: LanguageMapping = {
   71: 'Python',
   75: 'C',
   76: 'C++',
-  91: 'Java',
 };
 
-interface LanguageMapping {
-  [key: number]: string;
-}
+interface LanguageMapping { [key: number]: string; }
 
 type saveAttemptDataProps = {
   attempt: string;
@@ -36,7 +61,50 @@ type saveAttemptDataProps = {
   username: string;
 }
 
-function MonacoEditor() {
+type TestCaseType = {
+  id:string;
+  qnid:string;
+  testcases: {
+      input: string;
+      output: string;
+  }[];
+  hiddentestcases: {
+      input: string;
+      output: string;
+  }[];
+};
+
+function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
+  const extractInputs = (testCase: TestCaseType | null): string[] => {
+    const allInputs: string[] = [];
+    const inputsFromTestCases = testCase?.testcases.map((tc) => tc.input);
+    const inputsFromHiddenTestCases = testCase?.hiddentestcases.map((htc) => htc.input);
+    if(inputsFromTestCases){
+      allInputs.push(...inputsFromTestCases);
+    }
+    if(inputsFromHiddenTestCases){
+      allInputs.push(...inputsFromHiddenTestCases);
+    }
+    return allInputs;
+  };
+  // Append inputs from React state into the Python driver code
+  const extractOutputs = (testCase: TestCaseType | null): string[] => {
+    const allOutputs: string[] = [];
+    const inputsFromTestCases = testCase?.testcases.map((tc) => tc.output);
+    const inputsFromHiddenTestCases = testCase?.hiddentestcases.map((htc) => htc.output);
+    if(inputsFromTestCases){
+      allOutputs.push(...inputsFromTestCases);
+    }
+    if(inputsFromHiddenTestCases){
+      allOutputs.push(...inputsFromHiddenTestCases);
+    }
+    return allOutputs;
+  };
+  const allInputs = extractInputs(tc);
+  const allOutputs = extractOutputs(tc);
+  console.log(allOutputs);
+  const updatedPythonDriver = pythonDriver.replace(/ls/, `ls= ${JSON.stringify(allInputs)}`);
+  console.log(updatedPythonDriver);
   const [fileName, setFileName] = useState("script.py");
   const [langUsed, setLangUsed] = useState(71); // python is the default
   const updateLanguageUsed = (language: number) => {
@@ -61,7 +129,7 @@ function MonacoEditor() {
   const [output, setOutput] = useState<string>("");
   function waitFor3second(){
       return new Promise(resolve =>
-          setTimeout(() => resolve("result"),3000)
+          setTimeout(() => resolve("result"),3000) // need more time if C is used, py:3000, C:5000, C++:10000
       );
   }
   function handleEditorDidMount(editor: any, monaco: any) {
@@ -79,13 +147,38 @@ function MonacoEditor() {
   useEffect(() => {
     // console.log(saveAttemptData);
   }, [saveAttemptData]);
+
+  function submitCode() {
+    if (editorRef.current) {
+      const attempt: string = editorRef.current.getValue();
+      console.log(attempt)
+      setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
+      const submission = `${attempt}\n\n${updatedPythonDriver}`;
+      console.log(submission);
+      axios
+        .post("http://0.0.0.0:2358/submissions", {
+          source_code: submission,
+          language_id: langUsed,
+        })
+        .then((response) => {
+          console.log(response)
+          const submissionToken: string = response.data.token;
+          waitFor3second().then(()=>
+            {pollJudge0ForResult(submissionToken);}
+          )
+        })
+        .catch((error) => {
+          console.error("Error compiling code:", error);
+        });
+    }
+  }
+
   function compileAndRunCode() {
     if (editorRef.current) {
-      const attempt: string = editorRef.current.getValue(); // what we will try to save in the future
-      // console.log(codeToCompile)
+      const attempt: string = editorRef.current.getValue();
+      console.log(langUsed)
       setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
-      // Make a POST request to Judge0 to compile and run the code.
-      // account for C:75 and Java:91 and C++:76
+      //fucking middleware
       axios
         .post("http://0.0.0.0:2358/submissions", {
           source_code: attempt,
@@ -93,6 +186,7 @@ function MonacoEditor() {
         })
         .then((response) => {
           // Handle the response from Judge0, which will include the token.
+          console.log(response)
           const submissionToken: string = response.data.token;
           waitFor3second().then(()=>
           // Poll Judge0 for the result (you can implement this as needed).
@@ -105,16 +199,14 @@ function MonacoEditor() {
     }
   }
 
-  function pollJudge0ForResult(submissionToken: string) {
-    // Implement a function to poll Judge0 for the result of the submission.
-    // You can use a timer or WebSocket to check the status of the submission and get the output.
-    // Example code for polling Judge0:
+  function pollJudge0ForResult(submissionToken: string) {//consider websockets
     axios
       .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
       .then((response) => {
             console.log(response)
           const submissionOutput: string = response.data.stdout;
           setOutput(submissionOutput);
+          checkSolution(submissionOutput);
     //     if (status === "Processing") {
     //       // Submission is still processing; continue polling.
     //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
@@ -145,6 +237,26 @@ function MonacoEditor() {
     }     
   }
 
+  const checkSolution = (attemptedSolution: string) =>{
+    if (attemptedSolution) {
+      const inputList: string[] = attemptedSolution.split('\n').filter(Boolean);
+      console.log(inputList);
+      console.log(allOutputs);
+      if (arraysEqual(allOutputs, inputList)) {
+        // write a small BACKEND call to update the question to be done
+        console.log("SUCCESS")
+      }
+    } else {
+      console.error('Invalid input: attemptedSolution is null');
+    }
+  }
+  function arraysEqual(arr1: any[], arr2: any[]) {
+    if (arr1.length !== arr2.length) return false;
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) return false;
+    }
+    return true;
+  }
 
   const saveAttempt = async (e:{preventDefault: () => void}) => {
     e.preventDefault();
@@ -174,30 +286,25 @@ function MonacoEditor() {
     const fetchPreviousAttempt = async () => {
       try {
         const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}`);
-        // if (response.ok) {
         const data = await response.json();
         const previousAttemptData: saveAttemptDataProps = data.data.data
-        console.log(previousAttemptData)
-        // If the editor is mounted, set the editor value
         if (isEditorMounted && editorRef.current) {
           editorRef.current.setValue(previousAttemptData.attempt);
         } else {
-          // Otherwise, store the data to set the value when the editor mounts
           fetchedAttemptData.current = previousAttemptData;
         }
         setSaveAttemptData(previousAttemptData);
         setLangUsed(previousAttemptData.language);
         setHasPreviousAttempt(true);
-        // }
       } catch (err) {
         console.log("Error fetching previous attempt:", err);
+        setHasPreviousAttempt(false);
       }
     };
 
     fetchPreviousAttempt();
     
   }, [qnid, langUsed, username, isEditorMounted]);
-
   return (
     <>
     <Box p={4} borderRadius="md" boxShadow="md" bg="white">
@@ -212,7 +319,7 @@ function MonacoEditor() {
           {/* <MenuItem onClick={() => updateLanguageUsed(91)}>Java</MenuItem> */}
         </MenuList>
       </Menu>
-      <Button onClick={saveAttempt } style={{ marginLeft: '8px' }}>Save</Button>
+      <Button onClick={hasPreviousAttempt? updateAttempt: saveAttempt} style={{ marginLeft: '8px' }}>Save</Button>
       <Editor
         height="500px"
         width="100%"
@@ -230,7 +337,7 @@ function MonacoEditor() {
             {/* Clear terminal's output */}
             <Button style={{ marginRight: '8px' }}>Clear</Button>
             {/* Submit is just to test code against test cases */}
-            <Button >Submit</Button>
+            <Button onClick={submitCode}>Submit</Button>
           </div>
         </Heading>
         <Box

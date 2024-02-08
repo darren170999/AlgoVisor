@@ -77,6 +77,10 @@ definitions:
     type: object
   requests.CreateTestCasesRequest:
     properties:
+      hiddentestcases:
+        items:
+          $ref: '#/definitions/requests.SingleTestCase'
+        type: array
       qnid:
         type: string
       testcases:
@@ -84,6 +88,7 @@ definitions:
           $ref: '#/definitions/requests.SingleTestCase'
         type: array
     required:
+    - hiddentestcases
     - qnid
     - testcases
     type: object

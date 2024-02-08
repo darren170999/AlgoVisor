@@ -16,11 +16,16 @@ type QnType = {
 };
 
 type TestCaseType = {
+  id:string;
   qnid: string;
-  testCases: {
+  testcases: {
       input: string;
       output: string;
   }[];
+  hiddentestcases: {
+    input: string;
+    output: string;
+}[];
 };
 
 function MonacoCode() {
@@ -82,7 +87,8 @@ function MonacoCode() {
         </GridItem>
         <GridItem>
           <Card>
-            <MonacoEditor />
+            <MonacoEditor 
+            tc ={testcase}/>
             
           </Card>
         </GridItem>

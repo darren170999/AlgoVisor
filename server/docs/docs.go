@@ -672,10 +672,17 @@ const docTemplate = `{
         "requests.CreateTestCasesRequest": {
             "type": "object",
             "required": [
+                "hiddentestcases",
                 "qnid",
                 "testcases"
             ],
             "properties": {
+                "hiddentestcases": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/requests.SingleTestCase"
+                    }
+                },
                 "qnid": {
                     "type": "string"
                 },

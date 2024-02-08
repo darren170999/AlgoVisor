@@ -59,6 +59,7 @@ func CreateTestCases() gin.HandlerFunc {
 			Id:          primitive.NewObjectID(),
 			QnId:        testCases.QnId,
 			TestCases:   testCases.TestCases,
+			HiddenTestCases: testCases.HiddenTestCases,
 		}
 
 		result, err := testCaseCollection.InsertOne(ctx, newTestCases)

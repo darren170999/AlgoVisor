@@ -11,14 +11,18 @@ type QnType = {
 };
 
 type TestCaseType = {
-    testCases: {
+    testcases: {
+        input: string;
+        output: string;
+    }[];
+    hiddentestcases: {
         input: string;
         output: string;
     }[];
 };
 
 function CodeQuestion({ data, tc }: { data: QnType; tc: TestCaseType | null }) {
-  return (
+    return (
     <>
         <Card bg="white" p={5} h="100%">
             <CardHeader>
@@ -48,28 +52,28 @@ function CodeQuestion({ data, tc }: { data: QnType; tc: TestCaseType | null }) {
                     <Text>{data.constraints}</Text>
                 </CardBody>
             </Card>
-            {tc && tc.testCases && tc.testCases.length > 0 && (
+            {tc && tc.testcases && tc.testcases.length > 0 && (
             <CardBody>
                 <Heading size="sm" mb={4}>
                 Test Cases:
                 </Heading>
-                {tc.testCases.map((testCase, index) => (
+                {tc.testcases.map((testcase, index) => (
                     <Box
                         key={index}
-                        bg={testCase.output === 'expectedOutput' ? 'green.200' : 'red.200'} // Adjust the condition based on your criteria
+                        bg={testcase.output === 'expectedOutput' ? 'green.200' : 'red.200'} // Adjust the condition based on your criteria
                         p={3}
                         mb={2}
                         borderRadius="md"
-                        borderColor={testCase.output === 'expectedOutput' ? 'green.500' : 'red.500'}
+                        borderColor={testcase.output === 'expectedOutput' ? 'green.500' : 'red.500'}
                         borderWidth={1}
                     >
                         <Text>
-                            Input: {testCase.input}, Output: {testCase.output}
+                            Input: {testcase.input}, Output: {testcase.output}
                         </Text>
                     </Box>
                 ))}
                 <Text>
-                    Hidden test cases 0/10
+                    Hidden test cases 0/{tc.hiddentestcases.length}
                 </Text>
             </CardBody>
             )}
