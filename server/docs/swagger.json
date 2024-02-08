@@ -347,6 +347,32 @@
                 }
             }
         },
+        "/tutorials/code/check/{username}": {
+            "get": {
+                "description": "Get all current attempts in the Database.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all Attempts by a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/tutorials/code/create": {
             "post": {
                 "description": "Creating a Question",

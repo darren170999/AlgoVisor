@@ -115,6 +115,43 @@ func GetAllAttempts() gin.HandlerFunc {
 }
 
 // CreateTags		godoc
+// @Summary			Get all Attempts by a user
+// @Description		Get all current attempts in the Database.
+// @Param username path string true "username"
+// @Produce			application/json
+// @Success			200 {object} responses.Response{}
+// @Router			/tutorials/code/check/{username} [get]
+func GetAllAttemptsByUsername() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		var attempt []models.Attempt
+		defer cancel()
+		username := c.Param("username")
+		filter := bson.M{"username": username}
+		results, err := attemptCollection.Find(ctx, filter)
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.AttemptResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+
+		defer results.Close(ctx)
+		for results.Next(ctx) {
+			var singleAttempt models.Attempt
+			if err = results.Decode(&singleAttempt); err != nil {
+				c.JSON(http.StatusInternalServerError, responses.AttemptResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			}
+
+			attempt = append(attempt, singleAttempt)
+		}
+
+		c.JSON(http.StatusOK,
+			responses.AttemptResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": attempt}},
+		)
+	}
+}
+
+// CreateTags		godoc
 // @Summary			Get Attempt
 // @Description		get Attempt from Db filtered by username and qnid
 // @Param qnid path string true "qnid"

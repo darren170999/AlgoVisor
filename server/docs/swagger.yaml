@@ -507,6 +507,23 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Update Status
+  /tutorials/code/check/{username}:
+    get:
+      description: Get all current attempts in the Database.
+      parameters:
+      - description: username
+        in: path
+        name: username
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get all Attempts by a user
   /tutorials/code/create:
     post:
       description: Creating a Question
