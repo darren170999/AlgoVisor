@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"context"
+	"fmt"
+
 	// "fmt"
 	"net/http"
 	"server/configs"
@@ -222,8 +224,6 @@ func UpdateStatus() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		var attempt models.Attempt
-		// qnId := attempt.QnId
-		// username := attempt.Username
 		defer cancel()
 		qnid := c.Param("qnid")
 		username := c.Param("username")
@@ -233,19 +233,14 @@ func UpdateStatus() gin.HandlerFunc {
 			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "Invalid language parameter"})
 			return
 		}
-
-		// if err := c.BindJSON(&attempt); err != nil {
-		// 	c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
-		// 	return
-		// }
-
-		// if validationErr := validate.Struct(&attempt); validationErr != nil {
-		// 	c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
-		// 	return
-		// }
+		var updateAttempt models.Attempt
+		if err := c.BindJSON(&updateAttempt); err != nil {
+			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "Invalid request body", Data: map[string]interface{}{"error": err.Error()}})
+			return
+		}
 		filter := bson.M{"qnid": qnid, "language": language, "username": username}
-		update := bson.M{"$set": bson.M{"attempt": attempt.Attempt, "status": "Completed"}}
-
+		update := bson.M{"$set": bson.M{ "attempt": updateAttempt.Attempt ,"status": "Completed"}}
+		fmt.Print(attempt.Attempt)
 		result, err := attemptCollection.UpdateOne(ctx, filter, update)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.AttemptResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -255,17 +250,5 @@ func UpdateStatus() gin.HandlerFunc {
 			c.JSON(http.StatusNotFound, responses.AttemptResponse{Status: http.StatusNotFound, Message: "Attempt not found", Data: nil})
 			return
 		}
-		var updatedAttempt models.Attempt
-		// fmt.Printf("MatchedCount: %d, ModifiedCount: %d\n", result.MatchedCount, result.ModifiedCount)
-		// fmt.Print(result)
-		if result.MatchedCount == 1 {
-			err := attemptCollection.FindOne(ctx, filter).Decode(&updatedAttempt)
-			if err != nil {
-				c.JSON(http.StatusInternalServerError, responses.AttemptResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
-				return
-			}
-		}
-
-		c.JSON(http.StatusOK, responses.AttemptResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": updatedAttempt}})
 	}
 }

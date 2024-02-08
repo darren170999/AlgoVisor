@@ -161,7 +161,7 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
           console.log(response)
           const submissionToken: string = response.data.token;
           waitFor3second().then(()=>
-            {pollJudge0ForResult(submissionToken);}
+            {pollJudge0ForSubmission(submissionToken);}
           )
         })
         .catch((error) => {
@@ -195,8 +195,21 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
         });
     }
   }
-
+  
   function pollJudge0ForResult(submissionToken: string) {//consider websockets
+    axios
+      .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
+      .then((response) => {
+            console.log(response)
+          const submissionOutput: string = response.data.stdout;
+          setOutput(submissionOutput);
+    //     if (status === "Processing") {
+    //       // Submission is still processing; continue polling.
+    //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
+    //     }
+      });
+  }
+  function pollJudge0ForSubmission(submissionToken: string) {//consider websockets
     axios
       .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
       .then((response) => {
@@ -241,7 +254,24 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
       console.log(allOutputs);
       if (arraysEqual(allOutputs, inputList)) {
         // write a small BACKEND call to update the question to be done
-        console.log("SUCCESS")
+        console.log("SUCCESS");
+        try{
+          console.log(saveAttemptData)
+          const response = fetch(`http://localhost:8080/tutorials/code/attempt/status/${qnid}/${langUsed}/${username}`, 
+          {
+            method: "PUT",
+            headers : {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(saveAttemptData),
+          });
+
+          if(response){
+            console.log(response)
+          }
+        } catch (err) {
+          console.log("Dk wtf happen: ", err)
+        }  
       }
     } else {
       console.error('Invalid input: attemptedSolution is null');
