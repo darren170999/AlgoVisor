@@ -4,7 +4,6 @@ import axios, { all } from "axios";
 import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
-import { stringify } from "querystring";
 const pythonDefault: string = `
 class Solution:
   def main(input):
@@ -102,11 +101,11 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
   };
   const allInputs = extractInputs(tc);
   const allOutputs = extractOutputs(tc);
-  console.log(allOutputs);
+  // console.log(allOutputs);
   const updatedPythonDriver = pythonDriver.replace(/ls/, `ls= ${JSON.stringify(allInputs)}`);
-  console.log(updatedPythonDriver);
+  // console.log(updatedPythonDriver);
   const [fileName, setFileName] = useState("script.py");
-  const [langUsed, setLangUsed] = useState(75); // python is the default
+  const [langUsed, setLangUsed] = useState(71); // python is the default
   const updateLanguageUsed = (language: number) => {
     setLangUsed(language);
     setSaveAttemptData(prevData => ({ ...prevData, language }));
@@ -119,7 +118,7 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
   let username = localStorage.getItem("username");
   const [saveAttemptData, setSaveAttemptData] = useState<saveAttemptDataProps>({
     attempt: "",
-    language: 75,
+    language: 71,
     qnid: qnid!,
     status: "Uncompleted", // If submitted is done and passed we will put Completed, in the meantime ignore
     username: localStorage.getItem("username")!,
@@ -135,8 +134,6 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
   function handleEditorDidMount(editor: any, monaco: any) {
     editorRef.current = editor;
     setIsEditorMounted(true);
-
-    // If data was fetched before mounting, set the editor value now
     if (fetchedAttemptData.current && editorRef.current) {
       editorRef.current.setValue(fetchedAttemptData.current.attempt);
     }
@@ -291,7 +288,8 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
         if (isEditorMounted && editorRef.current) {
           editorRef.current.setValue(previousAttemptData.attempt);
         } else {
-          fetchedAttemptData.current = previousAttemptData;
+          // fetchedAttemptData.current = previousAttemptData;
+          editorRef.current.setValue(pythonDefault);
         }
         setSaveAttemptData(previousAttemptData);
         setLangUsed(previousAttemptData.language);
