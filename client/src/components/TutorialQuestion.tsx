@@ -10,11 +10,10 @@ type QnType = {
 }
 
 function TutorialQuestion(data: QnType) {
-    // const [items, setItems] = useState<QnType[]>([]);
     console.log(data)
     return (
         <>
-        <Card w='400px' h='400px'>
+        <Card w='400px' h='400px' bg={data.status === 'new' ? 'white' : 'gray.200'}>
             <CardBody>
                 <Stack mt='6' spacing='3'>
                 <Heading size='md'>{data.name}</Heading>
