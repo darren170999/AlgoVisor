@@ -1,24 +1,37 @@
 import { useEffect, useRef, useState } from "react";
 import { Editor } from "@monaco-editor/react";
-import axios from "axios";
+import axios, { all } from "axios";
 import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
+import { stringify } from "querystring";
 const pythonDefault: string = `
 class Solution:
-  def main():
-    # Write code here
+  def main(input):
+    # Write code here, do not rename main
 `;
+const pythonDriver : string = `
+  output = []
+  ls
+  for i in ls:
+  # function should return output of format specified
+    output.append(main(i))
+  for o in output:
+    print(o)
+`;
+
 const cppDefault: string = `
 class Solution:
   def main():
     # Write code here
 `;
+
 const cDefault: string = `
 class Solution:
   def main():
     # Write code here
 `;
+
 const files: Record<string, any> = {
   "script.py": {
     name: "script.py",
@@ -31,6 +44,7 @@ const files: Record<string, any> = {
     value: "<div> </div>",
   },
 };
+
 const languageMapping: LanguageMapping = {
   71: 'Python',
   75: 'C',
@@ -38,8 +52,6 @@ const languageMapping: LanguageMapping = {
 };
 
 interface LanguageMapping { [key: number]: string; }
-
-type tcInputs = { inputs: string[]; }
 
 type saveAttemptDataProps = {
   attempt: string;
@@ -75,7 +87,24 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
     }
     return allInputs;
   };
+  // Append inputs from React state into the Python driver code
+  const extractOutputs = (testCase: TestCaseType | null): string[] => {
+    const allOutputs: string[] = [];
+    const inputsFromTestCases = testCase?.testcases.map((tc) => tc.output);
+    const inputsFromHiddenTestCases = testCase?.hiddentestcases.map((htc) => htc.output);
+    if(inputsFromTestCases){
+      allOutputs.push(...inputsFromTestCases);
+    }
+    if(inputsFromHiddenTestCases){
+      allOutputs.push(...inputsFromHiddenTestCases);
+    }
+    return allOutputs;
+  };
   const allInputs = extractInputs(tc);
+  const allOutputs = extractOutputs(tc);
+  console.log(allOutputs);
+  const updatedPythonDriver = pythonDriver.replace(/ls/, `ls= ${JSON.stringify(allInputs)}`);
+  console.log(updatedPythonDriver);
   const [fileName, setFileName] = useState("script.py");
   const [langUsed, setLangUsed] = useState(71); // python is the default
   const updateLanguageUsed = (language: number) => {
@@ -118,6 +147,32 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
   useEffect(() => {
     // console.log(saveAttemptData);
   }, [saveAttemptData]);
+
+  function submitCode() {
+    if (editorRef.current) {
+      const attempt: string = editorRef.current.getValue();
+      console.log(attempt)
+      setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
+      const submission = `${attempt}\n\n${updatedPythonDriver}`;
+      console.log(submission);
+      axios
+        .post("http://0.0.0.0:2358/submissions", {
+          source_code: submission,
+          language_id: langUsed,
+        })
+        .then((response) => {
+          console.log(response)
+          const submissionToken: string = response.data.token;
+          waitFor3second().then(()=>
+            {pollJudge0ForResult(submissionToken);}
+          )
+        })
+        .catch((error) => {
+          console.error("Error compiling code:", error);
+        });
+    }
+  }
+
   function compileAndRunCode() {
     if (editorRef.current) {
       const attempt: string = editorRef.current.getValue();
@@ -151,6 +206,7 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
             console.log(response)
           const submissionOutput: string = response.data.stdout;
           setOutput(submissionOutput);
+          checkSolution(submissionOutput);
     //     if (status === "Processing") {
     //       // Submission is still processing; continue polling.
     //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
@@ -181,6 +237,26 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
     }     
   }
 
+  const checkSolution = (attemptedSolution: string) =>{
+    if (attemptedSolution) {
+      const inputList: string[] = attemptedSolution.split('\n').filter(Boolean);
+      console.log(inputList);
+      console.log(allOutputs);
+      if (arraysEqual(allOutputs, inputList)) {
+        // write a small BACKEND call to update the question to be done
+        console.log("SUCCESS")
+      }
+    } else {
+      console.error('Invalid input: attemptedSolution is null');
+    }
+  }
+  function arraysEqual(arr1: any[], arr2: any[]) {
+    if (arr1.length !== arr2.length) return false;
+    for (let i = 0; i < arr1.length; i++) {
+      if (arr1[i] !== arr2[i]) return false;
+    }
+    return true;
+  }
 
   const saveAttempt = async (e:{preventDefault: () => void}) => {
     e.preventDefault();
@@ -261,7 +337,7 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
             {/* Clear terminal's output */}
             <Button style={{ marginRight: '8px' }}>Clear</Button>
             {/* Submit is just to test code against test cases */}
-            <Button >Submit</Button>
+            <Button onClick={submitCode}>Submit</Button>
           </div>
         </Heading>
         <Box
