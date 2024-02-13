@@ -5,7 +5,7 @@ type AccordionRowsProps = {
     sypnopsis: string;
     duration: string;
     status: string;
-    videoSrc: string;
+    videoSrc: Blob;
     videoDescription: string;
     materialSrc: string;
     materialDescription: string;
@@ -31,8 +31,9 @@ const AccordionRows = ({ name, sypnopsis, duration, status, videoSrc, videoDescr
         </AccordionButton>
         <AccordionPanel pb={4}>
             <VStack>
-                <iframe width={"560px"} height={"315px"} src={videoSrc}
-                title = {videoDescription} allowFullScreen></iframe>
+                <video controls>
+                    <source src={URL.createObjectURL(videoSrc)} type="video/mp4" />
+                 </video>
 
             </VStack>
             Materials:

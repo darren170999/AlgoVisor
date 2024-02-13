@@ -8,7 +8,7 @@ type ItemType = {
     sypnopsis: string;
     duration: string;
     status: string;
-    videoSrc: string;
+    videoSrc: Blob;
     videoDescription: string;
     materialSrc: string;
     materialDescription: string;
