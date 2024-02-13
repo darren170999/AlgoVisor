@@ -73,7 +73,11 @@ type TestCaseType = {
   }[];
 };
 
-function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
+type EditorType = {
+
+}
+
+function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: () => void}) {
   const extractInputs = (testCase: TestCaseType | null): string[] => {
     const allInputs: string[] = [];
     const inputsFromTestCases = testCase?.testcases.map((tc) => tc.input);
@@ -113,7 +117,7 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
   const [isEditorMounted, setIsEditorMounted] = useState(false);
   const fetchedAttemptData = useRef<saveAttemptDataProps | null>(null);
   const [hasPreviousAttempt, setHasPreviousAttempt] = useState(false);
-
+  const [success, setSuccess] = useState(false);
   let { qnid } = useParams();
   let username = localStorage.getItem("username");
   const [saveAttemptData, setSaveAttemptData] = useState<saveAttemptDataProps>({
@@ -255,6 +259,7 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
       if (arraysEqual(allOutputs, inputList)) {
         // write a small BACKEND call to update the question to be done
         console.log("SUCCESS");
+        onSuccess();
         try{
           console.log(saveAttemptData)
           const response = fetch(`http://localhost:8080/tutorials/code/attempt/status/${qnid}/${langUsed}/${username}`, 

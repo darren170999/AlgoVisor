@@ -21,7 +21,7 @@ type TestCaseType = {
     }[];
 };
 
-function CodeQuestion({ data, tc }: { data: QnType; tc: TestCaseType | null }) {
+function CodeQuestion({ data, tc, successflag }: { data: QnType; tc: TestCaseType | null; successflag : boolean }) {
     return (
     <>
         <Card bg="white" p={5} h="100%">
@@ -60,11 +60,11 @@ function CodeQuestion({ data, tc }: { data: QnType; tc: TestCaseType | null }) {
                 {tc.testcases.map((testcase, index) => (
                     <Box
                         key={index}
-                        bg={testcase.output === 'expectedOutput' ? 'green.200' : 'red.200'} // Adjust the condition based on your criteria
+                        bg={successflag ? 'green.200' : 'red.200'} // Adjust the condition based on your criteria
                         p={3}
                         mb={2}
                         borderRadius="md"
-                        borderColor={testcase.output === 'expectedOutput' ? 'green.500' : 'red.500'}
+                        borderColor={successflag ? 'green.500' : 'red.500'}
                         borderWidth={1}
                     >
                         <Text>
@@ -73,7 +73,7 @@ function CodeQuestion({ data, tc }: { data: QnType; tc: TestCaseType | null }) {
                     </Box>
                 ))}
                 <Text>
-                    Hidden test cases 0/{tc.hiddentestcases.length}
+                    Hidden test cases: {successflag ? tc.hiddentestcases.length : 0 }/{tc.hiddentestcases.length}
                 </Text>
             </CardBody>
             )}

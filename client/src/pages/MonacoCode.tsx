@@ -32,6 +32,7 @@ function MonacoCode() {
     let { qnid } = useParams();
     const [question, setQuestion] = useState<QnType | null>(null);
     const [testcase, setTestCase] = useState<TestCaseType | null>(null);
+    const [success, setSuccess] = useState<boolean>(false);
     const GetTestCase = async() => {
       try {
         const response = await fetch(`http://localhost:8080/testcase/${qnid}`, {
@@ -64,13 +65,17 @@ function MonacoCode() {
         console.error("Failed to fetch question:", error);
         }
   };
-
+  const handleSuccess = () => {
+    // This function will be called when checkSolution passes
+    console.log("Solution passed!");
+    setSuccess(true);
+    // Do whatever you need to do with the success notification
+};
   useEffect(() => {
     GetAQuestion();
     GetTestCase();
     // console.log(testcase)
   }, [qnid]);
-
   return (
     <>
       <Header />
@@ -80,6 +85,7 @@ function MonacoCode() {
             <CodeQuestion
               data = {question}
               tc = {testcase}
+              successflag = {success}
             />
           ) : (
             <p>Loading...</p>
@@ -88,7 +94,8 @@ function MonacoCode() {
         <GridItem>
           <Card>
             <MonacoEditor 
-            tc ={testcase}/>
+            tc ={testcase}
+            onSuccess={handleSuccess}/>
             
           </Card>
         </GridItem>
