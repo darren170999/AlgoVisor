@@ -2,11 +2,9 @@ package controllers
 
 import (
 	"context"
-	"fmt"
-	// "fmt"
 	"io"
 
-	// "io/ioutil"
+	// "io/ioutil" DEPRACATED
 
 	"net/http"
 	"server/configs"
@@ -116,8 +114,8 @@ func CreateVideo() gin.HandlerFunc {
 
 		// Retrieve the file from the form data
 		file, header, err := c.Request.FormFile("videoSrc")
-		fmt.Print(header);
-		if err != nil {
+		// fmt.Print(header);
+		if (err != nil || header == nil) {
 			c.JSON(http.StatusBadRequest, gin.H{"error": "Failed to retrieve video file"})
 			return
 		}
