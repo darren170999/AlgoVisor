@@ -250,6 +250,25 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: 'By Admin only: Create Course'
+  /course/create/video:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Creating a Video
+      parameters:
+      - description: videoSrc
+        in: formData
+        name: Course
+        required: true
+        type: file
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: 'By Admin only: Create Video'
   /courses:
     get:
       description: Get all current courses in the Database.

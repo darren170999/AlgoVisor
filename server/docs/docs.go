@@ -43,6 +43,35 @@ const docTemplate = `{
                 }
             }
         },
+        "/course/create/video": {
+            "post": {
+                "description": "Creating a Video",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "By Admin only: Create Video",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "videoSrc",
+                        "name": "Course",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/courses": {
             "get": {
                 "description": "Get all current courses in the Database.",
