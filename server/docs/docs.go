@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/course": {
+        "/course/create": {
             "post": {
                 "description": "Creating a Course",
                 "produces": [
@@ -23,13 +23,6 @@ const docTemplate = `{
                 ],
                 "summary": "By Admin only: Create Course",
                 "parameters": [
-                    {
-                        "type": "file",
-                        "description": "videoSrc",
-                        "name": "Course",
-                        "in": "formData",
-                        "required": true
-                    },
                     {
                         "description": "course JSON data",
                         "name": "Course",
@@ -684,8 +677,7 @@ const docTemplate = `{
                 "name",
                 "status",
                 "sypnopsis",
-                "videoDescription",
-                "videoSrc"
+                "videoDescription"
             ],
             "properties": {
                 "duration": {
@@ -708,13 +700,8 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "videoDescription": {
+                    "description": "VideoSrc            []byte ` + "`" + `json:\"videoSrc,omitempty\" validate:\"required\"` + "`" + `",
                     "type": "string"
-                },
-                "videoSrc": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
                 }
             }
         },

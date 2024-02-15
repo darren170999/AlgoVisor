@@ -36,11 +36,8 @@ definitions:
       sypnopsis:
         type: string
       videoDescription:
+        description: VideoSrc            []byte `json:"videoSrc,omitempty" validate:"required"`
         type: string
-      videoSrc:
-        items:
-          type: integer
-        type: array
     required:
     - duration
     - materialDescription
@@ -49,7 +46,6 @@ definitions:
     - status
     - sypnopsis
     - videoDescription
-    - videoSrc
     type: object
   requests.CreateQuestionRequest:
     properties:
@@ -236,15 +232,10 @@ info:
   title: Service API
   version: "1.0"
 paths:
-  /course:
+  /course/create:
     post:
       description: Creating a Course
       parameters:
-      - description: videoSrc
-        in: formData
-        name: Course
-        required: true
-        type: file
       - description: course JSON data
         in: body
         name: Course

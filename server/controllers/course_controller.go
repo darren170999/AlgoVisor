@@ -2,10 +2,11 @@ package controllers
 
 import (
 	"context"
-	"fmt"
-	"io"
+	// "fmt"
+	// "io"
 
-	//"io/ioutil" Depracated
+	// "io/ioutil"
+
 	"net/http"
 	"server/configs"
 	"server/data/responses"
@@ -37,68 +38,62 @@ var courseCollection *mongo.Collection = configs.GetCoursesCollection(configs.DB
 // CreateTags		godoc
 // @Summary			By Admin only: Create Course
 // @Description		Creating a Course
-// @Param			Course formData file true "videoSrc" // Assuming "videoSrc" is the name of your file input field
 // @Param           Course body requests.CreateCoursesRequest true "course JSON data"
 // @Produce			application/json
 // @Course			courses
 // @Success			200 {object} responses.Response{}
-// @Router			/course [post]
+// @Router			/course/create [post]
 func CreateCourse() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		var course models.Course
 		defer cancel()
-		err := c.Request.ParseMultipartForm(100 << 20) // 10 MB max size
-		fmt.Print(c.Request.ParseMultipartForm(100 << 20))
-		if err != nil {
-			c.JSON(http.StatusBadRequest, responses.CourseResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
-			return
-		}
-		// Retrieve the file from the form data
-		file, _, err := c.Request.FormFile("videoSrc")
-		if err != nil {
-			c.JSON(http.StatusBadRequest, responses.CourseResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
-			return
-		}
-		defer file.Close()
 
-		// Read the file content into a byte slice
-		videoData, err := io.ReadAll(file)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, responses.CourseResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
-			return
-		}
-		//validate the request body
-		if err := c.BindJSON(&course); err != nil {
+		// Read the blob data from the request body
+		// videoData, err := io.ReadAll(c.Request.Body)
+		// if err != nil {
+		// 	c.JSON(http.StatusInternalServerError, responses.CourseResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+		// 	return
+		// }
+		// defer c.Request.Body.Close()
+
+		// Retrieve other fields from the JSON request body
+		var course models.Course
+		if err := c.ShouldBindJSON(&course); err != nil {
 			c.JSON(http.StatusBadRequest, responses.CourseResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-		//use the validator library to validate required fields
+
+		// Validate the course fields using a validator library (assuming validate is the validator instance)
 		if validationErr := validate.Struct(&course); validationErr != nil {
 			c.JSON(http.StatusBadRequest, responses.CourseResponse{Status: http.StatusBadRequest, Message: "error", Data: map[string]interface{}{"data": validationErr.Error()}})
 			return
 		}
+
+		// Construct the new course object with blob data and other fields
 		newCourse := models.Course{
 			Id:                  primitive.NewObjectID(),
 			Name:                course.Name,
 			Sypnopsis:           course.Sypnopsis,
 			Duration:            course.Duration,
 			Status:              course.Status,
-			VideoSrc:            videoData,
+			// VideoSrc:            videoData, // Assign blob data to VideoSrc field
 			VideoDescription:    course.VideoDescription,
 			MaterialSrc:         course.MaterialSrc,
 			MaterialDescription: course.MaterialDescription,
 		}
 
+		// Insert the new course into the database
 		result, err := courseCollection.InsertOne(ctx, newCourse)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.CourseResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
 
+		// Return a success response
 		c.JSON(http.StatusCreated, responses.CourseResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": result}})
 	}
 }
+
 
 // CreateTags		godoc
 // @Summary			Get all Courses

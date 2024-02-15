@@ -16,6 +16,7 @@ import Tutorials from "./pages/Tutorials";
 import Admin from "./pages/Admin";
 import AdminQuestion from "./pages/AdminQuestion";
 import AdminTestcase from "./pages/AdminTestcase";
+import AdminCourse from "./pages/AdminCourse";
 
 export default function App() {
 
@@ -27,6 +28,7 @@ export default function App() {
           <Route path="/admin" element={<Admin/>}/>
           <Route path="/admin/question" element={<AdminQuestion/>}/>
           <Route path="/admin/testcase" element={<AdminTestcase/>}/>
+          <Route path="/admin/course" element={<AdminCourse/>}/>
           {/* <Route path="/admin/courses" element={<Admin/>}/> */}
           <Route path="/landing" element={<Landing/>}/>
           <Route path="/accounts" element={<Accounts/>}/>

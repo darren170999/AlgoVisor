@@ -9,7 +9,7 @@
     "host": "localhost:8080",
     "basePath": "/api",
     "paths": {
-        "/course": {
+        "/course/create": {
             "post": {
                 "description": "Creating a Course",
                 "produces": [
@@ -17,13 +17,6 @@
                 ],
                 "summary": "By Admin only: Create Course",
                 "parameters": [
-                    {
-                        "type": "file",
-                        "description": "videoSrc",
-                        "name": "Course",
-                        "in": "formData",
-                        "required": true
-                    },
                     {
                         "description": "course JSON data",
                         "name": "Course",
@@ -678,8 +671,7 @@
                 "name",
                 "status",
                 "sypnopsis",
-                "videoDescription",
-                "videoSrc"
+                "videoDescription"
             ],
             "properties": {
                 "duration": {
@@ -702,13 +694,8 @@
                     "type": "string"
                 },
                 "videoDescription": {
+                    "description": "VideoSrc            []byte `json:\"videoSrc,omitempty\" validate:\"required\"`",
                     "type": "string"
-                },
-                "videoSrc": {
-                    "type": "array",
-                    "items": {
-                        "type": "integer"
-                    }
                 }
             }
         },
