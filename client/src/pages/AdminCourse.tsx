@@ -17,7 +17,7 @@ type createCourseFormDataProps = {
 }
 
 type createVideoFormDataProps = {
-    // videoSrc : File | null;
+    videoSrc : File | null;
 }
 
 function AdminCourse(){
@@ -30,9 +30,11 @@ function AdminCourse(){
         sypnopsis: "",
         videoDescription: "",
     })
-    const [creatVideoFormData, setCreateVideoFormData] = useState<createVideoFormDataProps>({
+    const [createVideoFormData, setCreateVideoFormData] = useState<createVideoFormDataProps>({
         videoSrc: null,
     })
+    const [file, setFile] = useState<File | null>(null);
+    const [filename, setFilename] = useState('');
     const [isEmpty, setIsEmpty] = useState<boolean>(true);
     const [tagsValidationMessage, setTagsValidationMessage] = useState<string | null>(null);
     const validateTags = (event: { target: { value: string } }) => {
@@ -99,8 +101,44 @@ function AdminCourse(){
     };
     const handleVideoFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files ? event.target.files[0] : null;
-        setCreateCourseFormData((prevFormData) => ({ ...prevFormData, videoSrc: file }));
-        console.log(createCourseFormData)
+        setCreateVideoFormData((prevFormData) => ({ ...prevFormData, videoSrc: file }));
+    };
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = event.target.files ? event.target.files[0] : null;
+        setFile(selectedFile);
+    };
+    
+    const handleFilenameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFilename(event.target.value);
+    };
+    
+
+    const handleVideoUpload = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        console.log(file)
+        console.log(filename)
+        if (!file || !filename) {
+        alert('Please select a file and enter a filename.');
+        return;
+        }
+
+        const formData = new FormData();
+        formData.append('videoSrc', file);
+        formData.append('filename', filename);
+        try {
+            const response = await fetch("http://localhost:8080/course/create/video", {
+                method: "POST",
+                body: formData,
+            });
+            if(response.ok){
+                console.log("Video uploaded successfully!");
+                // Optionally handle response data here
+            } else {
+                console.log(response);
+            }
+        } catch (err) {
+            console.log("Error:", err);
+        }
     };
 
     return(
@@ -154,18 +192,20 @@ function AdminCourse(){
                     </Card>
                     <Card>
                         <CardBody>
-                            <form onSubmit={handleCreation}>
+                            <form onSubmit={handleVideoUpload}>
                                 <FormControl>
                                     <HStack paddingBottom="10px">
-                                        <FormLabel minW = "100px" >VideoSource</FormLabel>
-                                        <Input type='file' name="videoSrc" accept="video/mp4" onChange={handleVideoFileChange} />
+                                        <FormLabel minW = "100px">Upload Video</FormLabel>
+                                        <Input type='file' name="file" onChange={handleFileChange} /> 
+                                        {/* name="videoSrc" accept="video/mp4" formEncType="multipart/form-data" */}
                                     </HStack>
                                 </FormControl>
+                                <FormControl>
+                                    <FormLabel>Filename</FormLabel>
+                                    <Input type="text" name = "filename" value={filename} onChange={handleFilenameChange} />
+                                </FormControl>
                                 <br></br>
-                                {(!isEmpty) ?
-                                (<Stack>
-                                    <Button type='submit' color="black" >Create</Button>
-                                </Stack>) : <Stack><Button color="gray"> Create</Button></Stack>}
+                                <Button type="submit">Upload</Button>
                             </form>
                         </CardBody>
                     </Card>
