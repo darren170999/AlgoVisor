@@ -6,7 +6,7 @@ type CreateCoursesRequest struct {
 	Sypnopsis           string `json:"sypnopsis,omitempty" validate:"required"`
 	Duration            string `json:"duration,omitempty" validate:"required"`
 	Status              string `json:"status,omitempty" validate:"required"`
-	VideoSrc            string `json:"videoSrc,omitempty" validate:"required"`
+	VideoSrc            []byte `json:"videoSrc,omitempty" validate:"required"`
 	VideoDescription    string `json:"videoDescription,omitempty" validate:"required"`
 	MaterialSrc         string `json:"materialSrc,omitempty" validate:"required"`
 	MaterialDescription string `json:"materialDescription,omitempty" validate:"required"`

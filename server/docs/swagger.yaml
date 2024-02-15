@@ -38,7 +38,9 @@ definitions:
       videoDescription:
         type: string
       videoSrc:
-        type: string
+        items:
+          type: integer
+        type: array
     required:
     - duration
     - materialDescription
@@ -238,7 +240,12 @@ paths:
     post:
       description: Creating a Course
       parameters:
-      - description: course
+      - description: videoSrc
+        in: formData
+        name: Course
+        required: true
+        type: file
+      - description: course JSON data
         in: body
         name: Course
         required: true

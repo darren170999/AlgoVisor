@@ -24,7 +24,14 @@ const docTemplate = `{
                 "summary": "By Admin only: Create Course",
                 "parameters": [
                     {
-                        "description": "course",
+                        "type": "file",
+                        "description": "videoSrc",
+                        "name": "Course",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "description": "course JSON data",
                         "name": "Course",
                         "in": "body",
                         "required": true,
@@ -704,7 +711,10 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "videoSrc": {
-                    "type": "string"
+                    "type": "array",
+                    "items": {
+                        "type": "integer"
+                    }
                 }
             }
         },
