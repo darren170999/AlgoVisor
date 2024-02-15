@@ -13,8 +13,13 @@ type createCourseFormDataProps = {
     status: string;
     sypnopsis: string;
     videoDescription: string;
-    videoSrc : File | null;
+    // videoSrc : File | null;
 }
+
+type createVideoFormDataProps = {
+    // videoSrc : File | null;
+}
+
 function AdminCourse(){
     const [createCourseFormData, setCreateCourseFormData] = useState<createCourseFormDataProps>({
         duration: "",
@@ -24,6 +29,8 @@ function AdminCourse(){
         status: "",
         sypnopsis: "",
         videoDescription: "",
+    })
+    const [creatVideoFormData, setCreateVideoFormData] = useState<createVideoFormDataProps>({
         videoSrc: null,
     })
     const [isEmpty, setIsEmpty] = useState<boolean>(true);
@@ -54,26 +61,26 @@ function AdminCourse(){
     const handleCreation = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         // Create a new FormData object
-        const formData = new FormData();
+        // const formData = new FormData();
 
-        // Append text data to the FormData object
-        Object.entries(createCourseFormData).forEach(([key, value]) => {
-            if(key != "videoSrc"){
-                formData.append(key, value as string);
-            }
-        });
-        console.log(formData)
+        // // Append text data to the FormData object
+        // Object.entries(createCourseFormData).forEach(([key, value]) => {
+        //     if(key != "videoSrc"){
+        //         formData.append(key, value as string);
+        //     }
+        // });
+        // console.log(formData)
         // Append the file to the FormData object
-        if (createCourseFormData.videoSrc) {
-            formData.append("videoSrc", createCourseFormData.videoSrc);
-        }
+        // if (createCourseFormData.videoSrc) {
+        //     formData.append("videoSrc", createCourseFormData.videoSrc);
+        // }
         try{
             
             const response = await fetch("http://localhost:8080/course/create", {
                 method: "POST",
-                body: formData,
+                body: JSON.stringify(createCourseFormData),
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'application/json'
                 }
             });
             if(response.ok){
@@ -136,10 +143,6 @@ function AdminCourse(){
                                 <FormLabel minW = "100px">Video Description</FormLabel>
                                 <Textarea name="videoDescription" value={createCourseFormData.videoDescription} onChange={handleCreationForm} />
                             </HStack>
-                            <HStack paddingBottom="10px">
-                                <FormLabel minW = "100px" >VideoSource</FormLabel>
-                                <Input type='file' name="videoSrc" accept="video/mp4" onChange={handleVideoFileChange} />
-                            </HStack>
                         </FormControl>
                         <br></br>
                         {(!isEmpty) ?
@@ -147,9 +150,26 @@ function AdminCourse(){
                             <Button type='submit' color="black" >Create</Button>
                         </Stack>) : <Stack><Button color="gray"> Create</Button></Stack>}
                     </form>
+                        </CardBody>
+                    </Card>
+                    <Card>
+                        <CardBody>
+                            <form onSubmit={handleCreation}>
+                                <FormControl>
+                                    <HStack paddingBottom="10px">
+                                        <FormLabel minW = "100px" >VideoSource</FormLabel>
+                                        <Input type='file' name="videoSrc" accept="video/mp4" onChange={handleVideoFileChange} />
+                                    </HStack>
+                                </FormControl>
+                                <br></br>
+                                {(!isEmpty) ?
+                                (<Stack>
+                                    <Button type='submit' color="black" >Create</Button>
+                                </Stack>) : <Stack><Button color="gray"> Create</Button></Stack>}
+                            </form>
+                        </CardBody>
+                    </Card>
                     
-                </CardBody>
-            </Card>
         </FullScreenSection>
 
         </>
