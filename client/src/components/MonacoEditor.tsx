@@ -73,10 +73,6 @@ type TestCaseType = {
   }[];
 };
 
-type EditorType = {
-
-}
-
 function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: () => void}) {
   const extractInputs = (testCase: TestCaseType | null): string[] => {
     const allInputs: string[] = [];
@@ -289,6 +285,9 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     }
     return true;
   }
+  const clearOutput = () => {
+    setOutput("");
+  }
 
   const saveAttempt = async (e:{preventDefault: () => void}) => {
     e.preventDefault();
@@ -368,7 +367,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
           <div>
             <Button onClick={compileAndRunCode} style={{ marginRight: '8px' }}>Run</Button>
             {/* Clear terminal's output */}
-            <Button style={{ marginRight: '8px' }}>Clear</Button>
+            <Button onClick={clearOutput} style={{ marginRight: '8px' }}>Clear</Button>
             {/* Submit is just to test code against test cases */}
             <Button onClick={submitCode}>Submit</Button>
           </div>
