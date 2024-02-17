@@ -15,7 +15,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/course": {
+        "/course/create": {
             "post": {
                 "description": "Creating a Course",
                 "produces": [
@@ -24,13 +24,42 @@ const docTemplate = `{
                 "summary": "By Admin only: Create Course",
                 "parameters": [
                     {
-                        "description": "course",
+                        "description": "course JSON data",
                         "name": "Course",
                         "in": "body",
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/requests.CreateCoursesRequest"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/course/create/video": {
+            "post": {
+                "description": "Creating a Video",
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "By Admin only: Create Video",
+                "parameters": [
+                    {
+                        "type": "file",
+                        "description": "videoSrc",
+                        "name": "Course",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -217,6 +246,55 @@ const docTemplate = `{
                 }
             }
         },
+        "/tutorials/code/attempt/status/{qnid}/{language}/{username}": {
+            "put": {
+                "description": "Update Status's data in Db.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Update Status",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "qnid",
+                        "name": "qnid",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "language",
+                        "name": "language",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "attempt",
+                        "name": "Attempt",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.UpdateAttemptRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/tutorials/code/attempt/{qnid}/{language}/{username}": {
             "get": {
                 "description": "get Attempt from Db filtered by username and qnid",
@@ -292,6 +370,32 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/requests.UpdateAttemptRequest"
                         }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/tutorials/code/check/{username}": {
+            "get": {
+                "description": "Get all current attempts in the Database.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all Attempts by a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "username",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -602,8 +706,7 @@ const docTemplate = `{
                 "name",
                 "status",
                 "sypnopsis",
-                "videoDescription",
-                "videoSrc"
+                "videoDescription"
             ],
             "properties": {
                 "duration": {
@@ -626,9 +729,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "videoDescription": {
-                    "type": "string"
-                },
-                "videoSrc": {
+                    "description": "VideoSrc            []byte ` + "`" + `json:\"videoSrc,omitempty\" validate:\"required\"` + "`" + `",
                     "type": "string"
                 }
             }

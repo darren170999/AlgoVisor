@@ -12,9 +12,39 @@ type QnType = {
   tags: string;
   qnid: string;
 };
+type saveAttemptDataProps = {
+  attempt: string;
+  language: number;
+  qnid: string;
+  status: string;
+  username: string;
+}
 function Tutorials(){
   //PUT IN DB, Call everything in Tutorials one time and filter. Status is all new. 
   const [questions, setQuestions] = useState<QnType[]>([]);
+  const [completedQns, setCompletedQns] = useState<string[]>([]);
+  let username = localStorage.getItem("username");
+  const getAttempts = async() =>{
+    try {
+      const response = await fetch(`http://localhost:8080/tutorials/code/check/${username}`)
+      if(response.ok){
+        const res = await response.json();
+        const result: saveAttemptDataProps[] = res.data.data;
+        const completedQnsIds = result.filter(attempt => attempt.status === "Completed")
+        .map(completedAttempt => completedAttempt.qnid);
+        console.log(completedQnsIds)
+        setCompletedQns(completedQnsIds);
+
+      }
+    } catch (error) {
+      console.log("Failed")
+    }
+  }
+  useEffect(()=>{
+    getAttempts();
+
+  },[])
+
   const getQuestions = async() => {
     console.log("accessing");
     try{
@@ -25,7 +55,7 @@ function Tutorials(){
             }
         });
         if(response.ok){
-            console.log(response);
+            // console.log(response);
             var res = await response.json();
             setQuestions(res.data.data)
             
@@ -42,15 +72,19 @@ function Tutorials(){
   const appropriateTabs = (tabIndex: number) => {
     const tabName = `Tut${tabIndex + 1}`;
     return questions.filter((question) => question.tags === tabName)
-    .map((question)=> (
-    <TutorialQuestion
-    key={question.qnid}
-    qnid={question.qnid}
-    status={question.status}
-    tags={question.tags}
-    description={question.description}
-    name={question.name}/>
-    ));
+    .map((question)=> {
+      const boolCompleted = completedQns.includes(question.qnid);
+      return(
+        <TutorialQuestion
+        key={question.qnid}
+        qnid={question.qnid}
+        status={question.status}
+        tags={question.tags}
+        description={question.description}
+        name={question.name}
+        boolcompleted={boolCompleted}/>
+      );
+    });
   }
 
   return(

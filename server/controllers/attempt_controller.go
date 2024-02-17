@@ -2,6 +2,8 @@ package controllers
 
 import (
 	"context"
+	"fmt"
+
 	// "fmt"
 	"net/http"
 	"server/configs"
@@ -90,6 +92,43 @@ func GetAllAttempts() gin.HandlerFunc {
 		var attempt []models.Attempt
 		defer cancel()
 		results, err := attemptCollection.Find(ctx, bson.M{})
+
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.AttemptResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+
+		defer results.Close(ctx)
+		for results.Next(ctx) {
+			var singleAttempt models.Attempt
+			if err = results.Decode(&singleAttempt); err != nil {
+				c.JSON(http.StatusInternalServerError, responses.AttemptResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			}
+
+			attempt = append(attempt, singleAttempt)
+		}
+
+		c.JSON(http.StatusOK,
+			responses.AttemptResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": attempt}},
+		)
+	}
+}
+
+// CreateTags		godoc
+// @Summary			Get all Attempts by a user
+// @Description		Get all current attempts in the Database.
+// @Param username path string true "username"
+// @Produce			application/json
+// @Success			200 {object} responses.Response{}
+// @Router			/tutorials/code/check/{username} [get]
+func GetAllAttemptsByUsername() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		var attempt []models.Attempt
+		defer cancel()
+		username := c.Param("username")
+		filter := bson.M{"username": username}
+		results, err := attemptCollection.Find(ctx, filter)
 
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.AttemptResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
@@ -205,5 +244,48 @@ func UpdateAttempt() gin.HandlerFunc {
 		}
 
 		c.JSON(http.StatusOK, responses.AttemptResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": updatedAttempt}})
+	}
+}
+
+// CreateTags		godoc
+// @Summary			Update Status
+// @Description		Update Status's data in Db.
+// @Param qnid path string true "qnid"
+// @Param language path int true "language"
+// @Param username path string true "username"
+// @Param 			Attempt body requests.UpdateAttemptRequest true "attempt"
+// @Produce			application/json
+// @Success			200 {object} responses.Response{}
+// @Router			/tutorials/code/attempt/status/{qnid}/{language}/{username} [put]
+func UpdateStatus() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		var attempt models.Attempt
+		defer cancel()
+		qnid := c.Param("qnid")
+		username := c.Param("username")
+		languageStr := c.Param("language")
+		language, err := strconv.Atoi(languageStr)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "Invalid language parameter"})
+			return
+		}
+		var updateAttempt models.Attempt
+		if err := c.BindJSON(&updateAttempt); err != nil {
+			c.JSON(http.StatusBadRequest, responses.AttemptResponse{Status: http.StatusBadRequest, Message: "Invalid request body", Data: map[string]interface{}{"error": err.Error()}})
+			return
+		}
+		filter := bson.M{"qnid": qnid, "language": language, "username": username}
+		update := bson.M{"$set": bson.M{ "attempt": updateAttempt.Attempt ,"status": "Completed"}}
+		fmt.Print(attempt.Attempt)
+		result, err := attemptCollection.UpdateOne(ctx, filter, update)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.AttemptResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+		if result.MatchedCount != 1 {
+			c.JSON(http.StatusNotFound, responses.AttemptResponse{Status: http.StatusNotFound, Message: "Attempt not found", Data: nil})
+			return
+		}
 	}
 }

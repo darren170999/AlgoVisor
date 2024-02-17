@@ -4,7 +4,6 @@ import axios, { all } from "axios";
 import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
-import { stringify } from "querystring";
 const pythonDefault: string = `
 class Solution:
   def main(input):
@@ -74,7 +73,7 @@ type TestCaseType = {
   }[];
 };
 
-function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
+function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: () => void}) {
   const extractInputs = (testCase: TestCaseType | null): string[] => {
     const allInputs: string[] = [];
     const inputsFromTestCases = testCase?.testcases.map((tc) => tc.input);
@@ -102,9 +101,9 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
   };
   const allInputs = extractInputs(tc);
   const allOutputs = extractOutputs(tc);
-  console.log(allOutputs);
+  // console.log(allOutputs);
   const updatedPythonDriver = pythonDriver.replace(/ls/, `ls= ${JSON.stringify(allInputs)}`);
-  console.log(updatedPythonDriver);
+  // console.log(updatedPythonDriver);
   const [fileName, setFileName] = useState("script.py");
   const [langUsed, setLangUsed] = useState(71); // python is the default
   const updateLanguageUsed = (language: number) => {
@@ -114,7 +113,7 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
   const [isEditorMounted, setIsEditorMounted] = useState(false);
   const fetchedAttemptData = useRef<saveAttemptDataProps | null>(null);
   const [hasPreviousAttempt, setHasPreviousAttempt] = useState(false);
-
+  const [success, setSuccess] = useState(false);
   let { qnid } = useParams();
   let username = localStorage.getItem("username");
   const [saveAttemptData, setSaveAttemptData] = useState<saveAttemptDataProps>({
@@ -135,8 +134,6 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
   function handleEditorDidMount(editor: any, monaco: any) {
     editorRef.current = editor;
     setIsEditorMounted(true);
-
-    // If data was fetched before mounting, set the editor value now
     if (fetchedAttemptData.current && editorRef.current) {
       editorRef.current.setValue(fetchedAttemptData.current.attempt);
     }
@@ -164,7 +161,7 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
           console.log(response)
           const submissionToken: string = response.data.token;
           waitFor3second().then(()=>
-            {pollJudge0ForResult(submissionToken);}
+            {pollJudge0ForSubmission(submissionToken);}
           )
         })
         .catch((error) => {
@@ -198,8 +195,21 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
         });
     }
   }
-
+  
   function pollJudge0ForResult(submissionToken: string) {//consider websockets
+    axios
+      .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
+      .then((response) => {
+            console.log(response)
+          const submissionOutput: string = response.data.stdout;
+          setOutput(submissionOutput);
+    //     if (status === "Processing") {
+    //       // Submission is still processing; continue polling.
+    //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
+    //     }
+      });
+  }
+  function pollJudge0ForSubmission(submissionToken: string) {//consider websockets
     axios
       .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
       .then((response) => {
@@ -244,7 +254,25 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
       console.log(allOutputs);
       if (arraysEqual(allOutputs, inputList)) {
         // write a small BACKEND call to update the question to be done
-        console.log("SUCCESS")
+        console.log("SUCCESS");
+        onSuccess();
+        try{
+          console.log(saveAttemptData)
+          const response = fetch(`http://localhost:8080/tutorials/code/attempt/status/${qnid}/${langUsed}/${username}`, 
+          {
+            method: "PUT",
+            headers : {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(saveAttemptData),
+          });
+
+          if(response){
+            console.log(response)
+          }
+        } catch (err) {
+          console.log("Dk wtf happen: ", err)
+        }  
       }
     } else {
       console.error('Invalid input: attemptedSolution is null');
@@ -256,6 +284,9 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
       if (arr1[i] !== arr2[i]) return false;
     }
     return true;
+  }
+  const clearOutput = () => {
+    setOutput("");
   }
 
   const saveAttempt = async (e:{preventDefault: () => void}) => {
@@ -291,7 +322,8 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
         if (isEditorMounted && editorRef.current) {
           editorRef.current.setValue(previousAttemptData.attempt);
         } else {
-          fetchedAttemptData.current = previousAttemptData;
+          // fetchedAttemptData.current = previousAttemptData;
+          editorRef.current.setValue(pythonDefault);
         }
         setSaveAttemptData(previousAttemptData);
         setLangUsed(previousAttemptData.language);
@@ -335,7 +367,7 @@ function MonacoEditor({ tc }: { tc: TestCaseType | null }) {
           <div>
             <Button onClick={compileAndRunCode} style={{ marginRight: '8px' }}>Run</Button>
             {/* Clear terminal's output */}
-            <Button style={{ marginRight: '8px' }}>Clear</Button>
+            <Button onClick={clearOutput} style={{ marginRight: '8px' }}>Clear</Button>
             {/* Submit is just to test code against test cases */}
             <Button onClick={submitCode}>Submit</Button>
           </div>

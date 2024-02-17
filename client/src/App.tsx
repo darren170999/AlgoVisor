@@ -16,6 +16,8 @@ import Tutorials from "./pages/Tutorials";
 import Admin from "./pages/Admin";
 import AdminQuestion from "./pages/AdminQuestion";
 import AdminTestcase from "./pages/AdminTestcase";
+import AdminCourse from "./pages/AdminCourse";
+import PerformancePage from "./pages/PerformancePage";
 
 export default function App() {
 
@@ -27,17 +29,17 @@ export default function App() {
           <Route path="/admin" element={<Admin/>}/>
           <Route path="/admin/question" element={<AdminQuestion/>}/>
           <Route path="/admin/testcase" element={<AdminTestcase/>}/>
-          {/* <Route path="/admin/courses" element={<Admin/>}/> */}
+          <Route path="/admin/course" element={<AdminCourse/>}/>
+          {/* <Route path="/admin/database" element={<AdminCourse/>}/> */}
           <Route path="/landing" element={<Landing/>}/>
           <Route path="/accounts" element={<Accounts/>}/>
           <Route path="/home" element={<Home/>}/>
           <Route path="/visualizer" element={<Visualizer/>}/>
           <Route path="/concepts" element={<Concepts/>}/>
           <Route path="/tutorials" element={<Tutorials/>}>
-            {/* <Route path="code" element={<MonacoCode/>}/> */}
-            {/* <Route path="question/:questionId" element={<MonacoCode />} /> */}
           </Route>
           <Route path="/tutorials/code/:qnid" element={<MonacoCode />} />
+          <Route path="/tutorials/performance" element={<PerformancePage/>}></Route>
           <Route path='*' element={<Navigate to='/404'/>}/>
           <Route path='/404'element={<Error404/>}/>
         </Routes>

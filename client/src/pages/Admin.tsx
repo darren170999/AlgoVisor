@@ -74,6 +74,9 @@ function Admin() {
                 <Link to="/admin/testcase">
                   <Button variant="ghost">Set test cases for question</Button>
                 </Link>
+                <Link to="/admin/course">
+                  <Button variant="ghost">Post a course to concepts</Button>
+                </Link>
               </Stack>
             </DrawerBody>
           </DrawerContent>

@@ -1,4 +1,4 @@
-import { Card, CardBody, Heading, Text, Button, ButtonGroup, CardFooter, Divider, Stack } from '@chakra-ui/react';
+import { Card, CardBody, Heading, Text, Button, ButtonGroup, CardFooter, Divider, Stack, Icon, VStack, Flex } from '@chakra-ui/react';
 import { CloseIcon, CheckIcon } from '@chakra-ui/icons';
 import { Link } from 'react-router-dom';
 type QnType = {
@@ -7,17 +7,22 @@ type QnType = {
     status: string;
     tags: string;
     qnid: string;
+    boolcompleted: boolean;
 }
 
 function TutorialQuestion(data: QnType) {
-    // const [items, setItems] = useState<QnType[]>([]);
     console.log(data)
     return (
         <>
-        <Card w='400px' h='400px'>
+        <Card w='400px' h='400px' bg={data.status === 'new' ? 'white' : 'gray.200'}>
             <CardBody>
                 <Stack mt='6' spacing='3'>
-                <Heading size='md'>{data.name}</Heading>
+                {data.boolcompleted && <Flex justify="flex-end" mr={2}>
+                    <Icon as={CheckIcon } color={"green.500"}/>
+                </Flex>}
+                <VStack>
+                    <Heading size='md'>{data.name}</Heading>
+                </VStack>
                 <Text>
                     {data.name}
                 </Text>
@@ -34,10 +39,6 @@ function TutorialQuestion(data: QnType) {
                             Start Attempt
                         </Button>
                     </Link>
-                    <Button>
-                        {/* To change this icon to make more sense */}
-                        {data.status === "completed" ? <CheckIcon color={"green"}/> : <CloseIcon color={"red"}/>}
-                    </Button>
                 </ButtonGroup>
             </CardFooter>
         </Card>

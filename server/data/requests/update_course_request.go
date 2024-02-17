@@ -1,6 +1,6 @@
 package requests
 
-type CreateCoursesRequest struct {
+type UpdateCoursesRequest struct {
 	// Id        primitive.ObjectID `json:"id,omitempty"`
 	Name                string `json:"name,omitempty" validate:"required"`
 	Sypnopsis           string `json:"sypnopsis,omitempty" validate:"required"`
