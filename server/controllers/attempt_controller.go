@@ -68,6 +68,7 @@ func CreateAttempt() gin.HandlerFunc {
 			Status:   attempt.Status,
 			Attempt:  attempt.Attempt,
 			Language: attempt.Language,
+			Speed:    attempt.Speed,
 		}
 
 		result, err := attemptCollection.InsertOne(ctx, newAttempt)
@@ -223,7 +224,7 @@ func UpdateAttempt() gin.HandlerFunc {
 			return
 		}
 		filter := bson.M{"qnid": qnid, "language": language, "username": username}
-		update := bson.M{"$set": bson.M{"attempt": attempt.Attempt, "status": attempt.Status}}
+		update := bson.M{"$set": bson.M{"attempt": attempt.Attempt, "status": attempt.Status, "speed": attempt.Speed}}
 
 		result, err := attemptCollection.UpdateOne(ctx, filter, update)
 		if err != nil {
@@ -276,7 +277,7 @@ func UpdateStatus() gin.HandlerFunc {
 			return
 		}
 		filter := bson.M{"qnid": qnid, "language": language, "username": username}
-		update := bson.M{"$set": bson.M{ "attempt": updateAttempt.Attempt ,"status": "Completed"}}
+		update := bson.M{"$set": bson.M{"attempt": updateAttempt.Attempt, "status": "Completed", "speed": attempt.Speed}}
 		fmt.Print(attempt.Attempt)
 		result, err := attemptCollection.UpdateOne(ctx, filter, update)
 		if err != nil {
