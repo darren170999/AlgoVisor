@@ -18,6 +18,7 @@ type saveAttemptDataProps = {
   qnid: string;
   status: string;
   username: string;
+  speed: number;
 }
 function Tutorials(){
   //PUT IN DB, Call everything in Tutorials one time and filter. Status is all new. 

@@ -58,6 +58,7 @@ type saveAttemptDataProps = {
   qnid: string;
   status: string;
   username: string;
+  speed: number;
 }
 
 type TestCaseType = {
@@ -122,6 +123,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     qnid: qnid!,
     status: "Uncompleted", // If submitted is done and passed we will put Completed, in the meantime ignore
     username: localStorage.getItem("username")!,
+    speed: 100.01,
   })
   const file = files[fileName];
   const editorRef = useRef<any>(null);
@@ -142,9 +144,50 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     // console.log(saveAttemptData)
   },[output])
   useEffect(() => {
-    // console.log(saveAttemptData);
+    console.log(saveAttemptData);
   }, [saveAttemptData]);
 
+  
+  function compileAndRunCode() {
+    if (editorRef.current) {
+      const attempt: string = editorRef.current.getValue();
+      // console.log(langUsed)
+      setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
+      //fucking middleware
+      axios
+      .post("http://0.0.0.0:2358/submissions", {
+        source_code: attempt,
+        language_id: langUsed,
+      })
+      .then((response) => {
+        // Handle the response from Judge0, which will include the token.
+        // console.log(response)
+        const submissionToken: string = response.data.token;
+        waitFor3second().then(()=>
+        // Poll Judge0 for the result (you can implement this as needed).
+        {pollJudge0ForResult(submissionToken);}
+        )
+      })
+      .catch((error) => {
+        console.error("Error compiling code:", error);
+      });
+    }
+  }
+  
+  function pollJudge0ForResult(submissionToken: string) {//consider websockets
+    axios
+    .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
+    .then((response) => {
+      console.log(response)
+      const submissionOutput: string = response.data.stdout;
+      setOutput(submissionOutput);
+      //     if (status === "Processing") {
+        //       // Submission is still processing; continue polling.
+        //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
+        //     }
+      });
+  }
+    
   function submitCode() {
     if (editorRef.current) {
       const attempt: string = editorRef.current.getValue();
@@ -152,6 +195,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
       const submission = `${attempt}\n\n${updatedPythonDriver}`;
       console.log(submission);
+      const startTime = performance.now();
       axios
         .post("http://0.0.0.0:2358/submissions", {
           source_code: submission,
@@ -161,7 +205,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
           console.log(response)
           const submissionToken: string = response.data.token;
           waitFor3second().then(()=>
-            {pollJudge0ForSubmission(submissionToken);}
+            {pollJudge0ForSubmission(submissionToken, startTime);}
           )
         })
         .catch((error) => {
@@ -170,53 +214,14 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     }
   }
 
-  function compileAndRunCode() {
-    if (editorRef.current) {
-      const attempt: string = editorRef.current.getValue();
-      console.log(langUsed)
-      setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
-      //fucking middleware
-      axios
-        .post("http://0.0.0.0:2358/submissions", {
-          source_code: attempt,
-          language_id: langUsed,
-        })
-        .then((response) => {
-          // Handle the response from Judge0, which will include the token.
-          console.log(response)
-          const submissionToken: string = response.data.token;
-          waitFor3second().then(()=>
-          // Poll Judge0 for the result (you can implement this as needed).
-            {pollJudge0ForResult(submissionToken);}
-          )
-        })
-        .catch((error) => {
-          console.error("Error compiling code:", error);
-        });
-    }
-  }
-  
-  function pollJudge0ForResult(submissionToken: string) {//consider websockets
+  function pollJudge0ForSubmission(submissionToken: string, startTime: number) {//consider websockets
     axios
-      .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
-      .then((response) => {
-            console.log(response)
-          const submissionOutput: string = response.data.stdout;
-          setOutput(submissionOutput);
-    //     if (status === "Processing") {
-    //       // Submission is still processing; continue polling.
-    //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
-    //     }
-      });
-  }
-  function pollJudge0ForSubmission(submissionToken: string) {//consider websockets
-    axios
-      .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
-      .then((response) => {
-            console.log(response)
-          const submissionOutput: string = response.data.stdout;
-          setOutput(submissionOutput);
-          checkSolution(submissionOutput);
+    .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
+    .then((response) => {
+      console.log(response)
+      const submissionOutput: string = response.data.stdout;
+      setOutput(submissionOutput);
+      checkSolution(submissionOutput, startTime);
     //     if (status === "Processing") {
     //       // Submission is still processing; continue polling.
     //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
@@ -225,14 +230,19 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   }
   const updateAttempt = async (e:{preventDefault: () => void}) => {
     e.preventDefault();
-    console.log(JSON.stringify(saveAttemptData))
+    // var tempSpeed = localStorage.getItem("Speed")
+    const updatedSaveAttemptData = {
+      ...saveAttemptData,
+      speed: 100.01, // Set to some default value
+    };
+    console.log(JSON.stringify(updatedSaveAttemptData))
     try{
       const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}` , {
           method: "PUT",
           headers : {
           "Content-Type": "application/json",
           },
-          body: JSON.stringify(saveAttemptData),
+          body: JSON.stringify(updatedSaveAttemptData),
       });
       if(response.ok){ // can remove later
           console.log("Form data posted successfully!");
@@ -246,8 +256,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
         console.log("Dk wtf happen: ", err)
     }     
   }
-
-  const checkSolution = (attemptedSolution: string) =>{
+  const checkSolution = (attemptedSolution: string, startTime: number) =>{
     if (attemptedSolution) {
       const inputList: string[] = attemptedSolution.split('\n').filter(Boolean);
       console.log(inputList);
@@ -255,16 +264,23 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       if (arraysEqual(allOutputs, inputList)) {
         // write a small BACKEND call to update the question to be done
         console.log("SUCCESS");
+        const endTime = performance.now();
+        const elapsedTime = (endTime - startTime)/1000; //since in ms, need to work out the math again
+        // console.log(`Time: ${elapsedTime} milliseconds`);
+        const updatedSaveAttemptData = {
+          ...saveAttemptData,
+          speed: elapsedTime // Update speed with elapsedTime
+        };
         onSuccess();
         try{
-          console.log(saveAttemptData)
+          console.log(updatedSaveAttemptData);
           const response = fetch(`http://localhost:8080/tutorials/code/attempt/status/${qnid}/${langUsed}/${username}`, 
           {
             method: "PUT",
             headers : {
             "Content-Type": "application/json",
             },
-            body: JSON.stringify(saveAttemptData),
+            body: JSON.stringify(updatedSaveAttemptData),
           });
 
           if(response){
@@ -288,23 +304,22 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   const clearOutput = () => {
     setOutput("");
   }
-
   const saveAttempt = async (e:{preventDefault: () => void}) => {
     e.preventDefault();
     console.log(JSON.stringify(saveAttemptData))
     try{
       const response = await fetch("http://localhost:8080/tutorials/code/attempt/create" , {
-          method: "POST",
-          headers : {
-          "Content-Type": "application/json",
-          },
-          body: JSON.stringify(saveAttemptData),
+        method: "POST",
+        headers : {
+        "Content-Type": "application/json",
+        },
+        body: JSON.stringify(saveAttemptData),
       });
       if(response.ok){ // can remove later
-          console.log("Form data posted successfully!");
-          response.json().then((data) => {
-              console.log(data);
-          });
+        console.log("Form data posted successfully!");
+        response.json().then((data) => {
+            console.log(data);
+        });
       } else {
           console.log(response);
       }
@@ -317,13 +332,14 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     const fetchPreviousAttempt = async () => {
       try {
         const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}`);
+        // console.log(response);
         const data = await response.json();
         const previousAttemptData: saveAttemptDataProps = data.data.data
         if (isEditorMounted && editorRef.current) {
-          editorRef.current.setValue(previousAttemptData.attempt);
+          editorRef.current.setValue(previousAttemptData.attempt!);
         } else {
           // fetchedAttemptData.current = previousAttemptData;
-          editorRef.current.setValue(pythonDefault);
+          editorRef.current.setValue(pythonDefault!);
         }
         setSaveAttemptData(previousAttemptData);
         setLangUsed(previousAttemptData.language);
