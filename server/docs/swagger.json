@@ -669,6 +669,7 @@
                 "attempt",
                 "language",
                 "qnid",
+                "speed",
                 "status",
                 "username"
             ],
@@ -682,6 +683,9 @@
                 "qnid": {
                     "description": "Id        primitive.ObjectID `json:\"id,omitempty\"`",
                     "type": "string"
+                },
+                "speed": {
+                    "type": "number"
                 },
                 "status": {
                     "type": "string"
@@ -930,6 +934,7 @@
                 "attempt",
                 "language",
                 "qnid",
+                "speed",
                 "status",
                 "username"
             ],
@@ -943,6 +948,9 @@
                 "qnid": {
                     "description": "Id       primitive.ObjectID `json:\"id,omitempty\"`",
                     "type": "string"
+                },
+                "speed": {
+                    "type": "number"
                 },
                 "status": {
                     "type": "string"

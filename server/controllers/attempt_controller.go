@@ -224,7 +224,7 @@ func UpdateAttempt() gin.HandlerFunc {
 			return
 		}
 		filter := bson.M{"qnid": qnid, "language": language, "username": username}
-		update := bson.M{"$set": bson.M{"attempt": attempt.Attempt, "status": attempt.Status, "speed": attempt.Speed}}
+		update := bson.M{"$set": bson.M{"attempt": attempt.Attempt, "status": attempt.Status}}
 
 		result, err := attemptCollection.UpdateOne(ctx, filter, update)
 		if err != nil {
@@ -277,7 +277,7 @@ func UpdateStatus() gin.HandlerFunc {
 			return
 		}
 		filter := bson.M{"qnid": qnid, "language": language, "username": username}
-		update := bson.M{"$set": bson.M{"attempt": updateAttempt.Attempt, "status": "Completed", "speed": attempt.Speed}}
+		update := bson.M{"$set": bson.M{"attempt": updateAttempt.Attempt, "status": "Completed", "speed": updateAttempt.Speed}}
 		fmt.Print(attempt.Attempt)
 		result, err := attemptCollection.UpdateOne(ctx, filter, update)
 		if err != nil {

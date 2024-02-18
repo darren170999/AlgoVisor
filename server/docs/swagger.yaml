@@ -9,6 +9,8 @@ definitions:
       qnid:
         description: Id        primitive.ObjectID `json:"id,omitempty"`
         type: string
+      speed:
+        type: number
       status:
         type: string
       username:
@@ -17,6 +19,7 @@ definitions:
     - attempt
     - language
     - qnid
+    - speed
     - status
     - username
     type: object
@@ -196,6 +199,8 @@ definitions:
       qnid:
         description: Id       primitive.ObjectID `json:"id,omitempty"`
         type: string
+      speed:
+        type: number
       status:
         type: string
       username:
@@ -204,6 +209,7 @@ definitions:
     - attempt
     - language
     - qnid
+    - speed
     - status
     - username
     type: object

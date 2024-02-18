@@ -675,6 +675,7 @@ const docTemplate = `{
                 "attempt",
                 "language",
                 "qnid",
+                "speed",
                 "status",
                 "username"
             ],
@@ -688,6 +689,9 @@ const docTemplate = `{
                 "qnid": {
                     "description": "Id        primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
                     "type": "string"
+                },
+                "speed": {
+                    "type": "number"
                 },
                 "status": {
                     "type": "string"
@@ -936,6 +940,7 @@ const docTemplate = `{
                 "attempt",
                 "language",
                 "qnid",
+                "speed",
                 "status",
                 "username"
             ],
@@ -949,6 +954,9 @@ const docTemplate = `{
                 "qnid": {
                     "description": "Id       primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
                     "type": "string"
+                },
+                "speed": {
+                    "type": "number"
                 },
                 "status": {
                     "type": "string"
