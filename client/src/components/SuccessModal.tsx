@@ -1,5 +1,5 @@
 import { Button, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
-
+import { Link } from "react-router-dom";
 interface SuccessModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -17,9 +17,11 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ isOpen, onClose, onViewPerf
                     Your solution has passed. Click the button below to view performance.
                 </ModalBody>
                 <ModalFooter>
-                    <Button colorScheme="blue" mr={3} onClick={onViewPerformance}>
-                        View Performance
-                    </Button>
+                    <Link to="/tutorials/performance">
+                        <Button colorScheme="blue" mr={3} onClick={onViewPerformance}>
+                            View Performance
+                        </Button>
+                    </Link>
                     <Button variant="ghost" onClick={onClose}>Close</Button>
                 </ModalFooter>
             </ModalContent>
