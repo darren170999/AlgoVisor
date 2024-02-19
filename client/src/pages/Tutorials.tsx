@@ -5,22 +5,8 @@ import { Text, Avatar, Button, ButtonGroup, Card, CardBody, CardFooter, Divider,
 import AccordionRows from "../components/AccordionRows";
 import TutorialQuestion from "../components/TutorialQuestion";
 import { useEffect, useState } from "react";
-type QnType = {
-  name: string;
-  description:string;
-  status: string;
-  tags: string;
-  qnid: string;
-};
-type saveAttemptDataProps = {
-  attempt: string;
-  language: number;
-  qnid: string;
-  status: string;
-  username: string;
-  speed: number;
-  memory: number;
-}
+import { QnType } from "../types/QnType";
+import { saveAttemptDataProps } from "../types/SaveAttemptDataProps";
 function Tutorials(){
   //PUT IN DB, Call everything in Tutorials one time and filter. Status is all new. 
   const [questions, setQuestions] = useState<QnType[]>([]);
@@ -78,13 +64,14 @@ function Tutorials(){
       const boolCompleted = completedQns.includes(question.qnid);
       return(
         <TutorialQuestion
-        key={question.qnid}
-        qnid={question.qnid}
-        status={question.status}
-        tags={question.tags}
-        description={question.description}
-        name={question.name}
-        boolcompleted={boolCompleted}/>
+          key={question.qnid}
+          qnid={question.qnid}
+          status={question.status}
+          tags={question.tags}
+          description={question.description}
+          name={question.name}
+          boolCompleted={boolCompleted} 
+          examples={""} constraints={""}/>
       );
     });
   }

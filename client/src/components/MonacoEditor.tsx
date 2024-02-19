@@ -4,6 +4,10 @@ import axios, { all } from "axios";
 import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
+import { submitSourceCode } from "../api/submitSourceCode";
+import { arraysEqual } from "../helper/arraysEqual";
+import { TestCaseType } from "../types/TestCaseType";
+import { saveAttemptDataProps } from "../types/SaveAttemptDataProps";
 const pythonDefault: string = `
 class Solution:
   def main(input):
@@ -51,29 +55,6 @@ const languageMapping: LanguageMapping = {
 };
 
 interface LanguageMapping { [key: number]: string; }
-
-type saveAttemptDataProps = {
-  attempt: string;
-  language: number;
-  qnid: string;
-  status: string;
-  username: string;
-  speed: number;
-  memory: number;
-}
-
-type TestCaseType = {
-  id:string;
-  qnid:string;
-  testcases: {
-      input: string;
-      output: string;
-  }[];
-  hiddentestcases: {
-      input: string;
-      output: string;
-  }[];
-};
 
 function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: () => void}) {
   const extractInputs = (testCase: TestCaseType | null): string[] => {
@@ -155,24 +136,18 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       const attempt: string = editorRef.current.getValue();
       // console.log(langUsed)
       setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
-      //fucking middleware
-      axios
-      .post("http://0.0.0.0:2358/submissions", {
-        source_code: attempt,
-        language_id: langUsed,
-      })
-      .then((response) => {
-        // Handle the response from Judge0, which will include the token.
-        // console.log(response)
-        const submissionToken: string = response.data.token;
-        waitFor3second().then(()=>
-        // Poll Judge0 for the result (you can implement this as needed).
-        {pollJudge0ForResult(submissionToken);}
-        )
-      })
-      .catch((error) => {
-        console.error("Error compiling code:", error);
-      });
+  
+      submitSourceCode(attempt, langUsed)
+        .then((submissionToken) => {
+          // Handle the response from Judge0, which will include the token.
+          waitFor3second().then(() => {
+            // Poll Judge0 for the result (you can implement this as needed).
+            pollJudge0ForResult(submissionToken);
+          });
+        })
+        .catch((error) => {
+          console.error('Error compiling code:', error);
+        });
     }
   }
   
@@ -299,13 +274,6 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       console.error('Invalid input: attemptedSolution is null');
     }
   }
-  function arraysEqual(arr1: any[], arr2: any[]) {
-    if (arr1.length !== arr2.length) return false;
-    for (let i = 0; i < arr1.length; i++) {
-      if (arr1[i] !== arr2[i]) return false;
-    }
-    return true;
-  }
   const clearOutput = () => {
     setOutput("");
   }
@@ -332,31 +300,29 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
         console.log("Dk wtf happen: ", err)
     }     
   }
+  const fetchPreviousAttempt = async () => {
+    try {
+      const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}`);
+      // console.log(response);
+      const data = await response.json();
+      const previousAttemptData: saveAttemptDataProps = data.data.data
+      if (isEditorMounted && editorRef.current) {
+        editorRef.current.setValue(previousAttemptData.attempt!);
+      } else {
+        // fetchedAttemptData.current = previousAttemptData;
+        editorRef.current.setValue(pythonDefault!);
+      }
+      setSaveAttemptData(previousAttemptData);
+      setLangUsed(previousAttemptData.language);
+      setHasPreviousAttempt(true);
+    } catch (err) {
+      console.log("Error fetching previous attempt:", err);
+      setHasPreviousAttempt(false);
+    }
+  };
   useEffect(() => {
     // Fetch the previous attempt data when the component mounts
-    const fetchPreviousAttempt = async () => {
-      try {
-        const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}`);
-        // console.log(response);
-        const data = await response.json();
-        const previousAttemptData: saveAttemptDataProps = data.data.data
-        if (isEditorMounted && editorRef.current) {
-          editorRef.current.setValue(previousAttemptData.attempt!);
-        } else {
-          // fetchedAttemptData.current = previousAttemptData;
-          editorRef.current.setValue(pythonDefault!);
-        }
-        setSaveAttemptData(previousAttemptData);
-        setLangUsed(previousAttemptData.language);
-        setHasPreviousAttempt(true);
-      } catch (err) {
-        console.log("Error fetching previous attempt:", err);
-        setHasPreviousAttempt(false);
-      }
-    };
-
     fetchPreviousAttempt();
-    
   }, [qnid, langUsed, username, isEditorMounted]);
   return (
     <>

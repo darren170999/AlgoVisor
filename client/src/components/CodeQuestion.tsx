@@ -1,25 +1,6 @@
 import { Card, CardBody, CardHeader, Heading, Box, Text } from "@chakra-ui/react";
-
-type QnType = {
-  qnid: string;
-  name: string;
-  description: string;
-  examples: string;
-  constraints: string;
-  status: string;
-  tags: string;
-};
-
-type TestCaseType = {
-    testcases: {
-        input: string;
-        output: string;
-    }[];
-    hiddentestcases: {
-        input: string;
-        output: string;
-    }[];
-};
+import { TestCaseType } from "../types/TestCaseType";
+import { QnType } from "../types/QnType";
 
 function CodeQuestion({ data, tc, successflag }: { data: QnType; tc: TestCaseType | null; successflag : boolean }) {
     return (
