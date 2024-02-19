@@ -668,6 +668,7 @@
             "required": [
                 "attempt",
                 "language",
+                "memory",
                 "qnid",
                 "speed",
                 "status",
@@ -678,6 +679,9 @@
                     "type": "string"
                 },
                 "language": {
+                    "type": "integer"
+                },
+                "memory": {
                     "type": "integer"
                 },
                 "qnid": {
@@ -933,6 +937,7 @@
             "required": [
                 "attempt",
                 "language",
+                "memory",
                 "qnid",
                 "speed",
                 "status",
@@ -943,6 +948,9 @@
                     "type": "string"
                 },
                 "language": {
+                    "type": "integer"
+                },
+                "memory": {
                     "type": "integer"
                 },
                 "qnid": {

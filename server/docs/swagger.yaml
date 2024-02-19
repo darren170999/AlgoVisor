@@ -6,6 +6,8 @@ definitions:
         type: string
       language:
         type: integer
+      memory:
+        type: integer
       qnid:
         description: Id        primitive.ObjectID `json:"id,omitempty"`
         type: string
@@ -18,6 +20,7 @@ definitions:
     required:
     - attempt
     - language
+    - memory
     - qnid
     - speed
     - status
@@ -196,6 +199,8 @@ definitions:
         type: string
       language:
         type: integer
+      memory:
+        type: integer
       qnid:
         description: Id       primitive.ObjectID `json:"id,omitempty"`
         type: string
@@ -208,6 +213,7 @@ definitions:
     required:
     - attempt
     - language
+    - memory
     - qnid
     - speed
     - status

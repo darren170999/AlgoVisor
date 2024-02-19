@@ -674,6 +674,7 @@ const docTemplate = `{
             "required": [
                 "attempt",
                 "language",
+                "memory",
                 "qnid",
                 "speed",
                 "status",
@@ -684,6 +685,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "language": {
+                    "type": "integer"
+                },
+                "memory": {
                     "type": "integer"
                 },
                 "qnid": {
@@ -939,6 +943,7 @@ const docTemplate = `{
             "required": [
                 "attempt",
                 "language",
+                "memory",
                 "qnid",
                 "speed",
                 "status",
@@ -949,6 +954,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "language": {
+                    "type": "integer"
+                },
+                "memory": {
                     "type": "integer"
                 },
                 "qnid": {

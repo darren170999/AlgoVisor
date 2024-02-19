@@ -12,4 +12,5 @@ type Attempt struct {
 	Language int                `json:"language,omitempty" validate:"required"`
 	Status   string             `json:"status,omitempty" validate:"required"`
 	Speed    float32            `json:"speed,omitempty" validate:"required"`
+	Memory   int                `json:"memory,omitempty" validate:"required"`
 }

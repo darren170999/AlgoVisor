@@ -19,6 +19,7 @@ type saveAttemptDataProps = {
   status: string;
   username: string;
   speed: number;
+  memory: number;
 }
 function Tutorials(){
   //PUT IN DB, Call everything in Tutorials one time and filter. Status is all new. 

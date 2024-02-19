@@ -59,6 +59,7 @@ type saveAttemptDataProps = {
   status: string;
   username: string;
   speed: number;
+  memory: number;
 }
 
 type TestCaseType = {
@@ -124,6 +125,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     status: "Uncompleted", // If submitted is done and passed we will put Completed, in the meantime ignore
     username: localStorage.getItem("username")!,
     speed: 100.01,
+    memory:1000000,
   })
   const file = files[fileName];
   const editorRef = useRef<any>(null);
@@ -220,8 +222,9 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     .then((response) => {
       console.log(response)
       const submissionOutput: string = response.data.stdout;
+      const memory: number = response.data.memory;
       setOutput(submissionOutput);
-      checkSolution(submissionOutput, startTime);
+      checkSolution(submissionOutput, startTime, memory);
     //     if (status === "Processing") {
     //       // Submission is still processing; continue polling.
     //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
@@ -234,6 +237,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     const updatedSaveAttemptData = {
       ...saveAttemptData,
       speed: 100.01, // Set to some default value
+      memory: 1000000,
     };
     console.log(JSON.stringify(updatedSaveAttemptData))
     try{
@@ -256,7 +260,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
         console.log("Dk wtf happen: ", err)
     }     
   }
-  const checkSolution = (attemptedSolution: string, startTime: number) =>{
+  const checkSolution = (attemptedSolution: string, startTime: number, memory: number) =>{
     if (attemptedSolution) {
       const inputList: string[] = attemptedSolution.split('\n').filter(Boolean);
       console.log(inputList);
@@ -266,10 +270,11 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
         console.log("SUCCESS");
         const endTime = performance.now();
         const elapsedTime = (endTime - startTime)/1000; //since in ms, need to work out the math again
-        // console.log(`Time: ${elapsedTime} milliseconds`);
+        console.log(memory)
         const updatedSaveAttemptData = {
           ...saveAttemptData,
-          speed: elapsedTime // Update speed with elapsedTime
+          speed: elapsedTime, // Update speed with elapsedTime,
+          memory: memory
         };
         onSuccess();
         try{
