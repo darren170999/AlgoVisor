@@ -8,32 +8,8 @@ import { submitSourceCode } from "../api/submitSourceCode";
 import { arraysEqual } from "../helper/arraysEqual";
 import { TestCaseType } from "../types/TestCaseType";
 import { saveAttemptDataProps } from "../types/SaveAttemptDataProps";
-const pythonDefault: string = `
-class Solution:
-  def main(input):
-    # Write code here, do not rename main
-`;
-const pythonDriver : string = `
-  output = []
-  ls
-  for i in ls:
-  # function should return output of format specified
-    output.append(main(i))
-  for o in output:
-    print(o)
-`;
-
-const cppDefault: string = `
-class Solution:
-  def main():
-    # Write code here
-`;
-
-const cDefault: string = `
-class Solution:
-  def main():
-    # Write code here
-`;
+import { pythonDefault } from "../helper/pythonDefault";
+import { pythonDriver } from "../helper/pythonDriver";
 
 const files: Record<string, any> = {
   "script.py": {
@@ -96,7 +72,6 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   const [isEditorMounted, setIsEditorMounted] = useState(false);
   const fetchedAttemptData = useRef<saveAttemptDataProps | null>(null);
   const [hasPreviousAttempt, setHasPreviousAttempt] = useState(false);
-  const [success, setSuccess] = useState(false);
   let { qnid } = useParams();
   let username = localStorage.getItem("username");
   const [saveAttemptData, setSaveAttemptData] = useState<saveAttemptDataProps>({
