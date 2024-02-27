@@ -10,6 +10,10 @@ import { TestCaseType } from "../types/TestCaseType";
 import { saveAttemptDataProps } from "../types/SaveAttemptDataProps";
 import { pythonDefault } from "../helper/pythonDefault";
 import { pythonDriver } from "../helper/pythonDriver";
+import { fetchSubmissionOutput } from "../api/pollJudge0ForResult";
+import { fetchSubmission } from "../api/pollJudge0ForSubmission";
+import { updateAttempt } from "../api/updateAttempt";
+import { saveAttempt } from "../api/saveAttempt";
 
 const files: Record<string, any> = {
   "script.py": {
@@ -126,18 +130,24 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     }
   }
   
-  function pollJudge0ForResult(submissionToken: string) {//consider websockets
-    axios
-    .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
-    .then((response) => {
-      console.log(response)
-      const submissionOutput: string = response.data.stdout;
+  async function pollJudge0ForResult(submissionToken: string) {//consider websockets
+    try{
+      const submissionOutput: string = await fetchSubmissionOutput(submissionToken);
       setOutput(submissionOutput);
-      //     if (status === "Processing") {
-        //       // Submission is still processing; continue polling.
-        //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
-        //     }
-      });
+    } catch(error) {
+      console.error('Error polling Judge0 for result:', error);
+    }
+    // axios
+    // .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
+    // .then((response) => {
+    //   console.log(response)
+    //   const submissionOutput: string = response.data.stdout;
+    //   setOutput(submissionOutput);
+    //   //     if (status === "Processing") {
+    //     //       // Submission is still processing; continue polling.
+    //     //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
+    //     //     }
+    //   });
   }
     
   function submitCode() {
@@ -167,50 +177,70 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   }
 
   function pollJudge0ForSubmission(submissionToken: string, startTime: number) {//consider websockets
-    axios
-    .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
+    fetchSubmission(submissionToken)
     .then((response) => {
-      console.log(response)
-      const submissionOutput: string = response.data.stdout;
-      const memory: number = response.data.memory;
-      setOutput(submissionOutput);
-      checkSolution(submissionOutput, startTime, memory);
-    //     if (status === "Processing") {
-    //       // Submission is still processing; continue polling.
-    //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
-    //     }
-      });
+      console.log(response);
+      const { stdout, memory } = response;
+      setOutput(stdout);
+      checkSolution(stdout, startTime, memory);
+      // if (status === "Processing") {
+      //   // Submission is still processing; continue polling.
+      //   setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
+      // }
+    })
+    .catch((error) => {
+      // Handle errors, if necessary
+      console.error('Error polling Judge0 for submission:', error);
+    });
+    // axios
+    // .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
+    // .then((response) => {
+    //   console.log(response)
+    //   const submissionOutput: string = response.data.stdout;
+    //   const memory: number = response.data.memory;
+    //   setOutput(submissionOutput);
+    //   checkSolution(submissionOutput, startTime, memory);
+    // //     if (status === "Processing") {
+    // //       // Submission is still processing; continue polling.
+    // //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
+    // //     }
+    //   });
   }
-  const updateAttempt = async (e:{preventDefault: () => void}) => {
+  const updateAttemptHandler = async (e:{preventDefault: () => void}) => {
     e.preventDefault();
     // var tempSpeed = localStorage.getItem("Speed")
     const updatedSaveAttemptData = {
       ...saveAttemptData,
-      speed: 100.01, // Set to some default value
+      speed: 100.01,
       memory: 1000000,
     };
-    console.log(JSON.stringify(updatedSaveAttemptData))
-    try{
-      const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}` , {
-          method: "PUT",
-          headers : {
-          "Content-Type": "application/json",
-          },
-          body: JSON.stringify(updatedSaveAttemptData),
-      });
-      if(response.ok){ // can remove later
-          console.log("Form data posted successfully!");
-          response.json().then((data) => {
-              console.log(data);
-          });
-      } else {
-          console.log(response);
-      }
-    } catch (err) {
-        console.log("Dk wtf happen: ", err)
-    }     
+    console.log(JSON.stringify(updatedSaveAttemptData));
+    try {
+      await updateAttempt(qnid, langUsed, username, updatedSaveAttemptData);
+    } catch (error) {
+      console.error("Failed to update attempt:", error);
+    }
+    // try{
+    //   const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}` , {
+    //       method: "PUT",
+    //       headers : {
+    //       "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(updatedSaveAttemptData),
+    //   });
+    //   if(response.ok){ // can remove later
+    //       console.log("Form data posted successfully!");
+    //       response.json().then((data) => {
+    //           console.log(data);
+    //       });
+    //   } else {
+    //       console.log(response);
+    //   }
+    // } catch (err) {
+    //     console.log("Dk wtf happen: ", err)
+    // }     
   }
-  const checkSolution = (attemptedSolution: string, startTime: number, memory: number) =>{
+  const checkSolution = async (attemptedSolution: string, startTime: number, memory: number) =>{
     if (attemptedSolution) {
       const inputList: string[] = attemptedSolution.split('\n').filter(Boolean);
       console.log(inputList);
@@ -227,23 +257,28 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
           memory: memory
         };
         onSuccess();
-        try{
-          console.log(updatedSaveAttemptData);
-          const response = fetch(`http://localhost:8080/tutorials/code/attempt/status/${qnid}/${langUsed}/${username}`, 
-          {
-            method: "PUT",
-            headers : {
-            "Content-Type": "application/json",
-            },
-            body: JSON.stringify(updatedSaveAttemptData),
-          });
+        try {
+          await updateAttempt(qnid, langUsed, username, updatedSaveAttemptData);
+        } catch (error) {
+          console.error("Failed to update attempt:", error);
+        }
+        // try{
+        //   console.log(updatedSaveAttemptData);
+        //   const response = fetch(`http://localhost:8080/tutorials/code/attempt/status/${qnid}/${langUsed}/${username}`, 
+        //   {
+        //     method: "PUT",
+        //     headers : {
+        //     "Content-Type": "application/json",
+        //     },
+        //     body: JSON.stringify(updatedSaveAttemptData),
+        //   });
 
-          if(response){
-            console.log(response)
-          }
-        } catch (err) {
-          console.log("Dk wtf happen: ", err)
-        }  
+        //   if(response){
+        //     console.log(response)
+        //   }
+        // } catch (err) {
+        //   console.log("Dk wtf happen: ", err)
+        // }  
       }
     } else {
       console.error('Invalid input: attemptedSolution is null');
@@ -252,28 +287,33 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   const clearOutput = () => {
     setOutput("");
   }
-  const saveAttempt = async (e:{preventDefault: () => void}) => {
+  const saveAttemptHandler = async (e:{preventDefault: () => void}) => {
     e.preventDefault();
-    console.log(JSON.stringify(saveAttemptData))
-    try{
-      const response = await fetch("http://localhost:8080/tutorials/code/attempt/create" , {
-        method: "POST",
-        headers : {
-        "Content-Type": "application/json",
-        },
-        body: JSON.stringify(saveAttemptData),
-      });
-      if(response.ok){ // can remove later
-        console.log("Form data posted successfully!");
-        response.json().then((data) => {
-            console.log(data);
-        });
-      } else {
-          console.log(response);
-      }
-    } catch (err) {
-        console.log("Dk wtf happen: ", err)
-    }     
+    console.log(JSON.stringify(saveAttemptData));
+    try {
+      await saveAttempt(saveAttemptData);
+    } catch (error) {
+      console.error("Failed to save attempt:", error);
+    }
+    // try{
+    //   const response = await fetch("http://localhost:8080/tutorials/code/attempt/create" , {
+    //     method: "POST",
+    //     headers : {
+    //     "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(saveAttemptData),
+    //   });
+    //   if(response.ok){ // can remove later
+    //     console.log("Form data posted successfully!");
+    //     response.json().then((data) => {
+    //         console.log(data);
+    //     });
+    //   } else {
+    //       console.log(response);
+    //   }
+    // } catch (err) {
+    //     console.log("Dk wtf happen: ", err)
+    // }     
   }
   const fetchPreviousAttempt = async () => {
     try {
@@ -313,7 +353,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
           {/* <MenuItem onClick={() => updateLanguageUsed(91)}>Java</MenuItem> */}
         </MenuList>
       </Menu>
-      <Button onClick={hasPreviousAttempt? updateAttempt: saveAttempt} style={{ marginLeft: '8px' }}>Save</Button>
+      <Button onClick={hasPreviousAttempt? updateAttemptHandler: saveAttemptHandler} style={{ marginLeft: '8px' }}>Save</Button>
       <Editor
         height="500px"
         width="100%"
