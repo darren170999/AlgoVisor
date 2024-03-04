@@ -50,7 +50,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     if(inputsFromHiddenTestCases){
       allInputs.push(...inputsFromHiddenTestCases);
     }
-    console.log(allInputs)
+    // console.log(allInputs)
     return allInputs;
   };
   // Append inputs from React state into the Python driver code
@@ -70,7 +70,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   const allOutputs = extractOutputs(tc);
   // console.log(allOutputs);
   const updatedPythonDriver = pythonDriver.replace(/ls/, `ls= ${JSON.stringify(allInputs)}`);
-  console.log(updatedPythonDriver)
+  // console.log(updatedPythonDriver)
   const updatedCDriver = cDriver.replace(/input[]/, `input[]=${JSON.stringify(allInputs)}`);
   // console.log(updatedPythonDriver);
   const [fileName, setFileName] = useState("script.py");
@@ -84,6 +84,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   const [hasPreviousAttempt, setHasPreviousAttempt] = useState(false);
   let { qnid } = useParams();
   let username = localStorage.getItem("username");
+  const [code, setCode] = useState<String>("");
   const [saveAttemptData, setSaveAttemptData] = useState<saveAttemptDataProps>({
     attempt: "",
     language: 71,
@@ -106,13 +107,15 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     setIsEditorMounted(true);
     if (fetchedAttemptData.current && editorRef.current) {
       editorRef.current.setValue(fetchedAttemptData.current.attempt);
+      setCode(fetchedAttemptData.current.attempt)
+      console.log(code)
     }
   }
   useEffect(()=>{
     // console.log(saveAttemptData)
   },[output])
   useEffect(() => {
-    console.log(saveAttemptData);
+    // console.log(saveAttemptData);
   }, [saveAttemptData]);
 
   
@@ -143,26 +146,15 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     } catch(error) {
       console.error('Error polling Judge0 for result:', error);
     }
-    // axios
-    // .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
-    // .then((response) => {
-    //   console.log(response)
-    //   const submissionOutput: string = response.data.stdout;
-    //   setOutput(submissionOutput);
-    //   //     if (status === "Processing") {
-    //     //       // Submission is still processing; continue polling.
-    //     //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
-    //     //     }
-    //   });
   }
     
   function submitCode() {
     if (editorRef.current) {
       const attempt: string = editorRef.current.getValue();
-      console.log(attempt)
+      // console.log(attempt)
       setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
       const submission = `${attempt}\n\n${updatedPythonDriver}`;
-      console.log(submission);
+      // console.log(submission);
       const startTime = performance.now();
       axios
         .post("http://0.0.0.0:2358/submissions", {
@@ -198,19 +190,6 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       // Handle errors, if necessary
       console.error('Error polling Judge0 for submission:', error);
     });
-    // axios
-    // .get(`http://0.0.0.0:2358/submissions/${submissionToken}`)
-    // .then((response) => {
-    //   console.log(response)
-    //   const submissionOutput: string = response.data.stdout;
-    //   const memory: number = response.data.memory;
-    //   setOutput(submissionOutput);
-    //   checkSolution(submissionOutput, startTime, memory);
-    // //     if (status === "Processing") {
-    // //       // Submission is still processing; continue polling.
-    // //       setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
-    // //     }
-    //   });
   }
   const updateAttemptHandler = async (e:{preventDefault: () => void}) => {
     e.preventDefault();
@@ -225,38 +204,19 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       await updateAttempt(qnid, langUsed, username, updatedSaveAttemptData);
     } catch (error) {
       console.error("Failed to update attempt:", error);
-    }
-    // try{
-    //   const response = await fetch(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}` , {
-    //       method: "PUT",
-    //       headers : {
-    //       "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(updatedSaveAttemptData),
-    //   });
-    //   if(response.ok){ // can remove later
-    //       console.log("Form data posted successfully!");
-    //       response.json().then((data) => {
-    //           console.log(data);
-    //       });
-    //   } else {
-    //       console.log(response);
-    //   }
-    // } catch (err) {
-    //     console.log("Dk wtf happen: ", err)
-    // }     
+    }  
   }
   const checkSolution = async (attemptedSolution: string, startTime: number, memory: number) =>{
     if (attemptedSolution) {
       const inputList: string[] = attemptedSolution.split('\n').filter(Boolean);
-      console.log(inputList);
-      console.log(allOutputs);
+      // console.log(inputList);
+      // console.log(allOutputs);
       if (arraysEqual(allOutputs, inputList)) {
         // write a small BACKEND call to update the question to be done
-        console.log("SUCCESS");
+        // console.log("SUCCESS");
         const endTime = performance.now();
         const elapsedTime = (endTime - startTime)/1000; //since in ms, need to work out the math again
-        console.log(memory)
+        // console.log(memory)
         const updatedSaveAttemptData = {
           ...saveAttemptData,
           speed: elapsedTime, // Update speed with elapsedTime,
@@ -268,23 +228,6 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
         } catch (error) {
           console.error("Failed to update attempt:", error);
         }
-        // try{
-        //   console.log(updatedSaveAttemptData);
-        //   const response = fetch(`http://localhost:8080/tutorials/code/attempt/status/${qnid}/${langUsed}/${username}`, 
-        //   {
-        //     method: "PUT",
-        //     headers : {
-        //     "Content-Type": "application/json",
-        //     },
-        //     body: JSON.stringify(updatedSaveAttemptData),
-        //   });
-
-        //   if(response){
-        //     console.log(response)
-        //   }
-        // } catch (err) {
-        //   console.log("Dk wtf happen: ", err)
-        // }  
       }
     } else {
       console.error('Invalid input: attemptedSolution is null');
@@ -301,25 +244,6 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     } catch (error) {
       console.error("Failed to save attempt:", error);
     }
-    // try{
-    //   const response = await fetch("http://localhost:8080/tutorials/code/attempt/create" , {
-    //     method: "POST",
-    //     headers : {
-    //     "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(saveAttemptData),
-    //   });
-    //   if(response.ok){ // can remove later
-    //     console.log("Form data posted successfully!");
-    //     response.json().then((data) => {
-    //         console.log(data);
-    //     });
-    //   } else {
-    //       console.log(response);
-    //   }
-    // } catch (err) {
-    //     console.log("Dk wtf happen: ", err)
-    // }     
   }
   const fetchPreviousAttempt = async () => {
     try {
@@ -329,6 +253,8 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       const previousAttemptData: saveAttemptDataProps = data.data.data
       if (isEditorMounted && editorRef.current) {
         editorRef.current.setValue(previousAttemptData.attempt!);
+        setCode(editorRef.current.getValue())
+        console.log(code)
       } else {
         editorRef.current.setValue(pythonDefault!);
       }
@@ -341,7 +267,6 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     }
   };
   useEffect(() => {
-    // Fetch the previous attempt data when the component mounts
     fetchPreviousAttempt();
   }, [qnid, langUsed, username, isEditorMounted]);
   return (
