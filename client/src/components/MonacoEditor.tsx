@@ -14,6 +14,9 @@ import { fetchSubmissionOutput } from "../api/pollJudge0ForResult";
 import { fetchSubmission } from "../api/pollJudge0ForSubmission";
 import { updateAttempt } from "../api/updateAttempt";
 import { saveAttempt } from "../api/saveAttempt";
+import { cDriver } from "../helper/cDriver";
+import { cDefault } from "../helper/cDefault";
+import { cppDefault } from "../helper/cppDefault";
 
 const files: Record<string, any> = {
   "script.py": {
@@ -47,6 +50,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     if(inputsFromHiddenTestCases){
       allInputs.push(...inputsFromHiddenTestCases);
     }
+    console.log(allInputs)
     return allInputs;
   };
   // Append inputs from React state into the Python driver code
@@ -66,6 +70,8 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   const allOutputs = extractOutputs(tc);
   // console.log(allOutputs);
   const updatedPythonDriver = pythonDriver.replace(/ls/, `ls= ${JSON.stringify(allInputs)}`);
+  console.log(updatedPythonDriver)
+  const updatedCDriver = cDriver.replace(/input[]/, `input[]=${JSON.stringify(allInputs)}`);
   // console.log(updatedPythonDriver);
   const [fileName, setFileName] = useState("script.py");
   const [langUsed, setLangUsed] = useState(71); // python is the default
@@ -324,7 +330,6 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       if (isEditorMounted && editorRef.current) {
         editorRef.current.setValue(previousAttemptData.attempt!);
       } else {
-        // fetchedAttemptData.current = previousAttemptData;
         editorRef.current.setValue(pythonDefault!);
       }
       setSaveAttemptData(previousAttemptData);
