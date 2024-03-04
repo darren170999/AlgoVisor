@@ -10,7 +10,7 @@ import { TestCaseType } from "../types/TestCaseType";
 import { saveAttemptDataProps } from "../types/SaveAttemptDataProps";
 import { pythonDefault } from "../helper/pythonDefault";
 import { pythonDriver } from "../helper/pythonDriver";
-import { fetchSubmissionOutput } from "../api/pollJudge0ForResult";
+// import { fetchSubmissionOutput } from "../api/pollJudge0ForResult";
 import { fetchSubmission } from "../api/pollJudge0ForSubmission";
 import { updateAttempt } from "../api/updateAttempt";
 import { saveAttempt } from "../api/saveAttempt";
@@ -107,8 +107,6 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     setIsEditorMounted(true);
     if (fetchedAttemptData.current && editorRef.current) {
       editorRef.current.setValue(fetchedAttemptData.current.attempt);
-      setCode(fetchedAttemptData.current.attempt)
-      console.log(code)
     }
   }
   useEffect(()=>{
@@ -123,8 +121,9 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     if (editorRef.current) {
       const attempt: string = editorRef.current.getValue();
       // console.log(langUsed)
+      console.log(attempt)
       setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
-  
+      console.log(saveAttemptData);
       submitSourceCode(attempt, langUsed)
         .then((submissionToken) => {
           // Handle the response from Judge0, which will include the token.
@@ -140,12 +139,20 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   }
   
   async function pollJudge0ForResult(submissionToken: string) {//consider websockets
-    try{
-      const submissionOutput: string = await fetchSubmissionOutput(submissionToken);
-      setOutput(submissionOutput);
-    } catch(error) {
+    fetchSubmission(submissionToken)
+    .then((response) => {
+      console.log(response);
+      const { stdout } = response;
+      setOutput(stdout);
+      // if (status === "Processing") {
+      //   // Submission is still processing; continue polling.
+      //   setTimeout(() => pollJudge0ForResult(submissionToken), 1000);
+      // }
+    })
+    .catch((error) => {
+      // Handle errors, if necessary
       console.error('Error polling Judge0 for result:', error);
-    }
+    });
   }
     
   function submitCode() {

@@ -164,7 +164,7 @@ func GetAllAttemptsByUsername() gin.HandlerFunc {
 // @Router			/tutorials/code/attempt/{qnid}/{language}/{username} [get]
 func GetAttemptByQnIdByUsername() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+		ctx, cancel := context.WithTimeout(context.Background(), 1*time.Second)
 		defer cancel()
 		qnid := c.Param("qnid")
 		username := c.Param("username")
