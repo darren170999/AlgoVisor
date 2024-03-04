@@ -674,7 +674,9 @@ const docTemplate = `{
             "required": [
                 "attempt",
                 "language",
+                "memory",
                 "qnid",
+                "speed",
                 "status",
                 "username"
             ],
@@ -685,9 +687,15 @@ const docTemplate = `{
                 "language": {
                     "type": "integer"
                 },
+                "memory": {
+                    "type": "integer"
+                },
                 "qnid": {
                     "description": "Id        primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
                     "type": "string"
+                },
+                "speed": {
+                    "type": "number"
                 },
                 "status": {
                     "type": "string"
@@ -935,7 +943,9 @@ const docTemplate = `{
             "required": [
                 "attempt",
                 "language",
+                "memory",
                 "qnid",
+                "speed",
                 "status",
                 "username"
             ],
@@ -946,9 +956,15 @@ const docTemplate = `{
                 "language": {
                     "type": "integer"
                 },
+                "memory": {
+                    "type": "integer"
+                },
                 "qnid": {
                     "description": "Id       primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
                     "type": "string"
+                },
+                "speed": {
+                    "type": "number"
                 },
                 "status": {
                     "type": "string"

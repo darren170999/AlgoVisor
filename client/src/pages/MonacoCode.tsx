@@ -5,30 +5,8 @@ import { useParams } from "react-router-dom";
 import CodeQuestion from "../components/CodeQuestion";
 import { useEffect, useState } from "react";
 import SuccessModal from "../components/SuccessModal";
-
-type QnType = {
-    name: string;
-    description: string;
-    examples: string;
-    constraints: string;
-    status: string;
-    tags: string;
-    qnid: string;
-};
-
-type TestCaseType = {
-    id:string;
-    qnid: string;
-    testcases: {
-        input: string;
-        output: string;
-    }[];
-    hiddentestcases: {
-        input: string;
-        output: string;
-    }[];
-};
-
+import { QnType } from "../types/QnType";
+import { TestCaseType } from "../types/TestCaseType";
 function MonacoCode() {
     let { qnid } = useParams();
     const [question, setQuestion] = useState<QnType | null>(null);

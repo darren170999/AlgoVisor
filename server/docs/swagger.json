@@ -668,7 +668,9 @@
             "required": [
                 "attempt",
                 "language",
+                "memory",
                 "qnid",
+                "speed",
                 "status",
                 "username"
             ],
@@ -679,9 +681,15 @@
                 "language": {
                     "type": "integer"
                 },
+                "memory": {
+                    "type": "integer"
+                },
                 "qnid": {
                     "description": "Id        primitive.ObjectID `json:\"id,omitempty\"`",
                     "type": "string"
+                },
+                "speed": {
+                    "type": "number"
                 },
                 "status": {
                     "type": "string"
@@ -929,7 +937,9 @@
             "required": [
                 "attempt",
                 "language",
+                "memory",
                 "qnid",
+                "speed",
                 "status",
                 "username"
             ],
@@ -940,9 +950,15 @@
                 "language": {
                     "type": "integer"
                 },
+                "memory": {
+                    "type": "integer"
+                },
                 "qnid": {
                     "description": "Id       primitive.ObjectID `json:\"id,omitempty\"`",
                     "type": "string"
+                },
+                "speed": {
+                    "type": "number"
                 },
                 "status": {
                     "type": "string"

@@ -1,72 +1,45 @@
 import { useEffect, useState } from "react";
-import FullScreenSection from "../components/FullScreenSection";
 import Header from "../components/Header";
-import Chart from "chart.js/auto"; // Import Chart.js library
+import { Grid, GridItem, Card } from "@chakra-ui/react";
+import GraphComponent from "../components/GraphComponent";
+import { fetchAllAttempts } from "../api/fetchAllAttempts";
 
-function PerformancePage(){
+interface AttemptData {
+    speed?: number;
+    memory?: number;
+}
 
-    const [performanceData, setPerformanceData] = useState<number[]>([]);
+function PerformancePage() {
+    const [speeds, setSpeeds] = useState<number[]>([]);
+    const [memories, setMemories] = useState<number[]>([]);
 
     useEffect(() => {
-        // Call a function to fetch performance data from the server/database
-        // For now, let's mock the data with a normal distribution
-        const mockPerformanceData = generateMockPerformanceData();
-        setPerformanceData(mockPerformanceData);
-        
-        // After setting the data, draw the graph
-        drawGraph(mockPerformanceData);
+        const fetchData = async () => {
+            try {
+                const data = await fetchAllAttempts();
+                const validAttempts = data.data.filter((attempt: AttemptData) => attempt.speed !== undefined || attempt.memory !== undefined);
+                const speedsData = validAttempts.map((attempt: AttemptData) => attempt.speed).filter((speed: number) => !isNaN(speed));
+                const memoriesData = validAttempts.map((attempt: AttemptData) => attempt.memory).filter((memory: number) => !isNaN(memory));
+                setSpeeds(speedsData);
+                setMemories(memoriesData);
+            } catch (error) {
+                console.error("Error fetching attempts:", error);
+            }
+        };
+        fetchData();
     }, []);
 
-    // Function to generate mock performance data (normal distribution)
-    const generateMockPerformanceData = () => {
-        const data = [];
-        for (let i = 0; i < 100; i++) {
-            const value = Math.random() * 10; // Random number for demonstration
-            data.push(value);
-        }
-        return data;
-    };
-
-    // Function to draw the graph
-    const drawGraph = (data: number[]) => {
-        const ctx = document.getElementById("performanceChart") as HTMLCanvasElement;
-        new Chart(ctx, {
-            type: "line",
-            data: {
-                labels: Array.from({ length: data.length }, (_, i) => (i + 1).toString()),
-                datasets: [{
-                    label: "Execution Time",
-                    data: data,
-                    fill: false,
-                    borderColor: "rgb(75, 192, 192)",
-                    tension: 0.1
-                }]
-            },
-            options: {
-                scales: {
-                    x: {
-                        title: {
-                            display: true,
-                            text: "Test Case"
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: "Execution Time (ms)"
-                        }
-                    }
-                }
-            }
-        });
-    };
-
-    return(
+    return (
         <>
-            <Header/>
-            <FullScreenSection backgroundColor="#1a1f71" isDarkBackground p={8} alignItems="flex-start" spacing={8}>
-                <canvas id="performanceChart" width="400" height="400"></canvas>
-            </FullScreenSection>
+            <Header />
+            <Grid templateColumns="1fr 1fr" gap={4}>
+                <GridItem>
+                    <GraphComponent title="Memory Graph" data={memories} />
+                </GridItem>
+                <GridItem>
+                    <GraphComponent title="Speed Graph" data={speeds} />
+                </GridItem>
+            </Grid>
         </>
     );
 }
