@@ -230,6 +230,8 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
           speed: elapsedTime, // Update speed with elapsedTime,
           memory: memory,
         };
+        localStorage.setItem("memory", memory.toString())
+        localStorage.setItem("speed", elapsedTime.toString())
         console.log(updatedSaveAttemptData);
         onSuccess();
         try {
@@ -260,7 +262,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   }
   const saveAttemptHandler = async (e:{preventDefault: () => void}) => {
     e.preventDefault();
-    console.log(JSON.stringify(saveAttemptData));
+    // console.log(JSON.stringify(saveAttemptData));
     try {
       await saveAttempt(saveAttemptData);
     } catch (error) {
