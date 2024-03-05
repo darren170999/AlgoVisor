@@ -77,6 +77,9 @@ function Admin() {
                 <Link to="/admin/course">
                   <Button variant="ghost">Post a course to concepts</Button>
                 </Link>
+                <Link to="/admin/delete">
+                  <Button variant="ghost">Delete course or questions</Button>
+                </Link>
                 <Link to="/admin/database">
                   <Button variant="ghost">Observe database metrics</Button>
                 </Link>
