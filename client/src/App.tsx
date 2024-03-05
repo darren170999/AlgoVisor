@@ -18,6 +18,7 @@ import AdminQuestion from "./pages/AdminQuestion";
 import AdminTestcase from "./pages/AdminTestcase";
 import AdminCourse from "./pages/AdminCourse";
 import PerformancePage from "./pages/PerformancePage";
+import AdminDatabase from "./pages/AdminDatabase";
 
 export default function App() {
 
@@ -30,7 +31,7 @@ export default function App() {
           <Route path="/admin/question" element={<AdminQuestion/>}/>
           <Route path="/admin/testcase" element={<AdminTestcase/>}/>
           <Route path="/admin/course" element={<AdminCourse/>}/>
-          {/* <Route path="/admin/database" element={<AdminCourse/>}/> */}
+          <Route path="/admin/database" element={<AdminDatabase/>}/>
           <Route path="/landing" element={<Landing/>}/>
           <Route path="/accounts" element={<Accounts/>}/>
           <Route path="/home" element={<Home/>}/>
