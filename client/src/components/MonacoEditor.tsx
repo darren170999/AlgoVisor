@@ -17,6 +17,7 @@ import { saveAttempt } from "../api/saveAttempt";
 import { cDriver } from "../helper/cDriver";
 import { cDefault } from "../helper/cDefault";
 import { cppDefault } from "../helper/cppDefault";
+import { updateStatus } from "../api/updateStatus";
 
 const files: Record<string, any> = {
   "script.py": {
@@ -92,7 +93,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     status: "Uncompleted", // If submitted is done and passed we will put Completed, in the meantime ignore
     username: localStorage.getItem("username")!,
     speed: 100.01,
-    memory:1000000,
+    memory: 1000000,
   })
   const file = files[fileName];
   const editorRef = useRef<any>(null);
@@ -203,8 +204,6 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     // var tempSpeed = localStorage.getItem("Speed")
     const updatedSaveAttemptData = {
       ...saveAttemptData,
-      speed: 100.01,
-      memory: 1000000,
     };
     console.log(JSON.stringify(updatedSaveAttemptData));
     try {
@@ -223,18 +222,34 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
         // console.log("SUCCESS");
         const endTime = performance.now();
         const elapsedTime = (endTime - startTime)/1000; //since in ms, need to work out the math again
-        // console.log(memory)
+        console.log(elapsedTime)
+        console.log(memory)
         const updatedSaveAttemptData = {
           ...saveAttemptData,
+          // status: "Completed",
           speed: elapsedTime, // Update speed with elapsedTime,
-          memory: memory
+          memory: memory,
         };
+        console.log(updatedSaveAttemptData);
         onSuccess();
         try {
-          await updateAttempt(qnid, langUsed, username, updatedSaveAttemptData);
+          const response = await axios.put(`http://localhost:8080/tutorials/code/attempt/status/${qnid}/${langUsed}/${username}`, updatedSaveAttemptData, {
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+        
+          console.log(response);
+        
+          if (response.status === 200) {
+            console.log('Form data posted successfully!');
+            console.log(response.data); // This will be the response data
+          } else {
+            console.log('Unexpected status code:', response.status);
+          }
         } catch (error) {
-          console.error("Failed to update attempt:", error);
-        }
+          console.error('An error occurred:', error);
+        }  
       }
     } else {
       console.error('Invalid input: attemptedSolution is null');
