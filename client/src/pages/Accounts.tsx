@@ -4,7 +4,7 @@ import { Button, Card, CardBody, CardFooter, Divider, FormControl, FormHelperTex
 import Header from "../components/Header";
 import { loginFormDataProps } from "../types/loginFormDataProps";
 import { signUpFormDataProps } from "../types/signUpFormDataProps";
-import { sendEmail } from "../helper/sendEmail";
+// import { sendEmail } from "../helper/sendEmail";
 
 function Accounts(){
     const [signUpFormData, setSignUpFormData] = useState<signUpFormDataProps>({
@@ -83,7 +83,7 @@ function Accounts(){
                     console.log(data);
                 });
                 
-                sendEmail(signUpFormData.email);
+                // sendEmail(signUpFormData.email);
 
                 setIsLogging(!isLogging);
                 setErr("");

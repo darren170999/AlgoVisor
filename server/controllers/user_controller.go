@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"net/smtp"
 	"server/configs"
 	"server/data/requests"
 	"server/data/responses"
@@ -68,7 +69,7 @@ func CreateUser() gin.HandlerFunc {
 			return
 		}
 
-		err = userCollection.FindOne(ctx, bson.M{"email": user.Email}).Decode((&existingUser));
+		err = userCollection.FindOne(ctx, bson.M{"email": user.Email}).Decode((&existingUser))
 		if err == nil {
 			c.JSON(http.StatusConflict, responses.UserResponse{Status: http.StatusConflict, Message: "error", Data: map[string]interface{}{"data": "Email already taken"}})
 			return
@@ -82,7 +83,6 @@ func CreateUser() gin.HandlerFunc {
 			c.JSON(http.StatusInternalServerError, responses.UserResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-
 
 		// createUsersRequest := request.CreateUsersRequest{}
 		// // err := ctx.ShouldBindJSON(&createUsersRequest)
@@ -102,8 +102,40 @@ func CreateUser() gin.HandlerFunc {
 			return
 		}
 
+		// Send welcome email
+		if err := sendWelcomeEmail(user.Email, user.Name); err != nil {
+			// Log or handle error, but don't interrupt user flow
+			log.Println("Failed to send welcome email:", err)
+		}
+
 		c.JSON(http.StatusCreated, responses.UserResponse{Status: http.StatusCreated, Message: "success", Data: map[string]interface{}{"data": result}})
 	}
+}
+
+func sendWelcomeEmail(receiverEmail, receiverName string) error {
+	senderEmail := "darrensohjunhan@gmail.com"
+	senderPassword := "xdom urig tgqm zyao"
+
+	auth := smtp.PlainAuth("", senderEmail, senderPassword, "smtp.gmail.com")
+
+	to := []string{receiverEmail}
+	msg := []byte("To: " + receiverEmail + "\r\n" +
+		"Subject: Welcome to AlgoVisor\r\n" +
+		"\r\n" +
+		"Dear " + receiverName + ",\r\n" +
+		"\r\n" +
+		"We sincerely appreciate that you took time for this!\r\n" +
+		"\r\n" +
+		"Thank you for signing up, we have verified your account.\r\n" +
+		"\r\n" +
+		"Happy learning,\r\n" +
+		"AlgoVisor")
+
+	err := smtp.SendMail("smtp.gmail.com:587", auth, senderEmail, to, msg)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // CreateTags		godoc
