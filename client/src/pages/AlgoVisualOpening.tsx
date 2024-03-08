@@ -5,7 +5,7 @@ import RedirectToHome from "../components/RedirectToHome";
 function AlgoVisualOpening() {
     return (
     <>
-    <RedirectToHome/>
+        <RedirectToHome/>
         <VStack 
         justifyContent="center"
         alignItems="center"
@@ -17,7 +17,6 @@ function AlgoVisualOpening() {
             <img src={require('../AlgoVisual.gif')} alt="Logo" />
 
         </VStack>
-
     </>
 
     );

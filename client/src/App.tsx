@@ -18,6 +18,9 @@ import AdminQuestion from "./pages/AdminQuestion";
 import AdminTestcase from "./pages/AdminTestcase";
 import AdminCourse from "./pages/AdminCourse";
 import PerformancePage from "./pages/PerformancePage";
+import AdminDatabase from "./pages/AdminDatabase";
+import AdminDelete from "./pages/AdminDelete";
+import Townhall from "./pages/Townhall";
 
 export default function App() {
 
@@ -30,14 +33,15 @@ export default function App() {
           <Route path="/admin/question" element={<AdminQuestion/>}/>
           <Route path="/admin/testcase" element={<AdminTestcase/>}/>
           <Route path="/admin/course" element={<AdminCourse/>}/>
-          {/* <Route path="/admin/database" element={<AdminCourse/>}/> */}
+          <Route path="/admin/delete" element={<AdminDelete/>}/>
+          <Route path="/admin/database" element={<AdminDatabase/>}/>
           <Route path="/landing" element={<Landing/>}/>
           <Route path="/accounts" element={<Accounts/>}/>
           <Route path="/home" element={<Home/>}/>
           <Route path="/visualizer" element={<Visualizer/>}/>
+          <Route path="/townhall" element={<Townhall/>}/>
           <Route path="/concepts" element={<Concepts/>}/>
-          <Route path="/tutorials" element={<Tutorials/>}>
-          </Route>
+          <Route path="/tutorials" element={<Tutorials/>}/>
           <Route path="/tutorials/code/:qnid" element={<MonacoCode />} />
           <Route path="/tutorials/performance" element={<PerformancePage/>}></Route>
           <Route path='*' element={<Navigate to='/404'/>}/>

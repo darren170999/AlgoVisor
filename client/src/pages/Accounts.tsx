@@ -2,22 +2,9 @@ import { useEffect, useState } from "react";
 import FullScreenSection from "../components/FullScreenSection";
 import { Button, Card, CardBody, CardFooter, Divider, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, Stack, Textarea, VStack, useStyleConfig, Text } from "@chakra-ui/react";
 import Header from "../components/Header";
-
-type signUpFormDataProps = {
-    name: string;
-    password: string;
-    title: string;
-    email: string;
-    userName: string;
-}
-type loginFormDataProps = {
-    userName: string;
-    password: string;
-}
-
-type errorProps = {
-    errorMessage: string;
-}
+import { loginFormDataProps } from "../types/loginFormDataProps";
+import { signUpFormDataProps } from "../types/signUpFormDataProps";
+// import { sendEmail } from "../helper/sendEmail";
 
 function Accounts(){
     const [signUpFormData, setSignUpFormData] = useState<signUpFormDataProps>({
@@ -54,8 +41,6 @@ function Accounts(){
                 body: JSON.stringify(loginFormData),
             });
             if(response.ok){
-                // console.log("Logged in successfully!"); 
-                
                 const data = await response.json();
                 if(data.message === "Login successful"){
                     localStorage.setItem('user', "true");
@@ -68,8 +53,6 @@ function Accounts(){
                 } else {
                     console.log(data)
                     console.error("Invalid username or password");
-                    // setErr("Invalid username or password");
-                    // You can add logic here to display an error message to the user
                 }
             } else {
                 console.error("Error");
@@ -96,15 +79,16 @@ function Accounts(){
                     body: JSON.stringify(signUpFormData),
                 });
             if(response.ok){
-                // console.log("Form data posted successfully!");
                 response.json().then((data) => {
                     console.log(data);
                 });
+                
+                // sendEmail(signUpFormData.email);
+
                 setIsLogging(!isLogging);
                 setErr("");
             } else {
                 console.log(response);
-                // window.location.replace("/accounts");
                 setErr("Username or email has been used");
             }
         } catch (err) {
