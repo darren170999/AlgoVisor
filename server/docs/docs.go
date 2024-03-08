@@ -89,6 +89,77 @@ const docTemplate = `{
                 }
             }
         },
+        "/subscriber": {
+            "post": {
+                "description": "Creating a Subscriber in MongoDB",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Subscribe",
+                "parameters": [
+                    {
+                        "description": "subscriber",
+                        "name": "Subscriber",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.GetSubscriberRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Unsubscribe",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete Subscriber",
+                "parameters": [
+                    {
+                        "description": "email",
+                        "name": "Subscriber",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.GetSubscriberRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/subscribers": {
+            "get": {
+                "description": "Get all current subscribers in my Database.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get subscriber's list",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/testcase": {
             "get": {
                 "description": "Get all current testCases in the Database.",
@@ -890,6 +961,18 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "requests.GetSubscriberRequest": {
+            "type": "object",
+            "required": [
+                "email"
+            ],
+            "properties": {
+                "email": {
+                    "description": "Id primitive.ObjectID ` + "`" + `json:\"id,omitempty\"` + "`" + `",
                     "type": "string"
                 }
             }

@@ -161,6 +161,14 @@ definitions:
     - password
     - title
     type: object
+  requests.GetSubscriberRequest:
+    properties:
+      email:
+        description: Id primitive.ObjectID `json:"id,omitempty"`
+        type: string
+    required:
+    - email
+    type: object
   requests.GetUserRequest:
     properties:
       password:
@@ -292,6 +300,52 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Get all Courses
+  /subscriber:
+    delete:
+      description: Unsubscribe
+      parameters:
+      - description: email
+        in: body
+        name: Subscriber
+        required: true
+        schema:
+          $ref: '#/definitions/requests.GetSubscriberRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Delete Subscriber
+    post:
+      description: Creating a Subscriber in MongoDB
+      parameters:
+      - description: subscriber
+        in: body
+        name: Subscriber
+        required: true
+        schema:
+          $ref: '#/definitions/requests.GetSubscriberRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Subscribe
+  /subscribers:
+    get:
+      description: Get all current subscribers in my Database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get subscriber's list
   /testcase:
     get:
       description: Get all current testCases in the Database.
