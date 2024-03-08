@@ -1,5 +1,6 @@
 import { Text, Box, Grid, GridItem, Avatar, Img } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
+import Footer from "../components/Footer";
 
 function HomeLoggedIn() {
   const [animationStarted, setAnimationStarted] = useState(false);
@@ -223,6 +224,7 @@ function HomeLoggedIn() {
           </Box>
         </GridItem>
       </Grid>
+      <Footer/>
     </>
   );
 }
