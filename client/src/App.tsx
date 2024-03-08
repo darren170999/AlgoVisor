@@ -20,6 +20,7 @@ import AdminCourse from "./pages/AdminCourse";
 import PerformancePage from "./pages/PerformancePage";
 import AdminDatabase from "./pages/AdminDatabase";
 import AdminDelete from "./pages/AdminDelete";
+import Townhall from "./pages/Townhall";
 
 export default function App() {
 
@@ -38,9 +39,9 @@ export default function App() {
           <Route path="/accounts" element={<Accounts/>}/>
           <Route path="/home" element={<Home/>}/>
           <Route path="/visualizer" element={<Visualizer/>}/>
+          <Route path="/townhall" element={<Townhall/>}/>
           <Route path="/concepts" element={<Concepts/>}/>
-          <Route path="/tutorials" element={<Tutorials/>}>
-          </Route>
+          <Route path="/tutorials" element={<Tutorials/>}/>
           <Route path="/tutorials/code/:qnid" element={<MonacoCode />} />
           <Route path="/tutorials/performance" element={<PerformancePage/>}></Route>
           <Route path='*' element={<Navigate to='/404'/>}/>

@@ -1,5 +1,5 @@
 import { Avatar, Box, HStack } from "@chakra-ui/react";
-import { faBook, faDroplet, faEye, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import { faBook, faDroplet, faEye, faHouse, faLock, faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useEffect, useState } from "react";
 import LogOutButton from "./LogOutButton";
@@ -53,6 +53,9 @@ function Header() {
                                 <HStack spacing={24} >
                                     <Link to="/visualizer">
                                         <FontAwesomeIcon icon={faEye} size="2x" />
+                                    </Link>
+                                    <Link to="/townhall">
+                                        <FontAwesomeIcon icon={faHouse} size="2x" />
                                     </Link>
                                     <Link to="/concepts">
                                         <FontAwesomeIcon icon={faBook} size="2x" />
