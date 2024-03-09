@@ -32,10 +32,10 @@ const Footer: FC = () => {
     const fetchSubs = () => {
       fetchAllSubscribers()
         .then(subs => {
-          console.log(subs)
+          // console.log(subs)
           const subber = subs.find((u: {email: string | null; }) => u.email === subscriberFormData.email);
           setIsUnSub(subber === undefined);
-          console.log(isUnSub);
+          // console.log(isUnSub);
         })
         .catch(error => {
           console.error('Error fetching users:', error);
@@ -45,13 +45,13 @@ const Footer: FC = () => {
   }, []);
 
   const handleUnsubscribe = () => {
-    console.log(subscriberFormData)
+    // console.log(subscriberFormData)
     unsubscribe(subscriberFormData);
     setIsUnSub(false)
   };
 
   const handleSubscribe = () => {
-    console.log(subscriberFormData)
+    // console.log(subscriberFormData)
     subscribe(subscriberFormData);
     setIsUnSub(true)
   };
@@ -69,7 +69,6 @@ const Footer: FC = () => {
           height={16}
         >
           <p>Darren Soh JunHan • © 2023</p>
-          {/* Add unsubscribe link */}
           {isUnSub ? 
           <a href="#" onClick={handleUnsubscribe} style={{ marginLeft: "1rem" }}>
             Unsubscribe from mailing list
