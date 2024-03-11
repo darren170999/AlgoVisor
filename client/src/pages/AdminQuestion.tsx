@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import FullScreenSection from "../components/FullScreenSection";
 import { Box, Button, Card, CardBody, CardFooter, Divider, FormControl, FormHelperText, FormLabel, HStack, Heading, Input, Stack, Textarea, VStack } from "@chakra-ui/react";
 import Header from "../components/Header";
+import { createTutorial } from "../api/createTutorialQuestion";
+import { sendQuestionNotifications } from "../api/sendQuestionNotifications";
 
 type createQuestionFormDataProps = {
     name: string;
@@ -16,6 +18,7 @@ type createQuestionFormDataProps = {
 function AdminQuestion(){
     const [loading, setLoading] = useState(true);
     const [lastQnID, setLastQnID] = useState<string | null>(null);
+    // const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
     const callDB = async() => {
         try{
             const response = await fetch("http://localhost:8080/tutorials" , {
@@ -44,7 +47,6 @@ function AdminQuestion(){
         callDB();
     }, []);
     useEffect(() => {
-        // Update the qnid in createQuestionFormData whenever lastQnID changes
         setCreateQuestionFormData((prevFormData) => ({ ...prevFormData, qnid: lastQnID || "" }));
       }, [lastQnID]);
 
@@ -81,37 +83,40 @@ function AdminQuestion(){
             setIsEmpty(false);
         }
     }
-    console.log(isEmpty)
+    // console.log(isEmpty)
     const handleCreation = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        console.log(isEmpty);
+        // console.log(isEmpty);
         // Check if any of the fields are empty
-        if(tagsValidationMessage === "Valid format" ){
-            try{
-                const response = await fetch("http://localhost:8080/tutorials/code/create" , {
-                    method: "POST",
-                    headers : {
-                    "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(createQuestionFormData),
-                });
-                if(response.ok){
-                    console.log("Form data posted successfully!");
-                    response.json().then((data) => {
-                        console.log(data);
-                        window.location.replace("/admin");
-                    });
-                } else {
-                    console.log(response);
-                    window.location.replace("/admin/question");
+        if (tagsValidationMessage === "Valid format") {
+            try {
+                const response = await createTutorial(createQuestionFormData);
+                console.log("Form data posted successfully!");
+                console.log(response);
+                // Check if a new question was created
+                if (response && response.data) {
+                    const send = await sendQuestionNotifications();
+                    console.log(send);
+                    // setCreateQuestionFormData({
+                    //     name: "",
+                    //     description: "",
+                    //     examples: "",
+                    //     constraints: "",
+                    //     status: "new",
+                    //     tags: "",
+                    //     qnid: lastQnID!,
+                    // })
                 }
+                window.location.replace("/admin");
             } catch (err) {
-                console.log("Dk wtf happen: ", err)
-            }     
+                console.log("Failed to create tutorial: ", err);
+                window.location.replace("/admin/question");
+            }
         } else {
-            console.log("Not working")
+            console.log("Not working");
         }
     };
+    
 
     return(
         <>
