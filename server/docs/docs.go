@@ -160,6 +160,23 @@ const docTemplate = `{
                 }
             }
         },
+        "/subscribers/notify": {
+            "get": {
+                "description": "Notify users",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get subscriber's list",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/testcase": {
             "get": {
                 "description": "Get all current testCases in the Database.",

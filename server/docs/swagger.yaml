@@ -346,6 +346,17 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Get subscriber's list
+  /subscribers/notify:
+    get:
+      description: Notify users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get subscriber's list
   /testcase:
     get:
       description: Get all current testCases in the Database.
