@@ -89,6 +89,32 @@ const docTemplate = `{
                 }
             }
         },
+        "/courses/{name}": {
+            "delete": {
+                "description": "Delete Course from Db based on name.",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Delete Course based on name",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "name",
+                        "name": "name",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/subscriber": {
             "post": {
                 "description": "Creating a Subscriber in MongoDB",
