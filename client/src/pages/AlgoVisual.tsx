@@ -2,9 +2,8 @@ import React, { Component } from 'react';
 import AlgoVisualPathFinder from '../components/AlgoVisualPathFinder';
 import AlgoVisualSorter from '../components/AlgoVisualSorter';
 import './AlgoVisual.css';
-// import HomeHeader from './HomeHeader';
-import sortSegment from '../sortSegment.gif';
-import pathSegment from '../pathSegment.gif';
+import sortingGif from '../sorting.gif';
+import pathFindingGif from '../pathFinding.gif';
 import Header from '../components/Header';
 
 interface AlgoVisualState {
@@ -30,13 +29,13 @@ class AlgoVisual extends Component<{}, AlgoVisualState> {
                     <div>
                         <h1> SORTING ALGORITHMS </h1>
                         <button onClick={() => this.setState({ sorting: true, pathFind: false })}>
-                            <img src={sortSegment} alt="loading..." />
+                            <img src={sortingGif} alt="loading..." />
                         </button>
                     </div>
                     <div>
                         <h1> PATH FINDING ALGORITHMS </h1>
                         <button onClick={() => this.setState({ pathFind: true, sorting: false })}>
-                            <img src={pathSegment} alt="loading..." />
+                            <img src={pathFindingGif} alt="loading..." />
                         </button>
                     </div>
                 </div>
