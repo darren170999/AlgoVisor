@@ -9,7 +9,7 @@ import Landing from "./pages/Landing";
 import Accounts from "./pages/Accounts";
 import Home from "./pages/Home";
 import Concepts from "./pages/Concepts";
-import Visualizer from "./pages/Visualizer";
+import Visualizer from "./pages/AlgoVisual";
 import Error404 from "./pages/Error404";
 import MonacoCode from "./pages/MonacoCode";
 import Tutorials from "./pages/Tutorials";
