@@ -3,7 +3,9 @@ package controllers
 import (
 	"context"
 	"fmt"
+	"log"
 	"net/http"
+	"net/smtp"
 	"server/configs"
 	"server/data/responses"
 	"server/models"
@@ -119,29 +121,91 @@ func DeleteSubscriber() gin.HandlerFunc {
 func GetAllSubscriber() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		var subscribers []models.Subscriber
 		defer cancel()
 
+		var subscribers []models.Subscriber
 		results, err := subscriberCollection.Find(ctx, bson.M{})
-
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, responses.SubscriberResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
 			return
 		}
-
-		//reading from the db in an optimal way
 		defer results.Close(ctx)
+
 		for results.Next(ctx) {
 			var singleSubscriber models.Subscriber
 			if err = results.Decode(&singleSubscriber); err != nil {
 				c.JSON(http.StatusInternalServerError, responses.SubscriberResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+				return
 			}
-
 			subscribers = append(subscribers, singleSubscriber)
 		}
 
-		c.JSON(http.StatusOK,
-			responses.SubscriberResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": subscribers}},
-		)
+		c.JSON(http.StatusOK, responses.SubscriberResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": subscribers}})
 	}
+}
+
+// CreateTags		godoc
+// @Summary			Get subscriber's list
+// @Description		Notify users
+// @Produce			application/json
+// @Success			200 {object} responses.Response{}
+// @Router			/subscribers/notify [get]
+func GetAndNotify() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		defer cancel()
+
+		var subscribers []models.Subscriber
+		results, err := subscriberCollection.Find(ctx, bson.M{})
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.SubscriberResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+		defer results.Close(ctx)
+
+		for results.Next(ctx) {
+			var singleSubscriber models.Subscriber
+			if err = results.Decode(&singleSubscriber); err != nil {
+				c.JSON(http.StatusInternalServerError, responses.SubscriberResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+				return
+			}
+			subscribers = append(subscribers, singleSubscriber)
+		}
+
+		// Send email notifications only once
+		if err := sendQuestionNotifications(subscribers); err != nil {
+			log.Println("Failed to send notification:", err)
+		}
+
+		c.JSON(http.StatusOK, responses.SubscriberResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": subscribers}})
+	}
+}
+func sendQuestionNotifications(subscribers []models.Subscriber) error {
+	senderEmail := "darrensohjunhan@gmail.com"
+	senderPassword := "xdom urig tgqm zyao"
+
+	auth := smtp.PlainAuth("", senderEmail, senderPassword, "smtp.gmail.com")
+
+	for _, subscriber := range subscribers {
+		to := []string{subscriber.Email}
+		msg := []byte("To: " + subscriber.Email + "\r\n" +
+			"Subject: New Question!\r\n" +
+			"\r\n" +
+			"Dear user" + ",\r\n" +
+			"\r\n" +
+			"There is an update in Algovisor!\r\n" +
+			"\r\n" +
+			"Please take a look at our latest content. \r\n" +
+			"\r\n" +
+			"You are receiving this email because of a notification channel that you are subscribed to. \r\n" +
+			"\r\n" +
+			"Happy learning,\r\n" +
+			"AlgoVisor")
+
+		err := smtp.SendMail("smtp.gmail.com:587", auth, senderEmail, to, msg)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }

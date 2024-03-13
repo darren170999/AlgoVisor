@@ -226,3 +226,34 @@ func GetAllCourses() gin.HandlerFunc {
 		)
 	}
 }
+
+// DeleteTags		godoc
+// @Summary			Delete Course based on name
+// @Description		Delete Course from Db based on name.
+// @Param			name path string true "name"
+// @Produce			application/json
+// @Success			200 {object} responses.Response{}
+// @Router			/courses/{name} [delete]
+func DeleteACourse() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+		name := c.Param("name")
+		defer cancel()
+		filter := bson.M{"name": name}
+		result, err := courseCollection.DeleteOne(ctx, filter)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, responses.CourseResponse{Status: http.StatusInternalServerError, Message: "error", Data: map[string]interface{}{"data": err.Error()}})
+			return
+		}
+		if result.DeletedCount == 0 {
+			c.JSON(http.StatusNotFound,
+				responses.CourseResponse{Status: http.StatusNotFound, Message: "error", Data: map[string]interface{}{"data": "Question with specified qnid not found!"}},
+			)
+			return
+		}
+		c.JSON(http.StatusOK,
+			responses.CourseResponse{Status: http.StatusOK, Message: "success", Data: map[string]interface{}{"data": "Question successfully deleted!"}},
+		)
+	}
+}
+

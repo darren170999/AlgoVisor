@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import axios, { all } from "axios";
-import { Box, Button, Heading, Menu, MenuButton, MenuItem, MenuList } from "@chakra-ui/react";
+import { Box, Button, Checkbox, Heading, Menu, MenuButton, MenuItem, MenuList, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
 import { submitSourceCode } from "../api/submitSourceCode";
@@ -98,6 +98,12 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   const file = files[fileName];
   const editorRef = useRef<any>(null);
   const [output, setOutput] = useState<string>("");
+  const [currentStep, setCurrentStep] = useState(0); // State to track the current step of the tutorial
+  const [showTutorial, setShowTutorial] = useState(true); // State to control the display of the tutorial modal
+  const [skipIntroduction, setSkipIntroduction] = useState(false); // State to track whether the introduction should be skipped
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [showRunModal, setShowRunModal] = useState(false);
+  const [showSubmitModal, setShowSubmitModal] = useState(false);
   function waitFor3second(){
       return new Promise(resolve =>
           setTimeout(() => resolve("result"),3000) // need more time if C is used, py:3000, C:5000, C++:10000
@@ -110,19 +116,17 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       editorRef.current.setValue(fetchedAttemptData.current.attempt);
     }
   }
-  useEffect(()=>{
-    // console.log(saveAttemptData)
-  },[output])
-  useEffect(() => {
-    // console.log(saveAttemptData);
-  }, [saveAttemptData]);
-
   
+  useEffect(()=>{},[output])
+  useEffect(() => {}, [saveAttemptData]);
+
   function compileAndRunCode() {
     if (editorRef.current) {
       const attempt: string = editorRef.current.getValue();
       // console.log(langUsed)
       console.log(attempt)
+      // setShowRunModal(false)
+      // setShowSaveModal(true)
       setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
       console.log(saveAttemptData);
       submitSourceCode(attempt, langUsed)
@@ -159,7 +163,8 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   function submitCode() {
     if (editorRef.current) {
       const attempt: string = editorRef.current.getValue();
-      // console.log(attempt)
+      console.log(attempt)
+      // setShowSubmitModal(false);
       setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
       const submission = `${attempt}\n\n${updatedPythonDriver}`;
       // console.log(submission);
@@ -201,13 +206,14 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   }
   const updateAttemptHandler = async (e:{preventDefault: () => void}) => {
     e.preventDefault();
-    // var tempSpeed = localStorage.getItem("Speed")
     const updatedSaveAttemptData = {
       ...saveAttemptData,
     };
     console.log(JSON.stringify(updatedSaveAttemptData));
     try {
       await updateAttempt(qnid, langUsed, username, updatedSaveAttemptData);
+      // setShowSaveModal(false);
+      // setShowSubmitModal(true);
     } catch (error) {
       console.error("Failed to update attempt:", error);
     }  
@@ -215,11 +221,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   const checkSolution = async (attemptedSolution: string, startTime: number, memory: number) =>{
     if (attemptedSolution) {
       const inputList: string[] = attemptedSolution.split('\n').filter(Boolean);
-      // console.log(inputList);
-      // console.log(allOutputs);
       if (arraysEqual(allOutputs, inputList)) {
-        // write a small BACKEND call to update the question to be done
-        // console.log("SUCCESS");
         const endTime = performance.now();
         const elapsedTime = (endTime - startTime)/1000; //since in ms, need to work out the math again
         console.log(elapsedTime)
@@ -265,6 +267,8 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
     // console.log(JSON.stringify(saveAttemptData));
     try {
       await saveAttempt(saveAttemptData);
+      // setShowSaveModal(false); // Close the save modal
+      // setShowSubmitModal(true);
     } catch (error) {
       console.error("Failed to save attempt:", error);
     }
@@ -293,6 +297,80 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   useEffect(() => {
     fetchPreviousAttempt();
   }, [qnid, langUsed, username, isEditorMounted]);
+  const handleSkipIntroduction = () => {
+    setCurrentStep(0);
+    setSkipIntroduction(true);
+    setShowRunModal(true); // Show the Save modal
+  };
+
+  const steps = [
+    {
+      content: (
+        <div>
+          Select the programming language from the dropdown menu.
+        </div>
+      ),
+      buttonText: "Next",
+    },
+    {
+      content: (
+        <div>
+          Write your code in the editor.
+        </div>
+      ),
+      buttonText: "Next",
+    },
+    {
+      content: (
+        <div>
+          Click the 'Run' button to compile and execute your code.
+        </div>
+      ),
+      buttonText: "Next",
+    },
+    {
+      content: (
+        <div>
+          Click the 'Save' button to save your progress
+        </div>
+      ),
+      buttonText: "Next",
+    },
+    {
+      content: (
+        <div>
+          If your code runs successfully, click the 'Submit' button to submit your solution.
+        </div>
+      ),
+      buttonText: "Finish",
+    },
+  ];
+  const handleNextStep = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    } else {
+      setSkipIntroduction(true); // Close the modal
+      setShowRunModal(true); // Show the Save modal
+    }
+  };
+  const handlePreviousStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+  const handleCloseSaveModal = () => {
+    setShowSaveModal(false);
+    // if(hasPreviousAttempt) {updateAttemptHandler()}else { saveAttemptHandler()}
+    setShowSubmitModal(true);
+  };
+  const handleCloseRunModal = () => {
+    setShowRunModal(false);
+    compileAndRunCode();
+    setShowSaveModal(true);
+  };
+  const handleCloseSubmitModal = () => {
+    setShowSubmitModal(false);
+  };
   return (
     <>
     <Box p={4} borderRadius="md" boxShadow="md" bg="white">
@@ -338,6 +416,57 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
           <pre>{output}</pre>
         </Box>
       </Box>
+    <Modal isOpen={!skipIntroduction} onClose={() => {setSkipIntroduction(true); setShowRunModal(true)}}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>Tutorial: How to use MonacoCode Editor</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          {steps[currentStep].content}
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={handlePreviousStep} isDisabled={currentStep === 0}>Previous</Button>
+          <Button ml={3} onClick={handleNextStep}>{steps[currentStep].buttonText}</Button>
+          <Checkbox isChecked={skipIntroduction} onChange={handleSkipIntroduction} style={{ marginLeft: 'auto' }}>Skip Introduction</Checkbox>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
+    <Modal isOpen={showRunModal} onClose={handleCloseRunModal} size="sm" useInert={false} >
+      <ModalContent style={{ top: 500, left: 250, margin: '20px' }} >
+        <ModalHeader>Test Run</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          Please click the "Run" button.
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={handleCloseRunModal}>Close</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>;
+    <Modal isOpen={showSaveModal} onClose={handleCloseSaveModal} size="sm" useInert={false} >
+      <ModalContent style={{ top: 0, left: 450, margin: '20px' }} >
+        <ModalHeader>Test Save</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          Please click the "Save" button to save your progress.
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={handleCloseSaveModal}>Close</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>;
+    <Modal isOpen={showSubmitModal} onClose={handleCloseSubmitModal} size="sm" useInert={false}>
+      <ModalContent style={{ top: 0, left: 0, margin: '20px' }} >
+        <ModalHeader>Test Submit</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          Please click the "Submit" button to save your progress.
+        </ModalBody>
+        <ModalFooter>
+          <Button onClick={handleCloseSubmitModal}>Close</Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>;
     </Box>
     </>
   );

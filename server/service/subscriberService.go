@@ -10,4 +10,5 @@ type SubscriberService interface {
 	Create(subcribers requests.CreateSubscriberRequest)
 	Delete(email string)
 	FindAll() []responses.SubscriberResponse
+	FindAllAndNotify() []responses.SubscriberResponse
 }

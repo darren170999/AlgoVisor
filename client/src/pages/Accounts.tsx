@@ -4,6 +4,7 @@ import { Button, Card, CardBody, CardFooter, Divider, FormControl, FormHelperTex
 import Header from "../components/Header";
 import { loginFormDataProps } from "../types/loginFormDataProps";
 import { signUpFormDataProps } from "../types/signUpFormDataProps";
+import { subscriberFormDataProps } from "../types/subscriberFormDataProps";
 // import { sendEmail } from "../helper/sendEmail";
 
 function Accounts(){
@@ -13,6 +14,9 @@ function Accounts(){
         title: "",
         email: "",
         userName: ""
+    })
+    const [subscriberFormData, setSubscriberFormData] = useState<subscriberFormDataProps>({
+        email: ""
     })
     const [loginFormData, setLoginFormData] = useState<loginFormDataProps>({
         userName: "",
@@ -67,6 +71,11 @@ function Accounts(){
     const handleSignUp = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         console.log(signUpFormData);
+        setSubscriberFormData({
+            email: signUpFormData.email
+        })
+        // console.log(subscriberFormData)
+        localStorage.setItem("email", signUpFormData.email)
         try{
             // if (!signUpFormData.email.endsWith('@e.ntu.edu.sg')) {
             //     throw Error("Please enter a valid NTU email")
@@ -82,11 +91,27 @@ function Accounts(){
                 response.json().then((data) => {
                     console.log(data);
                 });
-                
-                // sendEmail(signUpFormData.email);
-
                 setIsLogging(!isLogging);
                 setErr("");
+                try{
+                    console.log(subscriberFormData)
+                    const response = await fetch("http://localhost:8080/subscriber" , {
+                            method: "POST",
+                            headers : {
+                            "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify(subscriberFormData),
+                        });
+                    if(response.ok){
+                        response.json().then((data) => {
+                            console.log(data);
+                        });
+                    } else {
+                        console.log(response);
+                    }
+                } catch (err) {
+                    console.log("Dk wtf happen: ", err)
+                }
             } else {
                 console.log(response);
                 setErr("Username or email has been used");
@@ -94,6 +119,7 @@ function Accounts(){
         } catch (err) {
             console.log("Dk wtf happen: ", err)
         }
+
         
     };
     //if false means sign up, This is for checking if the user wants to login or sign up

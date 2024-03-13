@@ -300,6 +300,23 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Get all Courses
+  /courses/{name}:
+    delete:
+      description: Delete Course from Db based on name.
+      parameters:
+      - description: name
+        in: path
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Delete Course based on name
   /subscriber:
     delete:
       description: Unsubscribe
@@ -338,6 +355,17 @@ paths:
   /subscribers:
     get:
       description: Get all current subscribers in my Database.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get subscriber's list
+  /subscribers/notify:
+    get:
+      description: Notify users
       produces:
       - application/json
       responses:
