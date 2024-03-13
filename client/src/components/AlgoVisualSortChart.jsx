@@ -29,7 +29,10 @@ export default class AlgoVisualSortChart extends React.Component {
         >
           <Bar isAnimationActive={false} dataKey="value" fill={"#8884d8"} label={{position:'bottom'}}>
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={this.props.pivotBefore === index ? colors[4] : this.props.pivotAfter === index ? colors[3] : this.props.sorted.has(index) ? colors[0] : index === this.props.scanElement ? colors[2] : colors[1]} />
+              <Cell 
+              key={`cell-${index}`} 
+              fill={this.props.pivotBefore === index ? colors[4] : this.props.pivotAfter === index ? colors[3] : this.props.sorted.has(index) ? colors[0] : index === this.props.scanElement ? colors[2] : colors[1]} 
+              />
             ))}
           </Bar>
         </BarChart>

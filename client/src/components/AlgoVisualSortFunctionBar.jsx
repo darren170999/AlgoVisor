@@ -38,5 +38,4 @@ class AlgoVisualSortFunctionBar extends React.Component {
         )
     }
 }
-
 export default AlgoVisualSortFunctionBar;

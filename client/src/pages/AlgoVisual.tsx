@@ -27,13 +27,13 @@ class AlgoVisual extends Component<{}, AlgoVisualState> {
                 <Header/>
                 <div className='mode_options_container'>
                     <div>
-                        <h1> SORTING ALGORITHMS </h1>
+                        {/* <h1> SORTING ALGORITHMS </h1> */}
                         <button onClick={() => this.setState({ sorting: true, pathFind: false })}>
                             <img src={sortingGif} alt="loading..." />
                         </button>
                     </div>
                     <div>
-                        <h1> PATH FINDING ALGORITHMS </h1>
+                        {/* <h1> PATH FINDING ALGORITHMS </h1> */}
                         <button onClick={() => this.setState({ pathFind: true, sorting: false })}>
                             <img src={pathFindingGif} alt="loading..." />
                         </button>
