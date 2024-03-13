@@ -9,7 +9,6 @@
 
 .sort_button_container button {
     font-size:1.125em;
-    color: #66FCF1;
     background-color:transparent;
     background-repeat:no-repeat;
     border:none;
@@ -19,12 +18,12 @@
 }
 
 .sort_button_container button:hover {
-    color: #45A29E;
+    color: grey;
 }
 
 .sort_button_container select {
     font-size:1.125em;
-    color:#66FCF1;
+    /* color:#66FCF1; */
     background-color:transparent;
     background-repeat:no-repeat;
     border:none;
@@ -34,7 +33,7 @@
 }
 
 .sort_button_container select:hover {
-    color: #45A29E;
+    color: grey;
 }
 
 .sort_button_container select option {
@@ -43,6 +42,6 @@
 
 .sort_button_container div {
     font-size:1.125em;
-    color:#66FCF1;
+    /* color:#66FCF1; */
     width:25%;
 }

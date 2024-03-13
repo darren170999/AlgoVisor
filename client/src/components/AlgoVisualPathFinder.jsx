@@ -5,7 +5,8 @@ import '../components/Grid.css'
 import {gridIdx} from '../util/GridDraw'
 import Buffer from '../util/Buffer'
 import {mazeRecursiveDiv} from '../util/MazeGenerationAlgorithms'
-import AlgoVisualSortFunctionBar from '../components/AlgoVisualSortFunctionBar'
+import AlgoVisualFunctionBar from './AlgoVisualFunctionBar'
+import Header from '../components/Header'
 
 class AlgoVisualPathFinder extends React.Component {
     constructor() {
@@ -199,10 +200,13 @@ class AlgoVisualPathFinder extends React.Component {
             updateDrawnNodes:this.updateDrawnNodes
         }
         return (
-            <div>
-                <AlgoVisualSortFunctionBar genMaze={this.generateMaze} setAlgo={this.setAlgo} setDelay={this.setDelay} start={this.start} pause={this.pausePlayback} reset={this.reset} setWallType={this.setWallType} isRunning={this.state.isRunning} delay={this.state.delay}/>
-                <Grid gridState={this.state} nodeModifier={nodeModifier}/>
-            </div>
+            <>
+                <Header/>
+                <div>
+                    <AlgoVisualFunctionBar genMaze={this.generateMaze} setAlgo={this.setAlgo} setDelay={this.setDelay} start={this.start} pause={this.pausePlayback} reset={this.reset} setWallType={this.setWallType} isRunning={this.state.isRunning} delay={this.state.delay}/>
+                    <Grid gridState={this.state} nodeModifier={nodeModifier}/>
+                </div>
+            </>
         )
     }
 }

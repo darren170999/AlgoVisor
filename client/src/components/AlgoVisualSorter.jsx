@@ -1,6 +1,7 @@
 import React from 'react'
 import AlgoVisualSortChart from '../components/AlgoVisualSortChart'
 import AlgoVisualSortFunctionBar from '../components/AlgoVisualSortFunctionBar'
+import Header from '../components/Header'
 import {bubbleSort, mergeSort, quickSort, selectionSort, gravitySort} from '../util/SortingAlgorithms'
 
 class AlgoVisualSorter extends React.Component {
@@ -245,10 +246,13 @@ class AlgoVisualSorter extends React.Component {
         const pivotBefore = (this.state.pivot !== null && this.state.pivot.isBefore) ? this.state.pivot.before : null
         const pivotAfter = (this.state.pivot !== null && !this.state.pivot.isBefore) ? this.state.pivot.after : null
         return (
-            <div>
-                <AlgoVisualSortFunctionBar isRunning={this.state.isRunning} selectedAlgo={this.state.selectedAlgo} setAlgo={this.setAlgo} delay={this.state.delay} setDelay={this.setDelay} generateRandomArray={this.generateRandomArray} start={this.start} pause={this.pause}/>
-                <AlgoVisualSortChart array={this.state.array} sorted={this.state.sorted} scanElement={this.state.scanElement} pivotBefore={pivotBefore} pivotAfter={pivotAfter}/>
-            </div>
+            <>
+                <Header/>
+                <div>
+                    <AlgoVisualSortFunctionBar isRunning={this.state.isRunning} selectedAlgo={this.state.selectedAlgo} setAlgo={this.setAlgo} delay={this.state.delay} setDelay={this.setDelay} generateRandomArray={this.generateRandomArray} start={this.start} pause={this.pause}/>
+                    <AlgoVisualSortChart array={this.state.array} sorted={this.state.sorted} scanElement={this.state.scanElement} pivotBefore={pivotBefore} pivotAfter={pivotAfter}/>
+                </div>
+            </>
         )
     }
 }

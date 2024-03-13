@@ -1,0 +1,53 @@
+.button_container {
+    margin:auto;
+    width:100%;
+    display:flex;
+    grid:auto auto auto auto;
+    grid-gap:1.25em;
+    padding:1.25em;
+}
+
+.button_container button {
+    font-size:1em;
+    /* color: #66FCF1; */
+    background-color:Transparent;
+    background-repeat:no-repeat;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    overflow:hidden;
+    padding:1em;
+    width:15%;
+}
+
+.button_container button:hover {
+    color: grey;
+}
+
+.button_container select {
+    font-size:1em;
+    /* color:#66FCF1; */
+    background-color:Transparent;
+    background-repeat:no-repeat;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    overflow:hidden;
+    padding:1em;
+    width:20%
+}
+
+.button_container select:hover {
+    color: grey
+}
+
+.button_container select option {
+    background-color:#0B0C10;
+}
+
+.button_container div {
+    font-size:1em;
+    /* color:#66FCF1; */
+    width:15%;
+    padding:1em;
+}

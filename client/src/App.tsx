@@ -9,7 +9,7 @@ import Landing from "./pages/Landing";
 import Accounts from "./pages/Accounts";
 import Home from "./pages/Home";
 import Concepts from "./pages/Concepts";
-import Visualizer from "./pages/AlgoVisual";
+import AlgoVisual from "./pages/AlgoVisual";
 import Error404 from "./pages/Error404";
 import MonacoCode from "./pages/MonacoCode";
 import Tutorials from "./pages/Tutorials";
@@ -38,7 +38,7 @@ export default function App() {
           <Route path="/landing" element={<Landing/>}/>
           <Route path="/accounts" element={<Accounts/>}/>
           <Route path="/home" element={<Home/>}/>
-          <Route path="/visualizer" element={<Visualizer/>}/>
+          <Route path="/algoVisual" element={<AlgoVisual/>}/>
           <Route path="/townhall" element={<Townhall/>}/>
           <Route path="/concepts" element={<Concepts/>}/>
           <Route path="/tutorials" element={<Tutorials/>}/>
