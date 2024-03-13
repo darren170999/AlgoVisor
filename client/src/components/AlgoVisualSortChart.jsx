@@ -8,7 +8,7 @@ const generateData = (array) => {
   return data
 }
 
-const colors = ["#84d88a", "#8884d8", "#66FCF1", "#525452", "#b9bdb9"]
+const colors = ["black", "grey", "blue", "lightgrey", "red"]
 
 export default class AlgoVisualSortChart extends React.Component {
   render() {
