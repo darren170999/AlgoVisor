@@ -1,6 +1,6 @@
 .sort_button_container {
     margin:auto;
-    width:70%;
+    width:90%;
     display:flex;
     grid:auto auto auto auto;
     grid-gap:1.25em;
@@ -14,7 +14,7 @@
     border:none;
     outline:none;
     cursor:pointer;
-    width:25%;
+    width:30%;
 }
 
 .sort_button_container button:hover {
