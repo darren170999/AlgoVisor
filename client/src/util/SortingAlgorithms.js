@@ -115,10 +115,11 @@ export const quickSort = (arr) => {
 }
 
 const quickSortHelper = (pivots, diagram, scan, arr, left, right) => {
-    if (left >= right) return
-    let pivotIdx = partition(pivots, diagram, scan, arr, left, right)
-    quickSortHelper(pivots, diagram, scan, arr, left, pivotIdx-1)
-    quickSortHelper(pivots, diagram, scan, arr, pivotIdx+1, right)
+    if (left < right){
+        const pivotIdx = partition(pivots, diagram, scan, arr, left, right)
+        quickSortHelper(pivots, diagram, scan, arr, left, pivotIdx-1)
+        quickSortHelper(pivots, diagram, scan, arr, pivotIdx+1, right)
+    }
 }
 
 const partition = (pivots, diagram, scan, arr, left, right) => {
