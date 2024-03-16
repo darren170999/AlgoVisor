@@ -2,7 +2,146 @@ import React from 'react'
 import AlgoVisualSortChart from '../components/AlgoVisualSortChart'
 import AlgoVisualSortFunctionBar from '../components/AlgoVisualSortFunctionBar'
 import Header from '../components/Header'
+import { Box, Text, Code } from '@chakra-ui/react';
 import {bubbleSort, mergeSort, quickSort, selectionSort, gravitySort} from '../util/SortingAlgorithms'
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+
+const SelectionSortCode = () => (
+    <Box p="4" borderWidth="1px" borderRadius="md" my="4">
+      <Text fontSize="20px" color="#fcc015" mb="2">
+        Selection Sort Code:
+      </Text>
+      <SyntaxHighlighter language="python" style={materialDark}>
+        {`
+            def selection_sort(arr):
+                n = len(arr)
+                for i in range(n):
+                    min_idx = i
+                    for j in range(i+1, n):
+                        if arr[j] < arr[min_idx]:
+                            min_idx = j
+                    arr[i], arr[min_idx] = arr[min_idx], arr[i]
+            
+            # Example usage:
+            arr = [64, 25, 12, 22, 11]
+            selection_sort(arr)
+            print("Sorted array:", arr)
+                    `}
+      </SyntaxHighlighter>
+    </Box>
+  );
+
+const BubbleSortCode = () => (
+    <Box p="4" borderWidth="1px" borderRadius="md" my="4">
+        <Text fontSize="20px" color='#fcc015' mb="2">Bubble Sort Code:</Text>
+        <SyntaxHighlighter language="python" style={materialDark}>
+        {`
+            def bubble_sort(arr):
+                n = len(arr)
+                for i in range(n-1):
+                    for j in range(0, n-i-1):
+                        if arr[j] > arr[j+1]:
+                            arr[j], arr[j+1] = arr[j+1], arr[j]
+            
+            # Example usage:
+            arr = [64, 25, 12, 22, 11]
+            bubble_sort(arr)
+            print("Bubble Sort:", arr)
+                    `}
+      </SyntaxHighlighter>
+    </Box>
+);
+const QuickSortCode = () => (
+    <Box p="4" borderWidth="1px" borderRadius="md" my="4">
+        <Text fontSize="20px" color='#fcc015' mb="2" >Quick Sort Code:</Text>
+        <SyntaxHighlighter language="python" style={materialDark}>
+        {`
+            def quick_sort(arr):
+                if len(arr) <= 1:
+                    return arr
+                pivot = arr[len(arr)//2]
+                left = [x for x in arr if x < pivot]
+                middle = [x for x in arr if x == pivot]
+                right = [x for x in arr if x > pivot]
+                return quick_sort(left) + middle + quick_sort(right)
+            
+            arr = [64, 25, 12, 22, 11]
+            sorted_arr = quick_sort(arr)
+            print("Quick Sort:", sorted_arr)
+                    `} 
+      </SyntaxHighlighter>
+    </Box>
+);
+const GravitySortCode = () => (
+    <Box p="4" borderWidth="1px" borderRadius="md" my="4">
+        <Text fontSize="20px" color='#fcc015' mb="2">Gravity Sort Code:</Text>
+        <SyntaxHighlighter language="python" style={materialDark}>
+        {`
+            def gravity_sort(arr):
+                max_val = max(arr)
+
+                count_list = [0] * (max_val + 1)
+            
+                for num in arr:
+                    count_list[num] += 1
+            
+                sorted_arr = []
+                for i in range(len(count_list)):
+                    sorted_arr.extend([i] * count_list[i])
+            
+                return sorted_arr
+            
+            arr = [4, 2, 6, 8, 2, 1, 4, 7, 9, 5]
+            sorted_arr = gravity_sort(arr)
+            print("Original array:", arr)
+            print("Sorted array using Gravity Sort:", sorted_arr)
+                    `}
+      </SyntaxHighlighter>
+    </Box>
+);
+const MergeSortCode = () => (
+    <Box p="4" borderWidth="1px" borderRadius="md" my="4">
+        <Text fontSize="20px" color='#fcc015' mb="2">Merge Sort Code:</Text>
+        <SyntaxHighlighter language="python" style={materialDark}>
+        {`
+            def merge_sort(arr):
+                if len(arr) > 1:
+                    mid = len(arr) // 2
+                    left_half = arr[:mid]
+                    right_half = arr[mid:]
+            
+                    merge_sort(left_half)
+                    merge_sort(right_half)
+            
+                    i = j = k = 0
+            
+                    while i < len(left_half) and j < len(right_half):
+                        if left_half[i] < right_half[j]:
+                            arr[k] = left_half[i]
+                            i += 1
+                        else:
+                            arr[k] = right_half[j]
+                            j += 1
+                        k += 1
+            
+                    while i < len(left_half):
+                        arr[k] = left_half[i]
+                        i += 1
+                        k += 1
+            
+                    while j < len(right_half):
+                        arr[k] = right_half[j]
+                        j += 1
+                        k += 1
+            
+            arr = [64, 25, 12, 22, 11]
+            merge_sort(arr)
+            print("Merge Sort:", arr)
+                    `}
+      </SyntaxHighlighter>
+    </Box>
+);
 
 class AlgoVisualSorter extends React.Component {
     constructor() {
@@ -246,7 +385,24 @@ class AlgoVisualSorter extends React.Component {
     pause() {
         this.setState({isRunning:false})
     }
+    renderAlgorithmCode() {
+        const { selectedAlgo } = this.state;
 
+        switch (selectedAlgo) {
+            case 'SELECTION':
+                return <SelectionSortCode />;
+            case 'BUBBLE':
+                return <BubbleSortCode />;
+            case 'MERGE':
+                return <MergeSortCode />;
+            case 'QUICK':
+                return <QuickSortCode />;
+            case 'GRAVITY':
+                return <GravitySortCode />;
+            default:
+                return null;
+        }
+    }
     render() {
         const pivotBefore = (this.state.pivot !== null && this.state.pivot.isBefore) ? this.state.pivot.before : null
         const pivotAfter = (this.state.pivot !== null && !this.state.pivot.isBefore) ? this.state.pivot.after : null
@@ -254,9 +410,27 @@ class AlgoVisualSorter extends React.Component {
             <>
                 <Header/>
                 <div>
-                    <AlgoVisualSortFunctionBar isRunning={this.state.isRunning} selectedAlgo={this.state.selectedAlgo} setAlgo={this.setAlgo} delay={this.state.delay} setDelay={this.setDelay} generateRandomArray={this.generateRandomArray} start={this.start} pause={this.pause}/>
-                    <AlgoVisualSortChart array={this.state.array} sorted={this.state.sorted} scanElement={this.state.scanElement} pivotBefore={pivotBefore} pivotAfter={pivotAfter}/>
+                    <AlgoVisualSortFunctionBar
+                        isRunning={this.state.isRunning}
+                        selectedAlgo={this.state.selectedAlgo}
+                        setAlgo={this.setAlgo}
+                        delay={this.state.delay}
+                        setDelay={this.setDelay}
+                        generateRandomArray={this.generateRandomArray}
+                        start={this.start}
+                        pause={this.pause}
+                    />
+                    <AlgoVisualSortChart
+                        array={this.state.array}
+                        sorted={this.state.sorted}
+                        scanElement={this.state.scanElement}
+                        pivotBefore={pivotBefore}
+                        pivotAfter={pivotAfter}
+                    />
                 </div>
+                <Box maxWidth={"7xl"} mt={4} marginLeft={"75px"}>
+                    {this.renderAlgorithmCode()}
+                </Box>
             </>
         )
     }
