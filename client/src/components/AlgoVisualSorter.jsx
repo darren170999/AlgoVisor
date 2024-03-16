@@ -12,7 +12,7 @@ class AlgoVisualSorter extends React.Component {
             selectedAlgo:'SELECTION',
             array:[],
             sorted:new Set(),
-            arraySize:50,
+            arraySize:20,
             scanElement:null,
             pivot:null,
             delay:100,
@@ -126,6 +126,11 @@ class AlgoVisualSorter extends React.Component {
                 const diagram = scanElement === null ? buffer.consumeDiagram() : this.state.array
                 await(createPromise(this.state.delay, diagram, sortedSet, scanElement, null))
             }
+        }
+        const scanElement = buffer.consumeScan()
+        if (scanElement === undefined) {
+            for (let j = 0; j < this.state.array.length; j++) sortedSet.add(buffer.consumeSorted())
+            await(createPromise(this.state.delay, this.state.array, sortedSet, null, null))
         }
     }
 

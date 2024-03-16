@@ -1,5 +1,7 @@
 import React from 'react';
 import { BarChart, Bar, Cell, ResponsiveContainer } from 'recharts';
+import Legend from './Legend';
+import { Flex, Box} from '@chakra-ui/react';
 
 const generateData = (array) => {
   const data = array.map(x => {
@@ -8,14 +10,15 @@ const generateData = (array) => {
   return data
 }
 
-const colors = ["black", "grey", "blue", "lightgrey", "red"]
+const colors = ["grey", "white", "blue", "lightgrey", "red"]
 
 export default class AlgoVisualSortChart extends React.Component {
   render() {
     const data = generateData(this.props.array)
     return (
-      <div style={{margin:'auto', width:'85%', overflow:'hidden'}}>
-      <ResponsiveContainer width="100%" height={600}>
+      <Box margin="auto" width="85%" overflow="hidden" >
+      <Legend/>
+      <ResponsiveContainer width="100%" height={500}>
         <BarChart
           width={500}
           height={300}
@@ -37,7 +40,7 @@ export default class AlgoVisualSortChart extends React.Component {
           </Bar>
         </BarChart>
       </ResponsiveContainer>
-      </div>
+      </Box>
     );
   }
 }

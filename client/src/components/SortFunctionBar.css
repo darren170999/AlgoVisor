@@ -11,6 +11,7 @@
     font-size:1em;
     background-color:transparent;
     background-repeat:no-repeat;
+    color: white;
     border:none;
     outline:none;
     cursor:pointer;
@@ -18,30 +19,29 @@
 }
 
 .sort_button_container button:hover {
-    color: grey;
+    color: white;
 }
 
 .sort_button_container select {
     font-size:1em;
-    /* color:#66FCF1; */
     background-color:transparent;
     background-repeat:no-repeat;
+    color: white;
     border:none;
     outline:none;
     cursor:pointer;
-    width:25%;
 }
 
 .sort_button_container select:hover {
-    color: grey;
+    color: white;
 }
 
 .sort_button_container select option {
-    background-color:#0B0C10;
+    background-color:white;
 }
 
 .sort_button_container div {
     font-size:1em;
-    /* color:#66FCF1; */
+    color: white;
     width:25%;
 }

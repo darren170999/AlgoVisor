@@ -21,7 +21,7 @@
 }
 
 .button_container button:hover {
-    color: grey;
+    color: white;
 }
 
 .button_container select {
@@ -38,7 +38,7 @@
 }
 
 .button_container select:hover {
-    color: grey
+    color: white
 }
 
 .button_container select option {

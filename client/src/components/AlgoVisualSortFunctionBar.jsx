@@ -1,28 +1,27 @@
-import React, { Component, ChangeEvent } from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
+import React, { useState } from 'react';
+import { Box, Button, Select } from '@chakra-ui/react';
 import RangeSlider from 'react-bootstrap-range-slider';
 import './SortFunctionBar.css';
-
 
 class AlgoVisualSortFunctionBar extends React.Component {
     render() {
         return (
-            <div className="sort_button_container">
-                <button onClick={()=>this.props.generateRandomArray()}> 
+            <Box className="sort_button_container">
+                <Button onClick={() => this.props.generateRandomArray()} colorScheme="red">
                     SHUFFLE ARRAY
-                </button>
-                <select onChange={(event)=>this.props.setAlgo(event.target.value)}>
+                </Button>
+                <Select onChange={(event) => this.props.setAlgo(event.target.value)} color="white">
+                    {/* <option value="">Please Select</option> */}
                     <option value="SELECTION"> SELECTION SORT </option>
                     <option value="BUBBLE"> BUBBLE SORT </option>
                     <option value="MERGE"> MERGE SORT </option>
                     <option value="QUICK"> QUICK SORT </option>
                     <option value="GRAVITY"> GRAVITY SORT </option>
-                </select>
-                <button onClick={()=>this.props.isRunning ? this.props.pause() : this.props.start()}>
+                </Select>
+                <Button onClick={() => this.props.isRunning ? this.props.pause() : this.props.start()} colorScheme="red">
                     {this.props.isRunning ? 'PAUSE' : 'RUN'}
-                </button>
-                <div>
+                </Button>
+                <Box color="white">
                     SPEED
                     <RangeSlider 
                         value={(300 - this.props.delay)/50}
@@ -33,8 +32,8 @@ class AlgoVisualSortFunctionBar extends React.Component {
                         min={1}
                         max={5}                              
                     />
-                </div>
-            </div>
+                </Box>
+            </Box>
         )
     }
 }

@@ -8,6 +8,7 @@ class AlgoVisualFunctionBar extends React.Component {
     render() {
         return (
             <div className="button_container">
+                
                 <button onClick={()=>this.props.genMaze()}> 
                     GENERATE MAZE 
                 </button>

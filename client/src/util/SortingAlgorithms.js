@@ -21,6 +21,8 @@ export const selectionSort = (arr) => {
         swap(unsorted, i, minIdx)
         diagram.push(unsorted)
     }
+    // Add the final state of the array to the diagram
+    // diagram.push(arr.slice(0, arr.length))
     return new SortBuffer(diagram,sorted,scan)
 }
 
@@ -43,6 +45,7 @@ export const bubbleSort = (arr) => {
         sorted.push(arr.length-1-i)
     }
     sorted.push(0)
+    // diagram.push(arr.slice(0, arr.length))
     return new SortBuffer(diagram,sorted,scan)
 }
 
@@ -53,6 +56,7 @@ export const mergeSort = (arr) => {
     const sorted = []
     mergeSortHelper(diagram, scan, res, 0, arr.length-1)
     for (let i = 0; i < arr.length; i++) sorted.push(i)
+    diagram.push(res.slice(0, arr.length))
     return new SortBuffer(diagram, sorted, scan)
 }
 
