@@ -1,7 +1,6 @@
-import React from 'react';
 import { Box, Flex, Text } from '@chakra-ui/react';
 
-const Legend = () => {
+const SortLegend = () => {
   return (
     <Flex >
       <Box width="20px" height="20px" backgroundColor="gray" marginRight="5px"></Box>
@@ -14,4 +13,4 @@ const Legend = () => {
   );
 };
 
-export default Legend;
+export default SortLegend;

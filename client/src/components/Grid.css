@@ -5,20 +5,20 @@
 }
 
 .default {
-    height:1.5625em;
-    width:1.5625em;
+    height:1.5em;
+    width:1.5em;
 }
 
 .source_node {
     background-color:blue;
-    height:1.5625em;
-    width:1.5625em;
+    height:1.5em;
+    width:1.5em;
 }
 
 .target_node {
     background-color:black;
-    height:1.5625em;
-    width:1.5625em;
+    height:1.5em;
+    width:1.5em;
 }
 
 @keyframes visitedAnimation {
@@ -44,8 +44,8 @@
 }
 
 .visited_node {
-    height:1.5625em;
-    width:1.5625em;
+    height:1.5em;
+    width:1.5em;
     animation-name: visitedAnimation;
     animation-duration: 1.5s;
     animation-timing-function: ease-out;
@@ -75,8 +75,8 @@
 }
 
 .path_node {
-    height:1.5625em;
-    width:1.5625em;
+    height:1.5em;
+    width:1.5em;
     animation-name: pathAnimation;
     animation-duration: 1.5s;
     animation-timing-function: ease-out;
@@ -89,12 +89,12 @@
 
 .wall_node {
     background-color:#da8d00;
-    height:1.5625em;
-    width:1.5625em;
+    height:1.5em;
+    width:1.5em;
 }
 
 .weak_wall_node {
     background-color:#b3b000;
-    height:1.5625em;
-    width:1.5625em;
+    height:1.5em;
+    width:1.5em;
 }

@@ -3,29 +3,28 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css';
 import RangeSlider from 'react-bootstrap-range-slider';
 import './FunctionBar.css';
-
+import { Box, Button, Select } from '@chakra-ui/react';
 class AlgoVisualFunctionBar extends React.Component {
     render() {
         return (
-            <div className="button_container">
-                
-                <button onClick={()=>this.props.genMaze()}> 
-                    GENERATE MAZE 
-                </button>
-                <select onChange={(event)=>this.props.setAlgo(event.target.value)}>
+            <Box className="button_container">
+                <Button onClick={()=>this.props.genMaze()} colorScheme="red"> 
+                    GENERATE 
+                </Button>
+                <Select onChange={(event)=>this.props.setAlgo(event.target.value)} color="white">
                     <option value="BFS"> BREADTH-FIRST SEARCH </option>
                     <option value="DFS"> DEPTH-FIRST SEARCH </option>
                     <option value="DIJKSTRA"> DIJKSTRA'S ALGORITHM </option>
                     <option value="ASTAR"> ASTAR (MANHATTAN) </option>
-                </select>
-                <select onChange={(event)=>this.props.setWallType(event.target.value)}>
+                </Select>
+                <Select onChange={(event)=>this.props.setWallType(event.target.value)} color="white">
                     <option value="NON-PASSABLE WALL"> NON-PASSABLE WALL </option>
                     <option value="WEAK WALL"> WEAK WALL - WEIGHT 50</option>
-                </select>
-                <button onClick={()=>this.props.isRunning ? this.props.pause() : this.props.start()}>
+                </Select>
+                <Button onClick={()=>this.props.isRunning ? this.props.pause() : this.props.start()} colorScheme="red">
                     {this.props.isRunning ? 'PAUSE' : 'RUN'}
-                </button>
-                <div>
+                </Button>
+                <Box color="white" fontWeight={'bold'}>
                     SPEED
                     <RangeSlider 
                         value={(250 - this.props.delay)/50}
@@ -36,11 +35,11 @@ class AlgoVisualFunctionBar extends React.Component {
                         min={1}
                         max={5}                              
                     />
-                </div>
-                <button onClick={()=>this.props.reset()}>
+                </Box>
+                <Button onClick={()=>this.props.reset()}>
                     RESET
-                </button>
-            </div>
+                </Button>
+            </Box>
         )
     }
 }

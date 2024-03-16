@@ -7,6 +7,8 @@ import Buffer from '../util/Buffer'
 import {mazeRecursiveDiv} from '../util/MazeGenerationAlgorithms'
 import AlgoVisualFunctionBar from './AlgoVisualFunctionBar'
 import Header from '../components/Header'
+import PathLegend from './PathLegend'
+import { Box } from '@chakra-ui/react'
 
 class AlgoVisualPathFinder extends React.Component {
     constructor() {
@@ -202,10 +204,24 @@ class AlgoVisualPathFinder extends React.Component {
         return (
             <>
                 <Header/>
-                <div>
-                    <AlgoVisualFunctionBar genMaze={this.generateMaze} setAlgo={this.setAlgo} setDelay={this.setDelay} start={this.start} pause={this.pausePlayback} reset={this.reset} setWallType={this.setWallType} isRunning={this.state.isRunning} delay={this.state.delay}/>
-                    <Grid gridState={this.state} nodeModifier={nodeModifier}/>
-                </div>
+                <Box margin="auto" width="85%" overflow="hidden">
+                    <AlgoVisualFunctionBar 
+                        genMaze={this.generateMaze} 
+                        setAlgo={this.setAlgo} 
+                        setDelay={this.setDelay} 
+                        start={this.start} 
+                        pause={this.pausePlayback} 
+                        reset={this.reset} 
+                        setWallType={this.setWallType} 
+                        isRunning={this.state.isRunning} 
+                        delay={this.state.delay}
+                    />
+                    <PathLegend/>
+                    <Grid 
+                        gridState={this.state} 
+                        nodeModifier={nodeModifier}
+                    />
+                </Box>
             </>
         )
     }

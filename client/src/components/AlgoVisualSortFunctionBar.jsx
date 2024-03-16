@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Button, Select } from '@chakra-ui/react';
 import RangeSlider from 'react-bootstrap-range-slider';
 import './SortFunctionBar.css';
