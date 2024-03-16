@@ -8,8 +8,210 @@ import {mazeRecursiveDiv} from '../util/MazeGenerationAlgorithms'
 import AlgoVisualFunctionBar from './AlgoVisualFunctionBar'
 import Header from '../components/Header'
 import PathLegend from './PathLegend'
-import { Box } from '@chakra-ui/react'
+import { Box, Text } from '@chakra-ui/react'
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { materialDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+const BfsCode = () => (
+    <Box p="4" borderWidth="1px" borderRadius="md" my="4">
+      <Text fontSize="20px" color="#fcc015" mb="2">
+        Breadth First Search Code:
+      </Text>
+      <SyntaxHighlighter language="python" style={materialDark}>
+        {`
+from collections import deque
 
+def bfs(graph, start):
+    visited = set()
+    queue = deque([start])
+    visited.add(start)
+
+    while queue:
+        current_node = queue.popleft()
+        print(current_node, end=' ')
+
+        for neighbor in graph[current_node]:
+            if neighbor not in visited:
+                queue.append(neighbor)
+                visited.add(neighbor)
+
+# Example usage:
+graph = {
+    'A': ['B', 'C'],
+    'B': ['A', 'D', 'E'],
+    'C': ['A', 'F', 'G'],
+    'D': ['B'],
+    'E': ['B'],
+    'F': ['C'],
+    'G': ['C']
+}
+
+start_node = 'A'
+print("BFS Traversal:")
+bfs(graph, start_node)
+                    `}
+      </SyntaxHighlighter>
+    </Box>
+  );
+
+const DfsCode = () => (
+    <Box p="4" borderWidth="1px" borderRadius="md" my="4">
+        <Text fontSize="20px" color='#fcc015' mb="2">Depth First Search Code:</Text>
+        <SyntaxHighlighter language="python" style={materialDark}>
+        {`
+def dfs(graph, start, visited=None):
+if visited is None:
+    visited = set()
+visited.add(start)
+print(start, end=' ')
+
+for neighbor in graph[start]:
+    if neighbor not in visited:
+        dfs(graph, neighbor, visited)
+
+# Example usage:
+graph = {
+'A': ['B', 'C'],
+'B': ['A', 'D', 'E'],
+'C': ['A', 'F', 'G'],
+'D': ['B'],
+'E': ['B'],
+'F': ['C'],
+'G': ['C']
+}
+
+start_node = 'A'
+print("DFS Traversal:")
+dfs(graph, start_node)
+                    `}
+      </SyntaxHighlighter>
+    </Box>
+);
+const DijkstraCode = () => (
+    <Box p="4" borderWidth="1px" borderRadius="md" my="4">
+        <Text fontSize="20px" color='#fcc015' mb="2" >Dijkstra Code:</Text>
+        <SyntaxHighlighter language="python" style={materialDark}>
+        {`
+import heapq
+
+def dijkstra(graph, start):
+    # Initialize distances to all nodes as infinity
+    distances = {node: float('inf') for node in graph}
+    distances[start] = 0
+    
+    # Initialize priority queue with start node
+    pq = [(0, start)]
+    
+    while pq:
+        # Pop the node with the smallest distance
+        current_distance, current_node = heapq.heappop(pq)
+        
+        # If this node has already been visited with a shorter path, skip it
+        if current_distance > distances[current_node]:
+            continue
+        
+        # Update distances to neighbors
+        for neighbor, weight in graph[current_node].items():
+            distance = current_distance + weight
+            if distance < distances[neighbor]:
+                distances[neighbor] = distance
+                heapq.heappush(pq, (distance, neighbor))
+    
+    return distances
+
+# Example usage:
+graph = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'A': 1, 'C': 2, 'D': 5},
+    'C': {'A': 4, 'B': 2, 'D': 1},
+    'D': {'B': 5, 'C': 1}
+}
+
+start_node = 'A'
+distances = dijkstra(graph, start_node)
+
+print("Shortest distances from node", start_node + ":")
+for node, distance in distances.items():
+    print("To node", node + ":", distance)
+
+                    `} 
+      </SyntaxHighlighter>
+    </Box>
+);
+const AStarCode = () => (
+    <Box p="4" borderWidth="1px" borderRadius="md" my="4">
+        <Text fontSize="20px" color='#fcc015' mb="2">A Star Code:</Text>
+        <SyntaxHighlighter language="python" style={materialDark}>
+        {`
+import heapq
+
+class Node:
+    def __init__(self, state, parent=None, action=None, cost=0, heuristic=0):
+        self.state = state
+        self.parent = parent
+        self.action = action
+        self.cost = cost
+        self.heuristic = heuristic
+        self.total_cost = cost + heuristic
+
+    def __lt__(self, other):
+        return self.total_cost < other.total_cost
+
+def astar_search(initial_state, goal_test, successors, heuristic):
+    frontier = []
+    explored = set()
+    initial_node = Node(state=initial_state, cost=0, heuristic=heuristic(initial_state))
+    heapq.heappush(frontier, initial_node)
+
+    while frontier:
+        current_node = heapq.heappop(frontier)
+        current_state = current_node.state
+
+        if goal_test(current_state):
+            path = []
+            while current_node:
+                path.append((current_node.state, current_node.action))
+                current_node = current_node.parent
+            return path[::-1]
+
+        explored.add(current_state)
+
+        for action, next_state, step_cost in successors(current_state):
+            if next_state not in explored:
+                new_cost = current_node.cost + step_cost
+                new_heuristic = heuristic(next_state)
+                new_node = Node(state=next_state, parent=current_node, action=action, cost=new_cost, heuristic=new_heuristic)
+                heapq.heappush(frontier, new_node)
+
+    return None
+
+# Example usage:
+def h(state):
+    # Simple heuristic: Manhattan distance to goal
+    goal_state = (2, 2)
+    return abs(state[0] - goal_state[0]) + abs(state[1] - goal_state[1])
+
+def successors(state):
+    x, y = state
+    moves = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # up, down, left, right
+    for dx, dy in moves:
+        new_x, new_y = x + dx, y + dy
+        if 0 <= new_x < 3 and 0 <= new_y < 3:  # assuming a 3x3 grid
+            yield (dx, dy), (new_x, new_y), 1  # action, next_state, step_cost
+
+def goal_test(state):
+    return state == (2, 2)
+
+initial_state = (0, 0)
+path = astar_search(initial_state, goal_test, successors, h)
+if path:
+    print("A* Path found:", path)
+else:
+    print("No path found.")
+
+                    `}
+      </SyntaxHighlighter>
+    </Box>
+);
 class AlgoVisualPathFinder extends React.Component {
     constructor() {
         super()
@@ -188,6 +390,22 @@ class AlgoVisualPathFinder extends React.Component {
             this.setState({isGeneratingMaze:false})
         })
     }
+    renderPathFindingCode() {
+        const { selectedAlgo } = this.state;
+
+        switch (selectedAlgo) {
+            case 'BFS':
+                return <BfsCode />;
+            case 'DFS':
+                return <DfsCode />;
+            case 'DIJKSTRA':
+                return <DijkstraCode />;
+            case 'ASTAR':
+                return <AStarCode />;
+            default:
+                return null;
+        }
+    }
 
     render() {
         const nodeModifier = {
@@ -221,6 +439,9 @@ class AlgoVisualPathFinder extends React.Component {
                         gridState={this.state} 
                         nodeModifier={nodeModifier}
                     />
+                    <Box maxWidth={"6xl"} mt={24} marginLeft={"35px"}>
+                        {this.renderPathFindingCode()}
+                    </Box>
                 </Box>
             </>
         )
