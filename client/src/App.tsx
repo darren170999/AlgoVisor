@@ -21,6 +21,7 @@ import PerformancePage from "./pages/PerformancePage";
 import AdminDatabase from "./pages/AdminDatabase";
 import AdminDelete from "./pages/AdminDelete";
 import Townhall from "./pages/Townhall";
+import AdminTownhall from "./pages/AdminTownhall";
 
 export default function App() {
 
@@ -35,6 +36,7 @@ export default function App() {
           <Route path="/admin/course" element={<AdminCourse/>}/>
           <Route path="/admin/delete" element={<AdminDelete/>}/>
           <Route path="/admin/database" element={<AdminDatabase/>}/>
+          <Route path="/admin/townhall" element={<AdminTownhall/>}/>
           <Route path="/landing" element={<Landing/>}/>
           <Route path="/accounts" element={<Accounts/>}/>
           <Route path="/home" element={<Home/>}/>

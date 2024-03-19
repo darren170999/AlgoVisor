@@ -83,6 +83,9 @@ function Admin() {
                 <Link to="/admin/database">
                   <Button variant="ghost">Observe database metrics</Button>
                 </Link>
+                <Link to="/admin/townhall">
+                  <Button variant="ghost">Open or close rooms</Button>
+                </Link>
               </Stack>
             </DrawerBody>
           </DrawerContent>
