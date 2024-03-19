@@ -1,0 +1,49 @@
+.button_container {
+    margin:auto;
+    width:90%;
+    display:flex;
+    grid:auto auto auto auto;
+    grid-gap:1.25em;
+    padding-top: 30px;
+}
+
+.button_container button {
+    font-size:1em;
+    color: white;
+    background-color:Transparent;
+    background-repeat:no-repeat;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    /* width:15%; */
+}
+
+.button_container button:hover {
+    color: white;
+}
+
+.button_container select {
+    font-size:1em;
+    color:white;
+    background-color:Transparent;
+    background-repeat:no-repeat;
+    border:none;
+    outline:none;
+    cursor:pointer;
+    overflow:hidden;
+    font-weight: bold;
+    width: 280px;
+}
+
+.button_container select:hover {
+    color: white
+}
+
+.button_container select option {
+    background-color:white;
+}
+
+.button_container div {
+    font-size:1em;
+    width:25%;
+}

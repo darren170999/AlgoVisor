@@ -51,7 +51,7 @@ function Header() {
                         </HStack>
                             {loggedIn && <nav>
                                 <HStack spacing={24} >
-                                    <Link to="/visualizer">
+                                    <Link to="/algovisual">
                                         <FontAwesomeIcon icon={faEye} size="2x" />
                                     </Link>
                                     <Link to="/townhall">

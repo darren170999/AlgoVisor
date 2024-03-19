@@ -9,7 +9,7 @@ import Landing from "./pages/Landing";
 import Accounts from "./pages/Accounts";
 import Home from "./pages/Home";
 import Concepts from "./pages/Concepts";
-import Visualizer from "./pages/Visualizer";
+import AlgoVisual from "./pages/AlgoVisual";
 import Error404 from "./pages/Error404";
 import MonacoCode from "./pages/MonacoCode";
 import Tutorials from "./pages/Tutorials";
@@ -21,6 +21,7 @@ import PerformancePage from "./pages/PerformancePage";
 import AdminDatabase from "./pages/AdminDatabase";
 import AdminDelete from "./pages/AdminDelete";
 import Townhall from "./pages/Townhall";
+import AdminTownhall from "./pages/AdminTownhall";
 
 export default function App() {
 
@@ -35,10 +36,11 @@ export default function App() {
           <Route path="/admin/course" element={<AdminCourse/>}/>
           <Route path="/admin/delete" element={<AdminDelete/>}/>
           <Route path="/admin/database" element={<AdminDatabase/>}/>
+          <Route path="/admin/townhall" element={<AdminTownhall/>}/>
           <Route path="/landing" element={<Landing/>}/>
           <Route path="/accounts" element={<Accounts/>}/>
           <Route path="/home" element={<Home/>}/>
-          <Route path="/visualizer" element={<Visualizer/>}/>
+          <Route path="/algoVisual" element={<AlgoVisual/>}/>
           <Route path="/townhall" element={<Townhall/>}/>
           <Route path="/concepts" element={<Concepts/>}/>
           <Route path="/tutorials" element={<Tutorials/>}/>
