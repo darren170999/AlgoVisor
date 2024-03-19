@@ -1,4 +1,4 @@
-import { Text, Box, Grid, GridItem, Avatar, Img } from "@chakra-ui/react";
+import { Text, Box, Grid, GridItem, Avatar, Img, HStack } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import Footer from "../components/Footer";
 
