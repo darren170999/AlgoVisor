@@ -1,4 +1,4 @@
-import { Box, Card, Grid, GridItem, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text } from "@chakra-ui/react";
+import { Box, Card, Code, Grid, GridItem, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text } from "@chakra-ui/react";
 import Header from "../components/Header";
 import MonacoEditor from "../components/MonacoEditor";
 import { useParams } from "react-router-dom";
@@ -163,14 +163,21 @@ function MonacoCode() {
                     </ModalHeader>
                     <ModalCloseButton color="white" />
                     <ModalBody>
-                        <Box p={2} borderRadius="md" my={1}>
-                            <Text>
-                                {messages}
-                            </Text>
-                        </Box>
+                        {messages && messages.split('\n\n').map((block, index) => (
+                            <Box key={index} p={2} borderRadius="md" my={1}>
+                                {block.trim().startsWith('```') ? (
+                                    <Code fontSize="md" colorScheme="green" borderRadius="md" p={2} my={1}>
+                                        {block.replace(/```/g, '')}
+                                    </Code>
+                                ) : (
+                                    <Text>{block}</Text>
+                                )}
+                            </Box>
+                        ))}
                     </ModalBody>
                 </ModalContent>
             </Modal>
+
             <SuccessModal
                 isOpen={isModalOpen} 
                 onClose={handleCloseModal} 
