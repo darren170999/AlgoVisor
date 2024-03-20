@@ -1,4 +1,4 @@
-import { Box, Card, Grid, GridItem, IconButton, Modal, ModalBody, ModalContent, ModalOverlay } from "@chakra-ui/react";
+import { Box, Card, Grid, GridItem, IconButton, Modal, ModalBody, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay, Text } from "@chakra-ui/react";
 import Header from "../components/Header";
 import MonacoEditor from "../components/MonacoEditor";
 import { useParams } from "react-router-dom";
@@ -8,7 +8,10 @@ import SuccessModal from "../components/SuccessModal";
 import { QnType } from "../types/QnType";
 import { TestCaseType } from "../types/TestCaseType";
 import { RiOpenaiFill } from "react-icons/ri";
-import OpenAI from "openai";
+import { fetchAPI } from "../api/fetchAPI";
+import { OpenAI } from "openai";
+import { Models } from "openai/resources";
+import { ChatCompletionMessageParam } from "openai/resources/chat/completions";
 function MonacoCode() {
     let { qnid } = useParams();
     const [question, setQuestion] = useState<QnType | null>(null);
@@ -16,40 +19,50 @@ function MonacoCode() {
     const [success, setSuccess] = useState<boolean>(false);
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
     const [isChatGPTModal, setIsChatGPTModal] = useState<boolean>(false);
-    const [advice, setAdvice] = useState<string>("");
-    const openai = new OpenAI({
-        apiKey: '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'
-    });
-    
-      const getAdviceFromChatGPT = async (prompt: string) => {
+    const [messages, setMessages] = useState<string>();
+    const [apiKey, setApiKey] = useState<string | null>(null);
+    const getAdviceFromChatGPT = async (prompt:string, apiKey:string) => {
+        console.log(prompt)
         try {
-            const response = await fetch("https://api.openai.com/v1/engines/davinci/completions", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer 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" // Replace with your OpenAI API key
-                },
-                body: JSON.stringify({
-                    prompt: prompt,
-                    max_tokens: 50 // Maximum number of tokens to generate in the response
-                })
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setAdvice(data.choices[0].text.trim()); // Set the advice received from API
-            } else {
-                console.error("Failed to get advice:", response.status);
-            }
+            const openai = new OpenAI({ apiKey: apiKey, dangerouslyAllowBrowser: true });
+    
+            const requestBody = {
+                model: "gpt-3.5-turbo-instruct", // Use a model that supports general completions
+                prompt: prompt,
+                max_tokens: 200,
+            };
+    
+            const response = await openai.completions.create(requestBody); // Use general completions endpoint
+            console.log(response);
+            return response.choices[0].text;
         } catch (error) {
             console.error("Error fetching advice:", error);
+            return null;
         }
     };
-    const handleChatGPTIconClick = () => {
-        setIsChatGPTModal(true);
-        // Call the function to fetch advice when the icon is clicked
-        const prompt = `${question?.name}\n\n${question?.description}\n\nExamples:\n${question?.examples}`;
-        getAdviceFromChatGPT(prompt);
+    
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const api = await fetchAPI();
+                console.log(api);
+                setApiKey(api);
+            } catch (error) {
+                console.error("Failed to fetch API key:", error);
+            }
+        }
+        fetchData();
+    }, []);
+    
+    // Example usage of getAdviceFromChatGPT
+    const handleChatGPTIconClick = async () => {
+        if(apiKey){
+            const prompt = `Based on this question:\n${question?.description}\n\nExamples:\n${question?.examples}\n How can I write this code or improve on my solution?`;
+            const advice = await getAdviceFromChatGPT(prompt, apiKey);
+            console.log("Advice from ChatGPT:", advice);
+            setMessages(advice!)
+        }
+        setIsChatGPTModal(true)
     };
     const GetTestCase = async() => {
         try {
@@ -144,9 +157,17 @@ function MonacoCode() {
             </Box>
             <Modal isOpen={isChatGPTModal} onClose={handleCloseChatGPTModal}>
                 <ModalOverlay />
-                <ModalContent bg="green.200">
+                <ModalContent bg="white" color="black" borderRadius="md">
+                    <ModalHeader fontSize="xl" fontWeight="bold" bg="green.300" color="white">
+                        Some Advice from a LLM like ChatGPT!
+                    </ModalHeader>
+                    <ModalCloseButton color="white" />
                     <ModalBody>
-                        Give some advice
+                        <Box p={2} borderRadius="md" my={1}>
+                            <Text>
+                                {messages}
+                            </Text>
+                        </Box>
                     </ModalBody>
                 </ModalContent>
             </Modal>
