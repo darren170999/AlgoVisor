@@ -317,6 +317,17 @@ paths:
           schema:
             $ref: '#/definitions/responses.Response'
       summary: Delete Course based on name
+  /settings:
+    get:
+      description: Get all api keys
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.Response'
+      summary: Get all API Keys
   /subscriber:
     delete:
       description: Unsubscribe

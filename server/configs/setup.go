@@ -55,3 +55,8 @@ func GetAttemptsCollection(client *mongo.Client, collectionName string) *mongo.C
 	collection := client.Database("Dev-Tutorial").Collection(collectionName)
 	return collection
 }
+
+func GetSettingsCollection(client *mongo.Client, collectionName string) *mongo.Collection {
+	collection := client.Database("Dev-AlgoVisor").Collection(collectionName)
+	return collection
+}

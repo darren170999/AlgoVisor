@@ -115,6 +115,23 @@ const docTemplate = `{
                 }
             }
         },
+        "/settings": {
+            "get": {
+                "description": "Get all api keys",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Get all API Keys",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/subscriber": {
             "post": {
                 "description": "Creating a Subscriber in MongoDB",

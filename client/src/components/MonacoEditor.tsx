@@ -442,7 +442,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
           <Button onClick={handleCloseRunModal}>Close</Button>
         </ModalFooter>
       </ModalContent>
-    </Modal>;
+    </Modal>
     <Modal isOpen={showSaveModal} onClose={handleCloseSaveModal} size="sm" useInert={false} >
       <ModalContent style={{ top: 0, left: 450, margin: '20px' }} >
         <ModalHeader>Test Save</ModalHeader>
@@ -454,9 +454,9 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
           <Button onClick={handleCloseSaveModal}>Close</Button>
         </ModalFooter>
       </ModalContent>
-    </Modal>;
+    </Modal>
     <Modal isOpen={showSubmitModal} onClose={handleCloseSubmitModal} size="sm" useInert={false}>
-      <ModalContent style={{ top: 0, left: 0, margin: '20px' }} >
+      <ModalContent style={{ top: 5000, left: 300, margin: '20px' }} >
         <ModalHeader>Test Submit</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
@@ -466,7 +466,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
           <Button onClick={handleCloseSubmitModal}>Close</Button>
         </ModalFooter>
       </ModalContent>
-    </Modal>;
+    </Modal>
     </Box>
     </>
   );
