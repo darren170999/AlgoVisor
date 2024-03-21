@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Avatar, Box, HStack } from "@chakra-ui/react";
 import { SiVisualstudio, SiVisualstudiocode } from "react-icons/si";
 import { RiAdminLine, RiAdminFill } from "react-icons/ri";

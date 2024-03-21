@@ -17,7 +17,7 @@ const Announcements: React.FC<Announcements> = ({ images }) => {
   }, [images]);
 
   return (
-    <AspectRatio maxW="100vw" maxH="300px">
+    <AspectRatio maxW="100vw" maxH="200px">
       <Image src={images[currentImageIndex]} />
     </AspectRatio>
   );

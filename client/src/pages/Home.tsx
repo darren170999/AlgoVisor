@@ -32,7 +32,7 @@ function Home() {
   return (
     <ChakraProvider>
       <Header />
-      <Announcements images={images} />
+      {/* <Announcements images={images} /> */}
       <Box position="relative">
         {isShow ? (
           <>

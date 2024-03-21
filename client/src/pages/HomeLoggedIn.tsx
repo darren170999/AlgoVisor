@@ -1,7 +1,9 @@
 import { Text, Box, Grid, GridItem, Avatar, Img, HStack } from "@chakra-ui/react";
 import { useEffect, useState, useRef } from "react";
 import Footer from "../components/Footer";
-
+import { SiVisualstudio, SiVisualstudiocode } from "react-icons/si";
+import { GiWhiteBook, GiBlackBook } from "react-icons/gi";
+import { FaRegFileCode, FaFileCode } from "react-icons/fa6";
 function HomeLoggedIn() {
   const [animationStarted, setAnimationStarted] = useState(false);
   const [showSecondSection, setShowSecondSection] = useState(false); // State to track whether to show the second section
@@ -63,33 +65,7 @@ function HomeLoggedIn() {
 
   return (
     <>
-      <Grid templateColumns="1fr 1fr" gap={0} height="100vh" background="#1a1f71">
-        <GridItem>
-          <Box
-            className={`picture ${animationStarted ? "slide-in" : ""}`}
-            position="relative"
-            height="50%"
-            width="50%"
-            overflow="hidden"
-          >
-            <Box
-              className="picture-content"
-              position="absolute"
-              left={animationStarted ? "0%" : "-100%"}
-              top="0"
-              width="100%"
-              height="100%"
-              transition="left 1s ease-in-out"
-            >
-              <Img
-                borderRadius='full'
-                boxSize='300px'
-                src='logo512.png'
-                alt='Dan Abramov'
-              />
-            </Box>
-          </Box>
-        </GridItem>
+      <Grid templateColumns="2fr 1fr" gap={0} height="100vh" background="#1a1f71">
         <GridItem>
           <Box
             className={`words ${animationStarted ? "slide-in" : ""}`}
@@ -107,19 +83,111 @@ function HomeLoggedIn() {
               width="100%"
               height="100%"
               transition="right 1s ease-in-out"
+              padding="50px"
             >
-              <Text fontSize="5xl" color="black" fontWeight="bold" fontFamily={"arial"}>
-                Welcome to Algovisor,
-              </Text>
-              <Text fontSize="5xl" color="white" fontWeight="bold" fontFamily={"arial"}>
-                {username}
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+              >
+                <Text fontSize="3xl" color="white" fontWeight="bold" fontFamily={"sans-serif"}>
+                  Welcome to AlgoVisor,
+                </Text>
+                <Text fontSize="3xl" color="#fcc015" fontWeight="bold" fontFamily={"sans-serif"} marginLeft="10px">
+                  {username}
+                </Text>
+              </Box>
+              <Text fontSize="3xl" color="white" fontWeight="bold" fontFamily={"sans-serif"}   textAlign="justify" >
+                AlgoVisor, is a one stop lifelong learning platform. Here, users can hang out in private meeting rooms, learn about algorithms
+                revisit materials, attend career fairs, orientations and so much more!
               </Text>
             </Box>
           </Box>
         </GridItem>
+
+        <GridItem>
+          <Box
+            className={`picture ${animationStarted ? "slide-in" : ""}`}
+            position="relative"
+            height="100%"
+            width="100%"
+            overflow="hidden"
+          >
+            <Box
+              className="picture-content"
+              position="absolute"
+              left={animationStarted ? "0%" : "-100%"}
+              top="5"
+              width="100%"
+              height="100%"
+              transition="left 1s ease-in-out"
+              padding={30}
+              display="grid"
+              gridTemplateColumns="repeat(2, 1fr)"
+              gridTemplateRows="repeat(2, 1fr)"
+              gap={4} // Adjust gap as needed
+            >
+
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                width="100%"
+                height="100%"
+              >
+                <SiVisualstudio size={200} color={"white"} />
+                <Box
+                  display="flex"
+                  alignItems="baseline"
+                  justifyContent="flex-end"
+                  width="100%"
+                  height="100%"
+                >
+                  <GiWhiteBook size={100} color={"white"} />
+                </Box>
+              <Box
+                display="flex"
+                alignItems="end"
+                justifyContent="center"
+                width="100%"
+                height="100%"
+              >
+                <FaRegFileCode size={100} color={"white"} />
+              </Box>
+              </Box>
+            </Box>
+          </Box>
+        </GridItem>
+
+
       </Grid>
 
-      <Grid ref={secondSectionRef} templateColumns="1fr 1fr" gap={0} height="100vh" background="#fcc015">
+      <Grid ref={secondSectionRef} templateColumns="1fr 2fr" gap={0} height="100vh" background="#fcc015">
+        <GridItem>
+          <Box
+            className={`picture ${showSecondSection ? "slide-in" : ""}`}
+            position="relative"
+            height="100%"
+            width="100%"
+            overflow="hidden"
+          >
+            <Box
+              className="picture-content"
+              position="absolute"
+              right={showSecondSection ? "0%" : "100%"}
+              top="0"
+              width="100%"
+              height="100%"
+              transition="right 1s ease-in-out"
+              padding="50px"
+            >
+              <Avatar
+                src="https://bit.ly/dan-abramov"
+                size='3xl'
+              />
+            </Box>
+          </Box>
+        </GridItem>
         <GridItem>
           <Box
             className={`words ${showSecondSection ? "slide-in" : ""}`}
@@ -137,36 +205,30 @@ function HomeLoggedIn() {
               width="100%"
               height="100%"
               transition="left 1s ease-in-out"
+              padding="50px"
             >
-              <Text fontSize="5xl" color="black" fontWeight="bold" fontFamily={"arial"}>
-                Welcome to Algovisor {username},
+             <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+              >
+                <Text fontSize="4xl" color="white" fontWeight="bold" fontFamily={"sans-serif"}>
+                  Learn 
+                </Text>
+                <Text fontSize="4xl" color="#1a1f71" fontWeight="bold" fontFamily={"sans-serif"} marginLeft="10px">
+                  Together - 
+                </Text>
+                <Text fontSize="4xl" color="white" fontWeight="bold" fontFamily={"sans-serif"} marginLeft="10px">
+                  Grow 
+                </Text>
+                <Text fontSize="4xl" color="#1a1f71" fontWeight="bold" fontFamily={"sans-serif"} marginLeft="10px">
+                  Together  
+                </Text>
+              </Box>
+              <Text fontSize="3xl" color="#1a1f71" fontWeight="bold" fontFamily={"sans-serif"}>
+                 Developed by Nanyang Technological University, School of Electrical and Electronic Engineering.
+                 Project is helmed by Dr. Michelle Shao XuGuang, Assistant Chair (Lifelong learning) and Senior Lecturer at NTU
               </Text>
-            </Box>
-          </Box>
-        </GridItem>
-        {/* Picture */}
-        <GridItem>
-          <Box
-            className={`picture ${showSecondSection ? "slide-in" : ""}`}
-            position="relative"
-            height="50%"
-            width="50%"
-            overflow="hidden"
-          >
-            <Box
-              className="picture-content"
-              position="absolute"
-              right={showSecondSection ? "0%" : "100%"}
-              top="0"
-              width="100%"
-              height="100%"
-              transition="right 1s ease-in-out"
-            >
-              <img
-                src="https://bit.ly/dan-abramov"
-                alt="Dan Abramov"
-                style={{ width: "100%", height: "100%", objectFit: "cover", margin: "" }}
-              />
             </Box>
           </Box>
         </GridItem>
@@ -189,16 +251,15 @@ function HomeLoggedIn() {
               width="100%"
               height="100%"
               transition="left 1s ease-in-out"
+              padding={20}
             >
-              <img
+              <Avatar
                 src="https://bit.ly/dan-abramov"
-                alt="Dan Abramov"
-                style={{ width: "100%", height: "100%", objectFit: "cover", margin: "" }}
-              />
+                size="2xl"
+              /> 
             </Box>
           </Box>
         </GridItem>
-        {/* Words */}
         <GridItem>
           <Box
             className={`words ${showThirdSection ? "slide-in" : ""}`}
@@ -208,18 +269,19 @@ function HomeLoggedIn() {
             overflow="hidden"
           >
             <Box
-              className="words-content"
+              className="picture-content"
               position="absolute"
-              right={showThirdSection ? "0%" : "-100%"}
-              top="50%"
-              transform="translateY(-50%)"
+              left={showThirdSection ? "0%" : "-100%"}
+              top="0"
               width="100%"
               height="100%"
-              transition="right 1s ease-in-out"
+              transition="left 1s ease-in-out"
+              padding={20}
             >
-              <Text fontSize="5xl" color="black" fontWeight="bold" fontFamily={"arial"}>
-                Welcome to Algovisor {username},
-              </Text>
+              <Avatar
+                src="https://bit.ly/dan-abramov"
+                size={"2xl"}
+              />
             </Box>
           </Box>
         </GridItem>
