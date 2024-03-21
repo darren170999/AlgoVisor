@@ -11,7 +11,7 @@ function MyCarousel() {
           AlgoVisor is powered by the following technologies
         </Text>
       </HStack>
-    <HStack paddingTop={10} bgColor="#1a1f71">
+    <HStack paddingTop={10} bgColor="#1a1f71" height="50vh">
       <Carousel
         showArrows={false}
         showStatus={false}
@@ -41,6 +41,7 @@ function MyCarousel() {
           <Avatar src="https://webimages.mongodb.com/_com_assets/cms/kuzt9r42or1fxvlq2-Meta_Generic.png" size={"2xl"} margin={10}/>
           <Avatar src="https://static-00.iconduck.com/assets.00/openai-icon-505x512-pr6amibw.png" size={"2xl"} margin={10}/>
           <Avatar src="https://logowik.com/content/uploads/images/twilio2236.jpg" size={"2xl"} margin={10}/>
+          <Avatar src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTWhd7wqbjECoyXcsnkCWMQoUb2A0PHzhAgbt8EdFTe-w&s" size={"2xl"} margin={10}/>
         </Box>
       </Carousel>
     </HStack>

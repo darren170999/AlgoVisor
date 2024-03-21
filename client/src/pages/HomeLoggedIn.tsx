@@ -66,7 +66,7 @@ function HomeLoggedIn() {
 
   return (
     <>
-      <Grid templateColumns="2fr 1fr" gap={0} height="100vh" background="#1a1f71">
+      <Grid templateColumns="2fr 1fr" gap={0} height="80vh" background="#1a1f71">
         <GridItem>
           <Box
             className={`words ${animationStarted ? "slide-in" : ""}`}
@@ -163,7 +163,7 @@ function HomeLoggedIn() {
 
       </Grid>
 
-      <Grid ref={secondSectionRef} templateColumns="1fr 2fr" gap={0} height="100vh" background="#fcc015">
+      <Grid ref={secondSectionRef} templateColumns="1fr 2fr" gap={0} height="80vh" background="#fcc015">
         <GridItem>
           <Box
             className={`picture ${showSecondSection ? "slide-in" : ""}`}
