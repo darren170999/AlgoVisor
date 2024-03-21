@@ -4,12 +4,13 @@ import Footer from "../components/Footer";
 import { SiVisualstudio, SiVisualstudiocode } from "react-icons/si";
 import { GiWhiteBook, GiBlackBook } from "react-icons/gi";
 import { FaRegFileCode, FaFileCode } from "react-icons/fa6";
+import MyCarousel from "../components/MyCarousel";
 function HomeLoggedIn() {
   const [animationStarted, setAnimationStarted] = useState(false);
   const [showSecondSection, setShowSecondSection] = useState(false); // State to track whether to show the second section
-  const [showThirdSection, setShowThirdSection] = useState(false); // State to track whether to show the third section
+  // const [showThirdSection, setShowThirdSection] = useState(false); // State to track whether to show the third section
   const secondSectionRef = useRef<HTMLDivElement>(null); // Ref for the second section
-  const thirdSectionRef = useRef<HTMLDivElement>(null); // Ref for the third section
+  // const thirdSectionRef = useRef<HTMLDivElement>(null); // Ref for the third section
   const username = localStorage.getItem("username");
 
   useEffect(() => {
@@ -38,28 +39,28 @@ function HomeLoggedIn() {
     }
 
     // Observer function to handle intersection for the third section
-    const handleIntersectionThird = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          setShowThirdSection(true); // Start animation when third section comes into view
-        }
-      });
-    };
+    // const handleIntersectionThird = (entries: IntersectionObserverEntry[]) => {
+    //   entries.forEach(entry => {
+    //     if (entry.isIntersecting) {
+    //       setShowThirdSection(true); // Start animation when third section comes into view
+    //     }
+    //   });
+    // };
 
     // Create intersection observer for the third section
-    const observerThird = new IntersectionObserver(handleIntersectionThird, {
-      threshold: 0.5 // Trigger when half of the target is visible
-    });
+    // const observerThird = new IntersectionObserver(handleIntersectionThird, {
+    //   threshold: 0.5 // Trigger when half of the target is visible
+    // });
 
-    // Observe the third section
-    if (thirdSectionRef.current) {
-      observerThird.observe(thirdSectionRef.current);
-    }
+    // // Observe the third section
+    // if (thirdSectionRef.current) {
+    //   observerThird.observe(thirdSectionRef.current);
+    // }
 
     // Cleanup
     return () => {
       observerSecond.disconnect(); // Disconnect observer for second section when component unmounts
-      observerThird.disconnect(); // Disconnect observer for third section when component unmounts
+      // observerThird.disconnect(); // Disconnect observer for third section when component unmounts
     };
   }, []);
 
@@ -234,7 +235,7 @@ function HomeLoggedIn() {
         </GridItem>
       </Grid>
 
-      <Grid ref={thirdSectionRef} templateColumns="1fr 1fr" gap={0} height="100vh" background="#1a1f71">
+      {/* <Grid ref={thirdSectionRef} templateColumns="1fr 1fr" gap={0} height="100vh" background="#1a1f71">
         <GridItem>
           <Box
             className={`picture ${showThirdSection ? "slide-in" : ""}`}
@@ -285,7 +286,8 @@ function HomeLoggedIn() {
             </Box>
           </Box>
         </GridItem>
-      </Grid>
+      </Grid> */}
+      <MyCarousel/>
       <Footer/>
     </>
   );
