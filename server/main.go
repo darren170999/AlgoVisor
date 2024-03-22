@@ -39,6 +39,7 @@ func main() {
 	routes.TestCasesRoute(router)
 	routes.AttemptRoute(router)
 	routes.SubscriberRoute(router)
+	routes.SettingsRoute(router)
 
 	router.Run(":8080")
 }

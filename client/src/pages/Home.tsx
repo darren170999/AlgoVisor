@@ -3,6 +3,7 @@ import { ChakraProvider, Box, Text } from "@chakra-ui/react";
 import Header from "../components/Header";
 import HomeLoggedIn from "./HomeLoggedIn";
 import IntroComponent from "../components/IntroComponent";
+import Announcements from "../components/Announcements";
 
 function Home() {
   const [isShow, setIsShow] = useState<boolean>(true);
@@ -26,9 +27,12 @@ function Home() {
     }
   }, []);
 
+  const images = ["image.png", "image1.png", "image2.png"];
+
   return (
     <ChakraProvider>
       <Header />
+      {/* <Announcements images={images} /> */}
       <Box position="relative">
         {isShow ? (
           <>

@@ -64,11 +64,21 @@ const Footer: FC = () => {
           px={12}
           color="black"
           justifyContent="center"
-          alignItems="center"
+          alignItems="end"
           maxWidth="1024px"
-          height={16}
+          height={16} 
         >
           <p>Darren Soh JunHan • © 2023</p>
+        </Flex>
+        <Flex
+          margin="0 auto"
+          px={12}
+          color="black"
+          justifyContent="center"
+          alignItems="start"
+          maxWidth="1024px"
+          height={8} 
+        >
           {isUnSub ? 
           <a href="#" onClick={handleUnsubscribe} style={{ marginLeft: "1rem" }}>
             Unsubscribe from mailing list
