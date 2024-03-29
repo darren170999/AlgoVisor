@@ -18,8 +18,8 @@ function MyCarousel() {
         showIndicators={false}
         infiniteLoop={true}
         autoPlay={true}
-        interval={5000}
-        transitionTime={3000}
+        interval={2000}
+        transitionTime={1000}
       >
         <Box>
           <Avatar src="https://bit.ly/43Uwykm" size={"2xl"} margin={10}/>
