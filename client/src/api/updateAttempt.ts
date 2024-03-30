@@ -14,14 +14,14 @@ export async function updateAttempt(
     });
 
     if (response.status === 200) {
-      console.log('Form data posted successfully!');
+      // console.log('Form data posted successfully!');
       const data = response.data;
-      console.log(data);
+      // console.log(data);
     } else {
-      console.log('Unexpected status code:', response.status);
+      // console.log('Unexpected status code:', response.status);
     }
   } catch (error) {
-    console.error('An error occurred:', error);
+    // console.error('An error occurred:', error);
     throw error;
   }
 }

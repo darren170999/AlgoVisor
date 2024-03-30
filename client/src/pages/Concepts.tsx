@@ -16,8 +16,6 @@ type ItemType = {
 function Concepts(){
     const [items, setItems] = useState<ItemType[]>([]);
     const getCourses = async() => {
-        // e.preventDefault();
-        console.log("accessing");
         try{
             const response = await fetch("http://localhost:8080/courses", {
                 method: "GET",
@@ -26,14 +24,11 @@ function Concepts(){
                 }
             });
             if(response.ok){
-                console.log(response);
                 var res = await response.json();
-                // console.log(res)
                 setItems(res.data.data)
                 
             }
         } catch {
-            console.log("Failed")
         }
     }
     useEffect(()=>{

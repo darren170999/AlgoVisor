@@ -29,15 +29,11 @@ function AdminQuestion(){
             });
             if(response.ok){
                 const data = await response.json();
-                console.log(data);
                 const latestQnID = data.data.data.length + 1;
-                console.log(latestQnID);
                 setLastQnID(latestQnID.toString());
             } else {
-                console.log(response);
             }
         } catch (err) {
-            console.log("Error:", err);
         } finally {
             setLoading(false);  // Set loading to false regardless of success or failure
         }     
@@ -91,12 +87,9 @@ function AdminQuestion(){
         if (tagsValidationMessage === "Valid format") {
             try {
                 const response = await createTutorial(createQuestionFormData);
-                console.log("Form data posted successfully!");
-                console.log(response);
                 // Check if a new question was created
                 if (response && response.data) {
                     const send = await sendQuestionNotifications();
-                    console.log(send);
                     // setCreateQuestionFormData({
                     //     name: "",
                     //     description: "",
@@ -109,11 +102,10 @@ function AdminQuestion(){
                 }
                 window.location.replace("/admin");
             } catch (err) {
-                console.log("Failed to create tutorial: ", err);
                 window.location.replace("/admin/question");
             }
         } else {
-            console.log("Not working");
+            // console.log("Not working");
         }
     };
     

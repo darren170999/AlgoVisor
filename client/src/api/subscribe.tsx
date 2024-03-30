@@ -12,12 +12,10 @@ export async function subscribe(subscriberFormData: subscriberFormDataProps) {
         });
     if(response.ok){
         response.json().then((data) => {
-            console.log(data);
         });
     } else {
-        console.log(response);
     }
 } catch (err) {
-    console.log("Dk wtf happen: ", err)
+    // console.log("Dk wtf happen: ", err)
 }
 }

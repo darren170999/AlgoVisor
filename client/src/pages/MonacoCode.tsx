@@ -22,7 +22,6 @@ function MonacoCode() {
     const [messages, setMessages] = useState<string>();
     const [apiKey, setApiKey] = useState<string | null>(null);
     const getAdviceFromChatGPT = async (prompt:string, apiKey:string) => {
-        console.log(prompt)
         try {
             const openai = new OpenAI({ apiKey: apiKey, dangerouslyAllowBrowser: true });
     
@@ -33,7 +32,6 @@ function MonacoCode() {
             };
     
             const response = await openai.completions.create(requestBody); // Use general completions endpoint
-            console.log(response);
             return response.choices[0].text;
         } catch (error) {
             console.error("Error fetching advice:", error);
@@ -45,7 +43,6 @@ function MonacoCode() {
         async function fetchData() {
             try {
                 const api = await fetchAPI();
-                console.log(api);
                 setApiKey(api);
             } catch (error) {
                 console.error("Failed to fetch API key:", error);
@@ -59,7 +56,6 @@ function MonacoCode() {
         if(apiKey){
             const prompt = `Based on this question:\n${question?.description}\n\nExamples:\n${question?.examples}\n How can I write this code or improve on my solution?`;
             const advice = await getAdviceFromChatGPT(prompt, apiKey);
-            console.log("Advice from ChatGPT:", advice);
             setMessages(advice!)
         }
         setIsChatGPTModal(true)
@@ -99,7 +95,6 @@ function MonacoCode() {
     };
 
     const handleSuccess = () => {
-        console.log("Solution passed!");
         setSuccess(true);
         setIsModalOpen(true);
     };
@@ -114,8 +109,6 @@ function MonacoCode() {
 
     const handleViewPerformance = () => {
         setIsModalOpen(false);
-        // Navigate to performance page or perform any action you want
-        console.log("View Performance clicked");
     };
 
     useEffect(() => {

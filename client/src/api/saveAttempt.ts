@@ -7,8 +7,6 @@ export async function saveAttempt(saveAttemptData: any): Promise<void> {
         "Content-Type": "application/json",
       }
     });
-    console.log("Form data posted successfully!");
-    console.log(response.data);
   } catch (error) {
     console.error("An error occurred:", error);
     throw error;

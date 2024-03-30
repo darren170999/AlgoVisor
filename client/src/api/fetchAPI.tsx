@@ -6,7 +6,6 @@ export async function fetchAPI() {
         if (response.status === 200) {
             const data = response.data.data.data[0];
             const chatGPTApiKey = data.chatgptapikey;
-            // console.log(data)
             return chatGPTApiKey;
         } else {
             console.error('Failed to fetch API:', response.statusText);

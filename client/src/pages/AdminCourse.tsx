@@ -57,7 +57,7 @@ function AdminCourse(){
         } else {
             setIsEmpty(false);
         }
-        console.log(createCourseFormData)
+        // console.log(createCourseFormData)
     }
     
     const handleUpload = async (e: { preventDefault: () => void; }) => {
@@ -76,7 +76,6 @@ function AdminCourse(){
                 }
             });
             if(response.ok){
-                console.log("Course data posted successfully!");
                 const videoFormData = new FormData();
                 videoFormData.append('videoSrc', file!);
                 videoFormData.append('filename', filename);
@@ -86,16 +85,13 @@ function AdminCourse(){
                     body: videoFormData,
                 });
                 if(videoResponse.ok){
-                    console.log("Video uploaded successfully!");
                 } else {
-                    console.log(videoResponse);
                 }
                 window.location.replace("/admin");
             } else {
-                console.log(response);
             }
         } catch (err) {
-            console.log("Dk wtf happen: ", err)
+            // console.log("Dk wtf happen: ", err)
         }     
     };
 

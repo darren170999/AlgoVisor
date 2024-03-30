@@ -234,7 +234,7 @@ class AlgoVisualSorter extends React.Component {
 
             const scanElement = buffer.consumeScan()
             const diagramFrame = buffer.consumeDiagram()
-            console.log(scanElement, diagramFrame)
+            // console.log(scanElement, diagramFrame)
 
             if ((scanElement === undefined || scanElement === null) && (diagramFrame === undefined || diagramFrame === null)) {
                 sortedSet.add(buffer.consumeSorted())
