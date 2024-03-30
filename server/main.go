@@ -19,6 +19,8 @@ import (
 // @host 	localhost:8080
 // @BasePath /api
 func main() {
+        // Set Gin mode to release mode
+        gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
 	// Initialize the database
