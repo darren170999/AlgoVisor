@@ -9,5 +9,5 @@ import (
 func SettingsRoute(router *gin.Engine) {
 
 	router.GET("/settings", controllers.GetAllSettings())
-	router.GET("/api/settings", controllers.GetAllSettings())
+	// router.GET("/api/settings", controllers.GetAllSettings())
 }
