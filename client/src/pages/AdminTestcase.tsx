@@ -80,7 +80,7 @@ function AdminTestcase(){
     const handleCreation = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         try{
-            const response = await fetch("http://localhost:8080/testcase/create" , {
+            const response = await fetch("http://34.124.242.8:8080/testcase/create" , {
                 method: "POST",
                 headers : {
                 "Content-Type": "application/json",

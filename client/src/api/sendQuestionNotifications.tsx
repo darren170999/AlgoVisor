@@ -1,6 +1,6 @@
 export const sendQuestionNotifications = async (): Promise<any> => {
     try {
-        const response = await fetch("http://localhost:8080/subscribers/notify")
+        const response = await fetch("http://34.124.242.8:8080/subscribers/notify")
         if (response.ok) {
             return response.json();
         } else {

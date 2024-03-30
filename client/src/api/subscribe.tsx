@@ -3,7 +3,7 @@ import { subscriberFormDataProps } from '../types/subscriberFormDataProps';
 
 export async function subscribe(subscriberFormData: subscriberFormDataProps) {
   try{
-    const response = await fetch("http://localhost:8080/subscriber" , {
+    const response = await fetch("http://34.124.242.8:8080/subscriber" , {
             method: "POST",
             headers : {
             "Content-Type": "application/json",

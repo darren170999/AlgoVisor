@@ -1,6 +1,6 @@
 export async function fetchAllAttempts(){
     try {
-        const response = await fetch(`http://localhost:8080/tutorials/code/attempt`);
+        const response = await fetch(`http://34.124.242.8:8080/tutorials/code/attempt`);
         if (response.ok) {
             const data = await response.json();
             return data.data;

@@ -7,7 +7,7 @@ export async function updateAttempt(
   saveAttemptData: { speed: number; memory: number }
 ): Promise<void> {
   try {
-    const response = await axios.put(`http://localhost:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}`, saveAttemptData, {
+    const response = await axios.put(`http://34.124.242.8:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}`, saveAttemptData, {
       headers: {
         'Content-Type': 'application/json',
       },
