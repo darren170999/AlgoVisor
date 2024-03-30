@@ -29,34 +29,34 @@ var DB *mongo.Client = ConnectDB()
 
 // getting database users
 func GetUsersCollection(client *mongo.Client, collectionName string) *mongo.Collection {
-	collection := client.Database("Dev-AlgoVisor").Collection(collectionName)
+	collection := client.Database("Prod-AlgoVisor").Collection(collectionName)
 	return collection
 }
 
 // getting database courses
 func GetCoursesCollection(client *mongo.Client, collectionName string) *mongo.Collection {
-	collection := client.Database("Dev-Concepts").Collection(collectionName)
+	collection := client.Database("Prod-Concepts").Collection(collectionName)
 	return collection
 }
 
 // getting database tutorials
 func GetTutorialCollection(client *mongo.Client, collectionName string) *mongo.Collection {
-	collection := client.Database("Dev-Tutorial").Collection(collectionName)
+	collection := client.Database("Prod-Tutorial").Collection(collectionName)
 	return collection
 }
 
 // getting database testCases
 func GetTestCasesCollection(client *mongo.Client, collectionName string) *mongo.Collection {
-	collection := client.Database("Dev-Tutorial").Collection(collectionName)
+	collection := client.Database("Prod-Tutorial").Collection(collectionName)
 	return collection
 }
 // getting database attempts
 func GetAttemptsCollection(client *mongo.Client, collectionName string) *mongo.Collection {
-	collection := client.Database("Dev-Tutorial").Collection(collectionName)
+	collection := client.Database("Prod-Tutorial").Collection(collectionName)
 	return collection
 }
 
 func GetSettingsCollection(client *mongo.Client, collectionName string) *mongo.Collection {
-	collection := client.Database("Dev-AlgoVisor").Collection(collectionName)
+	collection := client.Database("Prod-AlgoVisor").Collection(collectionName)
 	return collection
 }
