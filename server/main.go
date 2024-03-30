@@ -28,7 +28,7 @@ func main() {
 
 	// CORS configuration
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:3000"} // Opening a port hole for everything in this ""
+	config.AllowOrigins = []string{"https://algo-visor.vercel.app/"} // Opening a port hole for everything in this ""
 	router.Use(cors.New(config))
 
 	// Add Swagger documentation
