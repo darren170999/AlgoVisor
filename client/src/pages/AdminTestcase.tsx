@@ -88,17 +88,13 @@ function AdminTestcase(){
                 body: JSON.stringify(createTestCaseFormData),
             });
             if(response.ok){
-                console.log("Form data posted successfully!");
                 response.json().then((data) => {
-                    console.log(data);
                     window.location.replace("/admin");
                 });
             } else {
-                console.log(response);
                 // window.location.replace("/admin/testcase");
             }
         } catch (err) {
-            console.log("Dk wtf happen: ", err)
         }     
     };
 

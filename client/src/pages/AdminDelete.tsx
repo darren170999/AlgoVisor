@@ -53,8 +53,6 @@ function AdminDelete() {
         .catch(error => {
             console.error("Error fetching questions:", error);
         });
-        console.log(testcaseOptions)
-        console.log(questionOptions)
     }, []);
 
     useEffect(()=>{

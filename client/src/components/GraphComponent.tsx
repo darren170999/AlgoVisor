@@ -8,7 +8,7 @@ type GraphProps = {
 };
 
 function GraphComponent({ title, data, current }: GraphProps) {
-    console.log(title);
+    // console.log(title);
 
     // Convert data to integers and floor the values
     const processedData = data.map(value => Math.floor(parseInt(value.toString())));
@@ -20,7 +20,7 @@ function GraphComponent({ title, data, current }: GraphProps) {
     processedData.forEach((value) => {
         frequencyMap.set(value, (frequencyMap.get(value) || 0) + 1);
     });
-    console.log(frequencyMap);
+    // console.log(frequencyMap);
 
     // Extract unique values and their frequencies
     const uniqueValues = Array.from(frequencyMap.keys());
@@ -33,7 +33,7 @@ function GraphComponent({ title, data, current }: GraphProps) {
             break;
         }
     }
-    console.log(uniqueValues);
+    // console.log(uniqueValues);
 
     return (
         <Card>

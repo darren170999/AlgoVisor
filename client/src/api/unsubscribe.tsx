@@ -13,10 +13,10 @@ export async function unsubscribe(subscriberFormData: subscriberFormDataProps) {
 
       if (response.status === 200) {
         // Handle success, e.g., show a confirmation message
-        console.log("Successfully unsubscribed");
+        // console.log("Successfully unsubscribed");
       } else {
         // Handle errors, e.g., show an error message
-        console.error("Failed to unsubscribe");
+        // console.error("Failed to unsubscribe");
       }
     }
   } catch (error) {

@@ -11,9 +11,11 @@ function Home() {
 
   useEffect(() => {
     const check = localStorage.getItem("user");
-    setIsShow(check === "false");
+    if(check === 'false'|| check ===null){
+      setIsShow(true);
+    }
 
-    if (check === "false") {
+    if (isShow) {
       const text = "Welcome to algovisor";
       let index = 0;
       const intervalId = setInterval(() => {
@@ -32,7 +34,6 @@ function Home() {
   return (
     <ChakraProvider>
       <Header />
-      {/* <Announcements images={images} /> */}
       <Box position="relative">
         {isShow ? (
           <>

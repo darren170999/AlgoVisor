@@ -55,26 +55,23 @@ function Accounts(){
                     setErr("");
                     window.location.replace("/home");
                 } else {
-                    console.log(data)
-                    console.error("Invalid username or password");
+                    // console.error("Invalid username or password");
                 }
             } else {
-                console.error("Error");
-                setErr("Invalid username or password");
+                // console.error("Error");
+                // setErr("Invalid username or password");
             }
         } catch (error) {
-            console.log("Dk wtf happen: ", error)
+            // console.log("Dk wtf happen: ", error)
         }
 
         
     };
     const handleSignUp = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        console.log(signUpFormData);
         setSubscriberFormData({
             email: signUpFormData.email
         })
-        // console.log(subscriberFormData)
         localStorage.setItem("email", signUpFormData.email)
         try{
             // if (!signUpFormData.email.endsWith('@e.ntu.edu.sg')) {
@@ -89,12 +86,11 @@ function Accounts(){
                 });
             if(response.ok){
                 response.json().then((data) => {
-                    console.log(data);
                 });
                 setIsLogging(!isLogging);
                 setErr("");
                 try{
-                    console.log(subscriberFormData)
+                    // console.log(subscriberFormData)
                     const response = await fetch("http://localhost:8080/subscriber" , {
                             method: "POST",
                             headers : {
@@ -104,20 +100,17 @@ function Accounts(){
                         });
                     if(response.ok){
                         response.json().then((data) => {
-                            console.log(data);
                         });
                     } else {
-                        console.log(response);
                     }
                 } catch (err) {
-                    console.log("Dk wtf happen: ", err)
+                    // console.log("Dk wtf happen: ", err)
                 }
             } else {
-                console.log(response);
                 setErr("Username or email has been used");
             }
         } catch (err) {
-            console.log("Dk wtf happen: ", err)
+            // console.log("Dk wtf happen: ", err)
         }
 
         

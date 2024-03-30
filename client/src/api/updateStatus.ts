@@ -12,17 +12,14 @@ export async function updateStatus(
             'Content-Type': 'application/json'
           }
         });
-      
-        console.log(response);
-      
         if (response.status === 200) {
-          console.log('Form data posted successfully!');
-          console.log(response.data); // This will be the response data
+          // console.log('Form data posted successfully!');
+          // console.log(response.data); // This will be the response data
         } else {
-          console.log('Unexpected status code:', response.status);
+          // console.log('Unexpected status code:', response.status);
         }
       } catch (error) {
-        console.error('An error occurred:', error);
+        // console.error('An error occurred:', error);
       }
   }
   

@@ -20,12 +20,10 @@ function Tutorials(){
         const result: saveAttemptDataProps[] = res.data.data;
         const completedQnsIds = result.filter(attempt => attempt.status === "Completed")
         .map(completedAttempt => completedAttempt.qnid);
-        console.log(completedQnsIds)
         setCompletedQns(completedQnsIds);
 
       }
     } catch (error) {
-      console.log("Failed")
     }
   }
   useEffect(()=>{
@@ -34,7 +32,6 @@ function Tutorials(){
   },[])
 
   const getQuestions = async() => {
-    console.log("accessing");
     try{
         const response = await fetch("http://localhost:8080/tutorials", {
             method: "GET",
@@ -43,18 +40,15 @@ function Tutorials(){
             }
         });
         if(response.ok){
-            // console.log(response);
             var res = await response.json();
             setQuestions(res.data.data)
             
         }
     } catch {
-        console.log("Failed")
     }
   }
   useEffect(()=>{
       getQuestions()
-      console.log(questions)
   },[])
 
   const appropriateTabs = (tabIndex: number) => {
