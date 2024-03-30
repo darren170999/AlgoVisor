@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export function fetchAllSubscribers() {
-    return axios.get('http://localhost:8080/subscribers')
+    return axios.get('http://34.124.242.8:8080/subscribers')
         .then(response => {
             if (response.status === 200) {
                 return response.data.data.data;
