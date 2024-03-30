@@ -14,10 +14,10 @@ func TutorialRoute(router *gin.Engine) {
 	router.DELETE("/tutorials/code/:qnid", controllers.DeleteAQuestion())
 	router.GET("/tutorials", controllers.GetAllQn())
 	// Swagger API testing
-	router.POST("/api/tutorials/code/create", controllers.CreateQuestion())
-	router.GET("/api/tutorials/code/:qnid", controllers.GetAQuestion())
-	router.PUT("/api/tutorials/code/:qnid", controllers.EditAQuestion())
-	router.DELETE("/api/tutorials/code/:qnid", controllers.DeleteAQuestion())
-	router.GET("/api/tutorials", controllers.GetAllQn())
+	// router.POST("/api/tutorials/code/create", controllers.CreateQuestion())
+	// router.GET("/api/tutorials/code/:qnid", controllers.GetAQuestion())
+	// router.PUT("/api/tutorials/code/:qnid", controllers.EditAQuestion())
+	// router.DELETE("/api/tutorials/code/:qnid", controllers.DeleteAQuestion())
+	// router.GET("/api/tutorials", controllers.GetAllQn())
 	
 }

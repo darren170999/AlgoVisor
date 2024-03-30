@@ -14,9 +14,9 @@ func TestCasesRoute(router *gin.Engine) {
 	router.DELETE("/testcase/:qnid", controllers.DeleteATestCase())
 	router.GET("/testcase", controllers.GetAllTestCases())
 	// Swagger API testing
-	router.POST("/api/testcase/create", controllers.CreateTestCases())
-	router.GET("/api/testcase/:qnid", controllers.GetATestCase())
+	// router.POST("/api/testcase/create", controllers.CreateTestCases())
+	// router.GET("/api/testcase/:qnid", controllers.GetATestCase())
 	// router.PUT("/api/testcase/:qnid", controllers.EditATestCase())
-	router.DELETE("/api/testcase/:qnid", controllers.DeleteATestCase())
-	router.GET("/api/testcase", controllers.GetAllTestCases())
+	// router.DELETE("/api/testcase/:qnid", controllers.DeleteATestCase())
+	// router.GET("/api/testcase", controllers.GetAllTestCases())
 }

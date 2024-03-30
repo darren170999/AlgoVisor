@@ -19,6 +19,8 @@ import (
 // @host 	localhost:8080
 // @BasePath /api
 func main() {
+        // Set Gin mode to release mode
+        gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 
 	// Initialize the database
@@ -26,7 +28,7 @@ func main() {
 
 	// CORS configuration
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:3000"} // Opening a port hole for everything in this ""
+	config.AllowOrigins = []string{"https://algo-visor.vercel.app/"} // Opening a port hole for everything in this ""
 	router.Use(cors.New(config))
 
 	// Add Swagger documentation
