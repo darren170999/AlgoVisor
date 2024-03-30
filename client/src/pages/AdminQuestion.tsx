@@ -21,7 +21,7 @@ function AdminQuestion(){
     // const [formSubmitted, setFormSubmitted] = useState<boolean>(false);
     const callDB = async() => {
         try{
-            const response = await fetch("http://34.124.242.8:8080/tutorials" , {
+            const response = await fetch("https://34.124.242.8:8080/tutorials" , {
                 method: "GET",
                 headers : {
                 "Content-Type": "application/json",

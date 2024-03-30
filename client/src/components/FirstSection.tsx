@@ -22,7 +22,7 @@ const FirstSection = ({ animationStarted, username }: { animationStarted: boolea
             transition="left 1s ease-in-out"
           >
             <img
-              src="https://bit.ly/dan-abramov"
+              src="httpss://bit.ly/dan-abramov"
               alt="Dan Abramov"
               style={{ width: "100%", height: "100%", objectFit: "cover", margin: "" }}
             />
