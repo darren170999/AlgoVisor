@@ -21,7 +21,7 @@ const FullScreenSection = ({ children, isDarkBackground, ...boxProps }: FullScre
           {children}
       </VStack>
       </VStack>
-      <Footer/>
+      {/* <Footer/> */}
     </>
   );
 };
