@@ -5,8 +5,6 @@ import (
 	_ "server/docs"
 	"server/routes"
 
-	// "server/controllers"
-
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
@@ -19,19 +17,19 @@ import (
 // @host 	localhost:8080
 // @BasePath /api
 func main() {
-        // Set Gin mode to release mode
-        gin.SetMode(gin.ReleaseMode)
+	// Set Gin mode to release mode
+	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
-
-	// Initialize the database
-	configs.ConnectDB()
 
 	// CORS configuration
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"https://algo-visor.vercel.app/"} // Opening a port hole for everything in this ""
+	config.AllowOrigins = []string{"https://algo-visor.vercel.app"} // Remove trailing slash
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
-        config.AllowHeaders = []string{"Origin", "Content-Type"}
+	config.AllowHeaders = []string{"Origin", "Content-Type"}
 	router.Use(cors.New(config))
+
+	// Initialize the database
+	configs.ConnectDB()
 
 	// Add Swagger documentation
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
