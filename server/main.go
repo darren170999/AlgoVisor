@@ -29,6 +29,8 @@ func main() {
 	// CORS configuration
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"https://algo-visor.vercel.app/"} // Opening a port hole for everything in this ""
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE"}
+        config.AllowHeaders = []string{"Origin", "Content-Type"}
 	router.Use(cors.New(config))
 
 	// Add Swagger documentation
