@@ -17,7 +17,7 @@ function Concepts(){
     const [items, setItems] = useState<ItemType[]>([]);
     const getCourses = async() => {
         try{
-            const response = await fetch("https://34.124.242.8:8080/courses", {
+            const response = await fetch("https://algovisor.onrender.com/courses", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

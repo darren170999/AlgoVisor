@@ -4,7 +4,7 @@ import { subscriberFormDataProps } from '../types/subscriberFormDataProps';
 export async function unsubscribe(subscriberFormData: subscriberFormDataProps) {
   try {
     if (subscriberFormData && subscriberFormData.email) {
-      const response = await axios.delete("https://34.124.242.8:8080/subscriber", {
+      const response = await axios.delete("https://algovisor.onrender.com/subscriber", {
         headers: {
           "Content-Type": "application/json"
         },

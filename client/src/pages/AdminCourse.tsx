@@ -68,7 +68,7 @@ function AdminCourse(){
         }
         
         try{
-            const response = await fetch("https://34.124.242.8:8080/course/create", {
+            const response = await fetch("https://algovisor.onrender.com/course/create", {
                 method: "POST",
                 body: JSON.stringify(createCourseFormData),
                 headers: {
@@ -80,7 +80,7 @@ function AdminCourse(){
                 videoFormData.append('videoSrc', file!);
                 videoFormData.append('filename', filename);
                 
-                const videoResponse = await fetch("https://34.124.242.8:8080/course/create/video", {
+                const videoResponse = await fetch("https://algovisor.onrender.com/course/create/video", {
                     method: "POST",
                     body: videoFormData,
                 });

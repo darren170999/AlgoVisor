@@ -21,7 +21,7 @@ function IntroComponent() {
               allow="fullscreen;autoplay"
               allowFullScreen
               height="100%"
-              src="httpss://staging.streamable.com/e/tiuwba?autoplay=1&muted=1&nocontrols=1"
+              src="https://staging.streamable.com/e/tiuwba?autoplay=1&muted=1&nocontrols=1"
               width="100%"
               style={{
                 border: "none",

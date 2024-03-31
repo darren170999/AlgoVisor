@@ -37,7 +37,7 @@ function Accounts(){
     const handleLogin = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         try{
-            const response = await fetch("https://34.124.242.8:8080/user/login", {
+            const response = await fetch("https://algovisor.onrender.com/user/login", {
                 method: "POST",
                 headers : {
                     "Content-Type": "application/json",
@@ -77,7 +77,7 @@ function Accounts(){
             // if (!signUpFormData.email.endsWith('@e.ntu.edu.sg')) {
             //     throw Error("Please enter a valid NTU email")
             // }
-            const response = await fetch("https://34.124.242.8:8080/user" , {
+            const response = await fetch("https://algovisor.onrender.com/user" , {
                     method: "POST",
                     headers : {
                     "Content-Type": "application/json",
@@ -91,7 +91,7 @@ function Accounts(){
                 setErr("");
                 try{
                     // console.log(subscriberFormData)
-                    const response = await fetch("https://34.124.242.8:8080/subscriber" , {
+                    const response = await fetch("https://algovisor.onrender.com/subscriber" , {
                             method: "POST",
                             headers : {
                             "Content-Type": "application/json",

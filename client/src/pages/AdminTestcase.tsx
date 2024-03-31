@@ -80,7 +80,7 @@ function AdminTestcase(){
     const handleCreation = async (e: { preventDefault: () => void; }) => {
         e.preventDefault();
         try{
-            const response = await fetch("https://34.124.242.8:8080/testcase/create" , {
+            const response = await fetch("https://algovisor.onrender.com/testcase/create" , {
                 method: "POST",
                 headers : {
                 "Content-Type": "application/json",

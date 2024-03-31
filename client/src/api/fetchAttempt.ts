@@ -6,7 +6,7 @@ interface PreviousAttemptData {
   
   export async function fetchAttempt(qnid: string | undefined, langUsed: number, username: string| null): Promise<PreviousAttemptData | null> {
     try {
-      const response = await fetch(`https://34.124.242.8:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}`);
+      const response = await fetch(`https://algovisor.onrender.com/tutorials/code/attempt/${qnid}/${langUsed}/${username}`);
       if (response.ok) {
         const data = await response.json();
         return data.data.data;

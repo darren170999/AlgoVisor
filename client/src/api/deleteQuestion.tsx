@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function deleteQuestion(qnid: number) {
     try {
-        const response = await axios.delete(`https://34.124.242.8:8080/tutorials/code/${qnid}`);
+        const response = await axios.delete(`https://algovisor.onrender.com/tutorials/code/${qnid}`);
         if (response.status === 200) {
             return response.data;
         } else {

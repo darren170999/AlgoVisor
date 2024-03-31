@@ -1,6 +1,6 @@
 export async function fetchAllCourses(){
     try {
-        const response = await fetch(`https://34.124.242.8:8080/courses`);
+        const response = await fetch(`https://algovisor.onrender.com/courses`);
         if (response.ok) {
             const data = await response.json();
             return data.data;

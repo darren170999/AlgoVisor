@@ -221,7 +221,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
         localStorage.setItem("speed", elapsedTime.toString())
         onSuccess();
         try {
-          const response = await axios.put(`https://34.124.242.8:8080/tutorials/code/attempt/status/${qnid}/${langUsed}/${username}`, updatedSaveAttemptData, {
+          const response = await axios.put(`https://algovisor.onrender.com/tutorials/code/attempt/status/${qnid}/${langUsed}/${username}`, updatedSaveAttemptData, {
             headers: {
               'Content-Type': 'application/json'
             }
@@ -252,7 +252,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   }
   const fetchPreviousAttempt = async () => {
     try {
-      const response = await fetch(`https://34.124.242.8:8080/tutorials/code/attempt/${qnid}/${langUsed}/${username}`);
+      const response = await fetch(`https://algovisor.onrender.com/tutorials/code/attempt/${qnid}/${langUsed}/${username}`);
       const data = await response.json();
       const previousAttemptData: saveAttemptDataProps = data.data.data
       if (isEditorMounted && editorRef.current) {
