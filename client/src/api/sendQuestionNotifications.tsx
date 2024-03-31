@@ -1,6 +1,6 @@
 export const sendQuestionNotifications = async (): Promise<any> => {
     try {
-        const response = await fetch("http://34.124.242.8:8080/subscribers/notify")
+        const response = await fetch("https://algovisor.onrender.com/subscribers/notify")
         if (response.ok) {
             return response.json();
         } else {

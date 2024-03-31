@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function deleteCourse(name: string) {
     try {
-        const response = await axios.delete(`http://34.124.242.8:8080/courses/${name}`);
+        const response = await axios.delete(`https://algovisor.onrender.com/courses/${name}`);
         if (response.status === 200) {
             return response.data;
         } else {

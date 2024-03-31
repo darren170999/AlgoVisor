@@ -14,7 +14,7 @@ function Tutorials(){
   let username = localStorage.getItem("username");
   const getAttempts = async() =>{
     try {
-      const response = await fetch(`http://34.124.242.8:8080/tutorials/code/check/${username}`)
+      const response = await fetch(`https://algovisor.onrender.com/tutorials/code/check/${username}`)
       if(response.ok){
         const res = await response.json();
         const result: saveAttemptDataProps[] = res.data.data;
@@ -33,7 +33,7 @@ function Tutorials(){
 
   const getQuestions = async() => {
     try{
-        const response = await fetch("http://34.124.242.8:8080/tutorials", {
+        const response = await fetch("https://algovisor.onrender.com/tutorials", {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

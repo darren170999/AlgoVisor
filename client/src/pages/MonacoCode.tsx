@@ -62,7 +62,7 @@ function MonacoCode() {
     };
     const GetTestCase = async() => {
         try {
-            const response = await fetch(`http://34.124.242.8:8080/testcase/${qnid}`, {
+            const response = await fetch(`https://algovisor.onrender.com/testcase/${qnid}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -79,7 +79,7 @@ function MonacoCode() {
 
     const GetAQuestion = async () => {
         try {
-            const response = await fetch(`http://34.124.242.8:8080/tutorials/code/${qnid}`, {
+            const response = await fetch(`https://algovisor.onrender.com/tutorials/code/${qnid}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

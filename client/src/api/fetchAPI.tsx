@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function fetchAPI() {
     try {
-        const response = await axios.get('http://34.124.242.8:8080/settings');
+        const response = await axios.get('https://algovisor.onrender.com/settings');
         if (response.status === 200) {
             const data = response.data.data.data[0];
             const chatGPTApiKey = data.chatgptapikey;
