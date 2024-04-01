@@ -181,8 +181,8 @@ func GetAndNotify() gin.HandlerFunc {
 	}
 }
 func sendQuestionNotifications(subscribers []models.Subscriber) error {
-	senderEmail := "darrensohjunhan@gmail.com"
-	senderPassword := "xdom urig tgqm zyao"
+	senderEmail := "algovisorntu@gmail.com"
+	senderPassword := "vjpx sffk dorh ymnt"
 
 	auth := smtp.PlainAuth("", senderEmail, senderPassword, "smtp.gmail.com")
 
