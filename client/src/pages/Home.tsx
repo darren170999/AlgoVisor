@@ -10,7 +10,7 @@ function Home() {
   const [displayText, setDisplayText] = useState<string>("");
   useEffect(() => {
     const check = localStorage.getItem("user");
-    setisLoggedIn(check==="true");
+    setIsLoggedIn(check==="true");
 
     if (isLoggedIn!) {
       const text = "Welcome to algovisor";
