@@ -77,9 +77,6 @@ function Tutorials(){
       isDarkBackground p={8}  spacing={8}>
       <VStack>
         {" "}
-        <Avatar size='2xl' src='/logo192.png'>
-          {" "}{" "}
-        </Avatar>
         <h1 style={{color: "#F7B600"}}></h1>
         <Heading>
           {" "}
