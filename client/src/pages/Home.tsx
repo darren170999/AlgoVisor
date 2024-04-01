@@ -6,16 +6,16 @@ import IntroComponent from "../components/IntroComponent";
 import Announcements from "../components/Announcements";
 
 function Home() {
-  const [isShow, setIsShow] = useState<boolean>(true);
+  const [isloggedIn, setIsLoggedIn] = useState<boolean>(true);
   const [displayText, setDisplayText] = useState<string>("");
 
   useEffect(() => {
     const check = localStorage.getItem("user");
-    if(check === 'false'|| check ===null){
-      setIsShow(true);
+    if(check === "true"){
+      setIsLoggedIn(true);
     }
 
-    if (isShow) {
+    if (isloggedIn!) {
       const text = "Welcome to algovisor";
       let index = 0;
       const intervalId = setInterval(() => {
@@ -29,13 +29,11 @@ function Home() {
     }
   }, []);
 
-  const images = ["image.png", "image1.png", "image2.png"];
-
   return (
     <ChakraProvider>
       <Header />
       <Box position="relative">
-        {isShow ? (
+        {isloggedIn! ? (
           <>
           <IntroComponent/>
             <Box
