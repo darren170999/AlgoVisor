@@ -1,4 +1,4 @@
-# AlgoVisual
+# Algo Visor
 Capstone Project for Information Engineering and Media
 By Darren Soh
 # Current Tech Stacks:
