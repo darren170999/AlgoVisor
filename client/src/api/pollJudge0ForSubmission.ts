@@ -22,8 +22,8 @@ export async function fetchSubmissionProduction(submissionToken: string): Promis
     method: 'GET',
     url: `https://judge0-ce.p.rapidapi.com/submissions/${submissionToken}`,
     params: {
-      base64_encoded: 'true',
-      fields: '*'
+      // base64_encoded: 'true',
+      // fields: '*'
     },
     headers: {
       'X-RapidAPI-Key': 'acdcf60472mshdc3e3ed45642c3bp1c9dd0jsnde507fbb32cf',
