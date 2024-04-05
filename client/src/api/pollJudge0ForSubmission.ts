@@ -26,7 +26,7 @@ export async function fetchSubmissionProduction(submissionToken: string): Promis
       fields: '*'
     },
     headers: {
-      'X-RapidAPI-Key': '03ae996fdbmshbceae746d30896cp102cf4jsne5ad46c7146a',
+      'X-RapidAPI-Key': 'acdcf60472mshdc3e3ed45642c3bp1c9dd0jsnde507fbb32cf',
       'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
     }
   };
