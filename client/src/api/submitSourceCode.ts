@@ -18,8 +18,8 @@ export async function submitSourceCodeProduction(sourceCode: string, languageId:
     method: 'POST',
     url: 'https://judge0-ce.p.rapidapi.com/submissions',
     params: {
-      base64_encoded: 'true',
-      fields: '*'
+      // base64_encoded: 'true',
+      // fields: '*'
     },
     headers: {
       'content-type': 'application/json',
