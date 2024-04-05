@@ -160,7 +160,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       const submission = `${attempt}\n\n${updatedPythonDriver}`;
       const startTime = performance.now();
       axios
-        .post("https://0.0.0.0:2358/submissions", {
+        .post("https://34.124.242.8/submissions", {
           source_code: submission,
           language_id: langUsed,
         })

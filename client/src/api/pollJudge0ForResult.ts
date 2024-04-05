@@ -8,7 +8,7 @@ interface SubmissionResponse {
 
 export async function fetchSubmission(submissionToken: string): Promise<SubmissionResponse> {
   try {
-    const response = await axios.get(`https://0.0.0.0:2358/submissions/${submissionToken}`);
+    const response = await axios.get(`https://34.124.242.8/submissions/${submissionToken}`);
     return response.data;
   } catch (error) {
     // Handle errors, e.g., network error, server error
