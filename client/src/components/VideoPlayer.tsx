@@ -10,7 +10,7 @@ function VideoPlayer({filename}: {filename: string}) {
     
     const fetchVideo = async () => {
         try {
-        const response = await fetch(`http://34.124.242.8:8080/course/video/${filename}`);
+        const response = await fetch(`https://algovisor.onrender.com/course/video/${filename}`);
         if (response.ok) {
             const videoBlob = await response.blob();
             const videoObjectUrl = URL.createObjectURL(videoBlob);

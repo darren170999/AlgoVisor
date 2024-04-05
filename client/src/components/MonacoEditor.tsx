@@ -4,14 +4,14 @@ import axios, { all } from "axios";
 import { Box, Button, Checkbox, Heading, Menu, MenuButton, MenuItem, MenuList, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from "@chakra-ui/react";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { useParams } from "react-router-dom";
-import { submitSourceCode } from "../api/submitSourceCode";
+import { submitSourceCodeProduction } from "../api/submitSourceCode";
 import { arraysEqual } from "../helper/arraysEqual";
 import { TestCaseType } from "../types/TestCaseType";
 import { saveAttemptDataProps } from "../types/SaveAttemptDataProps";
 import { pythonDefault } from "../helper/pythonDefault";
 import { pythonDriver } from "../helper/pythonDriver";
 // import { fetchSubmissionOutput } from "../api/pollJudge0ForResult";
-import { fetchSubmission } from "../api/pollJudge0ForSubmission";
+import { fetchSubmissionProduction } from "../api/pollJudge0ForSubmission";
 import { updateAttempt } from "../api/updateAttempt";
 import { saveAttempt } from "../api/saveAttempt";
 import { cDriver } from "../helper/cDriver";
@@ -122,7 +122,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       // setShowRunModal(false)
       // setShowSaveModal(true)
       setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
-      submitSourceCode(attempt, langUsed)
+      submitSourceCodeProduction(attempt, langUsed)
         .then((submissionToken) => {
           // Handle the response from Judge0, which will include the token.
           waitFor3second().then(() => {
@@ -137,7 +137,7 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
   }
   
   async function pollJudge0ForResult(submissionToken: string) {//consider websockets
-    fetchSubmission(submissionToken)
+    fetchSubmissionProduction(submissionToken)
     .then((response) => {
       const { stdout } = response;
       setOutput(stdout);
@@ -151,7 +151,6 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       console.error('Error polling Judge0 for result:', error);
     });
   }
-    
   function submitCode() {
     if (editorRef.current) {
       const attempt: string = editorRef.current.getValue();
@@ -159,25 +158,20 @@ function MonacoEditor({ tc, onSuccess }: { tc: TestCaseType | null ; onSuccess: 
       setSaveAttemptData((prevData) => ({ ...prevData, attempt }));
       const submission = `${attempt}\n\n${updatedPythonDriver}`;
       const startTime = performance.now();
-      axios
-        .post("http://34.124.242.8/submissions", {
-          source_code: submission,
-          language_id: langUsed,
-        })
-        .then((response) => {
-          const submissionToken: string = response.data.token;
-          waitFor3second().then(()=>
-            {pollJudge0ForSubmission(submissionToken, startTime);}
-          )
-        })
-        .catch((error) => {
-          console.error("Error compiling code:", error);
-        });
+      submitSourceCodeProduction(submission, langUsed)
+      .then((submissionToken) => {
+        waitFor3second().then(() =>
+          pollJudge0ForSubmission(submissionToken, startTime)
+        );
+      })
+      .catch((error) => {
+        console.error("Error compiling code:", error);
+      });
     }
   }
 
   function pollJudge0ForSubmission(submissionToken: string, startTime: number) {//consider websockets
-    fetchSubmission(submissionToken)
+    fetchSubmissionProduction(submissionToken)
     .then((response) => {
       const { stdout, memory } = response;
       setOutput(stdout);
