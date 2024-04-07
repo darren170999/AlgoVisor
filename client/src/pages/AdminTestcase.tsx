@@ -105,7 +105,7 @@ function AdminTestcase(){
             <Card minW="xl">
                 <CardBody>
                     <Heading as="h1">
-                        Create Test cases for IE2108
+                        Create Test cases for Algo Code
                     </Heading>
                     <br></br>
                     <form onSubmit={handleCreation}>
