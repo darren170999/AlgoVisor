@@ -117,7 +117,7 @@ function AdminQuestion(){
             <Card minW="xl">
                 {loading? (<div>loading</div>) :<CardBody>
                     <Heading as="h1">
-                        Create a question for IE2108
+                        Create a question for Algo Code
                     </Heading>
                     <br></br>
                     <form onSubmit={handleCreation}>
