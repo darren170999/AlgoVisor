@@ -9,7 +9,7 @@
 
 .mode_options_container {
     margin:auto;
-    /* width:75%; */
+    width:100%;
     display:flex;
     grid:auto auto auto auto;
     column-gap:4em;
@@ -42,4 +42,10 @@
 
 .mode_options_container img {
     width:80%;
+}
+.centered-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust as needed */
 }

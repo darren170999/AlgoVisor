@@ -5,6 +5,7 @@ import './AlgoVisual.css';
 import sortingGif from '../sorting.gif';
 import pathFindingGif from '../pathFinding.gif';
 import Header from '../components/Header';
+import { Heading } from '@chakra-ui/react';
 
 interface AlgoVisualState {
     pathFind: boolean;
@@ -25,6 +26,11 @@ class AlgoVisual extends Component<{}, AlgoVisualState> {
         return (
             <>
                 <Header/>
+                {/* <div className='centered-text'>
+                    <Heading>
+                        <h1 style={{ color: "#FFFFFF", fontFamily:"sans-serif", fontWeight:"bold", paddingTop:"80px"}}>Please choose either one</h1>
+                    </Heading>
+                </div> */}
                 <div className='mode_options_container'>
                     <div>
                         {/* <h1> SORTING ALGORITHMS </h1> */}
