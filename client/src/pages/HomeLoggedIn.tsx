@@ -99,8 +99,8 @@ function HomeLoggedIn() {
                 </Text>
               </Box>
               <Text fontSize="3xl" color="white" fontWeight="bold" fontFamily={"sans-serif"}   textAlign="justify" >
-                AlgoVisor, is a one stop lifelong learning platform. Here, users can hang out in private meeting rooms, learn about algorithms
-                revisit materials, attend career fairs, orientations and so much more!
+                Algo Visor, is a one stop lifelong learning platform for free!. Here, you can hang out in private meeting rooms, 
+                learn more about algorithms, revisit  school materials, try coding practices, attend orientations and so much more!
               </Text>
             </Box>
           </Box>
@@ -183,7 +183,7 @@ function HomeLoggedIn() {
               padding="50px"
             >
               <Avatar
-                src="https://bit.ly/dan-abramov"
+                src="https://dsohjh.com/avatar.png"
                 size='3xl'
               />
             </Box>
@@ -228,7 +228,7 @@ function HomeLoggedIn() {
               </Box>
               <Text fontSize="3xl" color="#1a1f71" fontWeight="bold" fontFamily={"sans-serif"}>
                  Developed by Nanyang Technological University, School of Electrical and Electronic Engineering.
-                 Project is helmed by Dr. Michelle Shao XuGuang, Assistant Chair (Lifelong learning) and Senior Lecturer at NTU
+                 Project is helmed by Dr. Michelle Shao XuGuang, Assistant Chair (Lifelong learning) and Senior Lecturer at NTU.
               </Text>
             </Box>
           </Box>
