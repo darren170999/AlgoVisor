@@ -88,16 +88,19 @@ function Concepts(){
 
                 <Accordion allowToggle colorScheme="blue">
 
-                    {staticItems.map((staticitem) => (
-                    <AccordionRowsStandard 
-                    name={staticitem.name} 
-                    sypnopsis={staticitem.sypnopsis} 
-                    duration={staticitem.duration} 
-                    status={staticitem.status} 
-                    videoSrc={staticitem.videoSrc} 
-                    videoDescription={staticitem.videoDescription} 
-                    materialSrc={staticitem.materialSrc} 
-                    materialDescription={staticitem.materialDescription}/>
+                    {staticItems
+                        .filter(staticItem => staticItem.videoDescription === "DSA")          
+                        .map((staticitem) => (
+                            <AccordionRowsStandard 
+                                name={staticitem.name} 
+                                sypnopsis={staticitem.sypnopsis} 
+                                duration={staticitem.duration} 
+                                status={staticitem.status} 
+                                videoSrc={staticitem.videoSrc} 
+                                videoDescription={staticitem.videoDescription} 
+                                materialSrc={staticitem.materialSrc} 
+                                materialDescription={staticitem.materialDescription}
+                            />
                     ))}
                 </Accordion>
                 </Card>
@@ -122,17 +125,20 @@ function Concepts(){
 
                 <Accordion allowToggle colorScheme="blue">
 
-                {staticItems.map((staticitem) => (
-                    <AccordionRowsStandard 
-                    name={staticitem.name} 
-                    sypnopsis={staticitem.sypnopsis} 
-                    duration={staticitem.duration} 
-                    status={staticitem.status} 
-                    videoSrc={staticitem.videoSrc} 
-                    videoDescription={staticitem.videoDescription} 
-                    materialSrc={staticitem.materialSrc} 
-                    materialDescription={staticitem.materialDescription}/>
-                    ))}
+                {staticItems
+                    .filter(staticItem => staticItem.videoDescription === "CS")          
+                    .map((staticitem) => (
+                        <AccordionRowsStandard 
+                            name={staticitem.name} 
+                            sypnopsis={staticitem.sypnopsis} 
+                            duration={staticitem.duration} 
+                            status={staticitem.status} 
+                            videoSrc={staticitem.videoSrc} 
+                            videoDescription={staticitem.videoDescription} 
+                            materialSrc={staticitem.materialSrc} 
+                            materialDescription={staticitem.materialDescription}
+                        />
+                ))}
                 </Accordion>
                 </Card>
             </>
