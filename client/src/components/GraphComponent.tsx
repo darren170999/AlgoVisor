@@ -53,7 +53,7 @@ function GraphComponent({ title, data, current }: GraphProps) {
                     />
                     <VictoryAxis
                         label="Value"
-                        style={{ axisLabel: { padding: 30 }, tickLabels: { fontSize: 10 } }} // Hide tick labels
+                        style={{ axisLabel: { padding: 30 }, tickLabels: { fontSize: 0 } }} // Hide tick labels
                         tickValues={uniqueValues}
                     />
                     <VictoryBar
@@ -77,6 +77,7 @@ function GraphComponent({ title, data, current }: GraphProps) {
             <text x={350} y={240} textAnchor="end" fontSize="14px" fill="#000">
                 Your Ranking: {userRanking + 1}
             </text>
+            <br></br>
             <text> 
                 You are doing better than {(data.length - userRanking)/data.length *100} % of people
             </text>
