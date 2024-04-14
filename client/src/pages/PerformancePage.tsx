@@ -37,10 +37,10 @@ function PerformancePage() {
             <Header />
             <Grid templateColumns="1fr 1fr" gap={4}>
                 <GridItem>
-                    <GraphComponent title="Memory Graph" data={memories} current={currentMemory}/>
+                    <GraphComponent title="Memory Graph(mb)" data={memories} current={currentMemory}/>
                 </GridItem>
                 <GridItem>
-                    <GraphComponent title="Speed Graph" data={speeds} current={currentSpeed}/>
+                    <GraphComponent title="Speed Graph(ms)" data={speeds} current={currentSpeed}/>
                 </GridItem>
             </Grid>
         </>
