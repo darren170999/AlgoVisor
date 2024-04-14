@@ -1,16 +1,6 @@
 import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, Heading, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import VideoPlayer from "./VideoPlayer";
-
-type AccordionRowsProps = {
-    name: string;
-    sypnopsis: string;
-    duration: string;
-    status: string;
-    videoSrc: Blob;
-    videoDescription: string;
-    materialSrc: string;
-    materialDescription: string;
-}
+import { AccordionRowsProps } from "../types/AccordionRowsProps";
 
 const AccordionRows = ({ name, sypnopsis, duration, status, videoSrc, videoDescription, materialSrc, materialDescription}: AccordionRowsProps) => {
     return (
