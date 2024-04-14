@@ -4,26 +4,9 @@ import Header from "../components/Header";
 import { useEffect, useState } from "react";
 import AccordionRows from "../components/AccordionRows";
 import AccordionRowsStandard from "../components/AccordionRowsStandard";
-type ItemType = {
-    name: string;
-    sypnopsis: string;
-    duration: string;
-    status: string;
-    videoSrc: Blob;
-    videoDescription: string;
-    materialSrc: string;
-    materialDescription: string;
-  };
-  type staticItemType = {
-    name: string;
-    sypnopsis: string;
-    duration: string;
-    status: string;
-    videoSrc: string;
-    videoDescription: string;
-    materialSrc: string;
-    materialDescription: string;
-  };
+import { staticItemType } from "../types/StaticItemType";
+import { ItemType } from "../types/ItemType";
+
 function Concepts(){
     const [staticItems, setStaticItems] = useState<staticItemType[]>([]);
     const getStaticCourses = async() => {
@@ -165,7 +148,7 @@ function Concepts(){
                 sypnopsis={"sypnopsis"} 
                 duration={"duration"} 
                 status={"status"} 
-                videoSrc={"https://www.veed.io/view/7ef1675b-2dcd-4683-acc3-a282578895e3?panel=share"} 
+                videoSrc={"https://staging.streamable.com/tiuwba"} 
                 videoDescription={"videoDescription"} 
                 materialSrc={"materialSrc"} 
                 materialDescription={"materialDescription"}/>

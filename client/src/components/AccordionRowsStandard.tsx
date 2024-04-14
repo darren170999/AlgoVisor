@@ -1,15 +1,5 @@
 import { AccordionButton, AccordionIcon, AccordionItem, AccordionPanel, Box, VStack } from "@chakra-ui/react";
-
-type AccordionRowsStandardProps = {
-    name: string;
-    sypnopsis: string;
-    duration: string;
-    status: string;
-    videoSrc: string; // Use URL for video source
-    videoDescription: string;
-    materialSrc: string;
-    materialDescription: string;
-}
+import { AccordionRowsStandardProps } from "../types/AccordionRowsStandardProps";
 
 const AccordionRowsStandard = ({ name, sypnopsis, duration, status, videoSrc, videoDescription, materialSrc, materialDescription}: AccordionRowsStandardProps) => {
     return (
@@ -35,7 +25,7 @@ const AccordionRowsStandard = ({ name, sypnopsis, duration, status, videoSrc, vi
                     src={videoSrc}
                     // frameBorder="0"
                     allowFullScreen
-                    style={{ width: '100%', height: 'auto' }}
+                    width={"560px"} height={"315px"}
                 ></iframe>
                 </VStack>
                 Materials:
