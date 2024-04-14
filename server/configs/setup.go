@@ -38,7 +38,10 @@ func GetCoursesCollection(client *mongo.Client, collectionName string) *mongo.Co
 	collection := client.Database("Prod-Concepts").Collection(collectionName)
 	return collection
 }
-
+func GetStaticCoursesCollection(client *mongo.Client, collectionName string) *mongo.Collection {
+	collection := client.Database("Prod-Concepts").Collection(collectionName)
+	return collection
+}
 // getting database tutorials
 func GetTutorialCollection(client *mongo.Client, collectionName string) *mongo.Collection {
 	collection := client.Database("Prod-Tutorial").Collection(collectionName)

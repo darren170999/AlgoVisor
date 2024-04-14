@@ -37,6 +37,7 @@ func main() {
 	// Define your routes
 	routes.UserRoute(router)
 	routes.CourseRoute(router)
+	routes.StaticCourseRoute(router)
 	routes.TutorialRoute(router)
 	routes.TestCasesRoute(router)
 	routes.AttemptRoute(router)
