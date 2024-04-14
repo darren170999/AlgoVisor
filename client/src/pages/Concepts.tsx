@@ -42,9 +42,6 @@ function Concepts(){
         } catch {
         }
     }
-    useEffect(()=>{
-        getCourses()
-    },[])
     const [items, setItems] = useState<ItemType[]>([]);
     const getCourses = async() => {
         try{
@@ -64,6 +61,7 @@ function Concepts(){
     }
     useEffect(()=>{
         getCourses()
+        getStaticCourses()
     },[])
     return(
         <>
@@ -124,16 +122,16 @@ function Concepts(){
 
                 <Accordion allowToggle colorScheme="blue">
 
-                    {items.map((item) => (
-                    <AccordionRows 
-                    name={item.name} 
-                    sypnopsis={item.sypnopsis} 
-                    duration={item.duration} 
-                    status={item.status} 
-                    videoSrc={item.videoSrc} 
-                    videoDescription={item.videoDescription} 
-                    materialSrc={item.materialSrc} 
-                    materialDescription={item.materialDescription}/>
+                {staticItems.map((staticitem) => (
+                    <AccordionRowsStandard 
+                    name={staticitem.name} 
+                    sypnopsis={staticitem.sypnopsis} 
+                    duration={staticitem.duration} 
+                    status={staticitem.status} 
+                    videoSrc={staticitem.videoSrc} 
+                    videoDescription={staticitem.videoDescription} 
+                    materialSrc={staticitem.materialSrc} 
+                    materialDescription={staticitem.materialDescription}/>
                     ))}
                 </Accordion>
                 </Card>
@@ -167,6 +165,38 @@ function Concepts(){
                 materialDescription={"materialDescription"}/>
             </Accordion>
             </Card> 
+            <Box textAlign="center" mb={4}>
+                    <Heading as="h2" size="lg" color="white">New* Courses</Heading>
+                </Box>
+                <Card>
+                <TableContainer minWidth={"1200px"} bgColor="#fffae5">
+                    <Table variant='striped'>
+                        <Thead>
+                        <Tr alignContent={"center"}>
+                            <Th>Name</Th>
+                            <Th>Sypnopsis</Th>
+                            <Th>Duration</Th>
+                            <Th>Status</Th>
+                        </Tr>
+                        </Thead>
+                    </Table>
+                </TableContainer>
+
+                <Accordion allowToggle colorScheme="blue">
+
+                    {items.map((item) => (
+                    <AccordionRows 
+                    name={item.name} 
+                    sypnopsis={item.sypnopsis} 
+                    duration={item.duration} 
+                    status={item.status} 
+                    videoSrc={item.videoSrc} 
+                    videoDescription={item.videoDescription} 
+                    materialSrc={item.materialSrc} 
+                    materialDescription={item.materialDescription}/>
+                    ))}
+                </Accordion>
+                </Card>
             
         </FullScreenSection>
     </>
