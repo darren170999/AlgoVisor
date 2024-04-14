@@ -171,6 +171,7 @@ function Concepts(){
                 materialDescription={"materialDescription"}/>
             </Accordion>
             </Card> 
+            {items.length > 0 ? <>
             <Box textAlign="center" mb={4}>
                     <Heading as="h2" size="lg" color="white">New* Courses</Heading>
                 </Box>
@@ -203,7 +204,7 @@ function Concepts(){
                     ))}
                 </Accordion>
                 </Card>
-            
+            </> : <></>}
         </FullScreenSection>
     </>
     );
