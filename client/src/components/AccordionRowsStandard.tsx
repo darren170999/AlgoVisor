@@ -31,9 +31,12 @@ const AccordionRowsStandard = ({ name, sypnopsis, duration, status, videoSrc, vi
             </AccordionButton>
             <AccordionPanel pb={4}>
                 <VStack>
-                    <video controls>
-                        <source src={videoSrc} type="video/mp4" />
-                    </video>
+                <iframe
+                    src={videoSrc}
+                    // frameBorder="0"
+                    allowFullScreen
+                    style={{ width: '100%', height: 'auto' }}
+                ></iframe>
                 </VStack>
                 Materials:
                 <a href={materialSrc} download target="_blank" style={{ color: 'blue' }}> {materialDescription}</a>
