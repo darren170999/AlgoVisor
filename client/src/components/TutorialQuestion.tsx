@@ -18,10 +18,7 @@ function TutorialQuestion({ name, description, status, tags, qnid, boolCompleted
                 <VStack>
                     <Heading size='md'>{name}</Heading>
                 </VStack>
-                <Text>
-                    {name}
-                </Text>
-                <Text color='blue.600' fontSize='xl'>
+                <Text color='blue.600' fontSize='md'>
                     {description}
                 </Text>
                 </Stack>

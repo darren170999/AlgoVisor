@@ -10,7 +10,6 @@ import { TestCaseType } from "../types/TestCaseType";
 import { saveAttemptDataProps } from "../types/SaveAttemptDataProps";
 import { pythonDefault } from "../helper/pythonDefault";
 import { pythonDriver } from "../helper/pythonDriver";
-// import { fetchSubmissionOutput } from "../api/pollJudge0ForResult";
 import { fetchSubmissionProduction } from "../api/pollJudge0ForSubmission";
 import { updateAttempt } from "../api/updateAttempt";
 import { saveAttempt } from "../api/saveAttempt";
