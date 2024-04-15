@@ -96,6 +96,9 @@ function Tutorials(){
             <Tab key={index}>AC {index + 1}</Tab>
           ))}
         </TabList>
+        <Box textAlign="left" mb={4} padding={"10px"}>
+            <Heading as="h2" size="sm" color="white">Algo Code</Heading>
+          </Box>
         <TabPanels>
           {[...Array(12).keys()].map((index) => (
                 <TabPanel key={index} className={`Tut${index + 1}`}>
