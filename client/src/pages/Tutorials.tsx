@@ -80,8 +80,8 @@ function Tutorials(){
         <h1 style={{color: "#F7B600"}}></h1>
         <Heading>
           {" "}
-          <h1 style={{textAlign: "center"}}>Welcome to the new IE2108 Tutorials</h1>
-          <h1 style={{color: "#F7B600"}}>Please attempt them every week</h1>
+          <h1 style={{textAlign: "center"}}>Welcome to Algo Code</h1>
+{/*           <h1 style={{color: "#F7B600"}}>Please attempt them every week</h1> */}
           {" "}
         </Heading>
       </VStack>
