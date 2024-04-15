@@ -9,6 +9,8 @@ import { QnType } from "../types/QnType";
 import { saveAttemptDataProps } from "../types/SaveAttemptDataProps";
 function Tutorials(){
   //PUT IN DB, Call everything in Tutorials one time and filter. Status is all new. 
+  const arrayList = ["Arrays & Hashing", "Two Pointers", "Stack", "Binary Search", "Sliding Window", "Linked List", 
+  "Trees", "Tries", "Backtracking", "Heaps", "Graphs", "Dynamic Programming"]
   const [questions, setQuestions] = useState<QnType[]>([]);
   const [completedQns, setCompletedQns] = useState<string[]>([]);
   let username = localStorage.getItem("username");
@@ -96,13 +98,13 @@ function Tutorials(){
             <Tab key={index}>AC {index + 1}</Tab>
           ))}
         </TabList>
-        <Box textAlign="left" mb={4} padding={"10px"}>
-            <Heading as="h2" size="sm" color="white">Algo Code</Heading>
-          </Box>
         <TabPanels>
           {[...Array(12).keys()].map((index) => (
                 <TabPanel key={index} className={`Tut${index + 1}`}>
                   <Box overflowX="auto" w="100%" maxWidth="900px">
+                    <Box textAlign="left" mb={4} padding={"10px"}>
+                      <Heading as="h2" size="sm" color="white">{arrayList[index]}</Heading>
+                    </Box>
                     <HStack spacing={4} style={{ flexWrap: "nowrap" }}>
                       {appropriateTabs(index)}
                     </HStack>
