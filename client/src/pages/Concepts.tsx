@@ -143,15 +143,20 @@ function Concepts(){
                 </Table>
             </TableContainer>
             <Accordion allowToggle colorScheme="blue">
-                <AccordionRowsStandard
-                name={"name"} 
-                sypnopsis={"sypnopsis"} 
-                duration={"duration"} 
-                status={"status"} 
-                videoSrc={"https://staging.streamable.com/tiuwba"} 
-                videoDescription={"videoDescription"} 
-                materialSrc={"materialSrc"} 
-                materialDescription={"materialDescription"}/>
+                {staticItems
+                        .filter(staticItem => staticItem.videoDescription === "EEE")          
+                        .map((staticitem) => (
+                            <AccordionRowsStandard 
+                                name={staticitem.name} 
+                                sypnopsis={staticitem.sypnopsis} 
+                                duration={staticitem.duration} 
+                                status={staticitem.status} 
+                                videoSrc={staticitem.videoSrc} 
+                                videoDescription={staticitem.videoDescription} 
+                                materialSrc={staticitem.materialSrc} 
+                                materialDescription={staticitem.materialDescription}
+                            />
+                    ))}
             </Accordion>
             </Card> 
             {items.length > 0 ? <>

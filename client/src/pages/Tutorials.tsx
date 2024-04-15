@@ -80,8 +80,12 @@ function Tutorials(){
         <h1 style={{color: "#F7B600"}}></h1>
         <Heading>
           {" "}
-          <h1 style={{textAlign: "center"}}>Welcome to Algo Code</h1>
-{/*           <h1 style={{color: "#F7B600"}}>Please attempt them every week</h1> */}
+          <Box textAlign="center" mb={4}>
+            <Heading as="h2" size="lg" color="white">Algo Code</Heading>
+          </Box>
+          <Box textAlign="center" mb={4}>
+            <Heading as="h2" size="md" color="white">Practice algorithms segregated by topics</Heading>
+          </Box>
           {" "}
         </Heading>
       </VStack>
