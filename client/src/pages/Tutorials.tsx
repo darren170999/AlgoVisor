@@ -89,7 +89,7 @@ function Tutorials(){
       <Tabs variant='enclosed' color={"yellow"} maxWidth=''>
         <TabList>
           {[...Array(12).keys()].map((index) => (
-            <Tab key={index}>Tutorial {index + 1}</Tab>
+            <Tab key={index}>AC {index + 1}</Tab>
           ))}
         </TabList>
         <TabPanels>
