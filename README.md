@@ -1,14 +1,20 @@
 # Algo Visor
 Capstone Project for Information Engineering and Media
+Algo Visor allows students to visualise and learn computer science concepts. Additionally, it also allows users to attempt leetcode-styled questions.
+•	Algo Visual: The ability to show how an algorithm runs along with snippet codes. 
+•	Algo Meets: Students can discuss different topics on algorithms in Virtual Reality space and in real time, 
+•	Algo Concepts: Reviewing curated content to learn and practice on algorithms topics. 
+•	Algo Code: To write and implement code or practice for interviews.
+
+
 By Darren Soh
 # Current Tech Stacks:
+Golang, Gin Framework, React, MongoDB, Typescript, Redis, Docker, Docker compose, Judge0, 
 
-Golang, Gin Framework, React, MongoDB, GraphQL, Typescript, Redis, Docker, Docker compose,
-
-# Findings:
-Important for go gin to rebuild by rebooting,
-Need to Echo path everytime we run swag init to refresh changes made in Swagger
-Primitive bson is superior because it gives a hard to decrypt string as key.
+# Notable Features:
+Code Compilation.
+Test Case comparisons while tracking latency.
+Algo Visualiser
 
 # DevOps:
 ## In progress
