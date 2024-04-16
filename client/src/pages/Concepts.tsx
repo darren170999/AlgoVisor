@@ -179,7 +179,7 @@ function Concepts(){
 
                 <Accordion allowToggle colorScheme="blue">
 
-                    {items.map((item) => (
+                    {items.length > 0? items.map((item) => (
                     <AccordionRows 
                     name={item.name} 
                     sypnopsis={item.sypnopsis} 
@@ -189,7 +189,7 @@ function Concepts(){
                     videoDescription={item.videoDescription} 
                     materialSrc={item.materialSrc} 
                     materialDescription={item.materialDescription}/>
-                    ))}
+                    )) : <></>}
                 </Accordion>
                 </Card>
             </> : <></>}
