@@ -159,7 +159,7 @@ function Concepts(){
                     ))}
             </Accordion>
             </Card> 
-            {items.length > 0 ? <>
+            {items && items.length > 0 ? <>
             <Box textAlign="center" mb={4}>
                     <Heading as="h2" size="lg" color="white">New* Courses</Heading>
                 </Box>
@@ -179,7 +179,7 @@ function Concepts(){
 
                 <Accordion allowToggle colorScheme="blue">
 
-                    {items.length > 0? items.map((item) => (
+                    {items.map((item) => (
                     <AccordionRows 
                     name={item.name} 
                     sypnopsis={item.sypnopsis} 
@@ -189,7 +189,7 @@ function Concepts(){
                     videoDescription={item.videoDescription} 
                     materialSrc={item.materialSrc} 
                     materialDescription={item.materialDescription}/>
-                    )) : <></>}
+                    ))}
                 </Accordion>
                 </Card>
             </> : <></>}
