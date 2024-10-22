@@ -6,7 +6,7 @@ Algo Visor allows students to visualise and learn computer science concepts. Add
 •	Algo Code: To write and implement code or practice for interviews.
 
 
-By Darren Soh
+By Darren Soh & Ng Jing Kang
 # Current Tech Stacks:
 Golang, Gin Framework, React, MongoDB, Typescript, Redis, Docker, Docker compose, Judge0, 
 
