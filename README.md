@@ -1,5 +1,4 @@
 # Algo Visor
-Capstone Project for Information Engineering and Media
 Algo Visor allows students to visualise and learn computer science concepts. Additionally, it also allows users to attempt leetcode-styled questions.
 •	Algo Visual: Visualize algorithms along with snippet codes. 
 •	Algo Meets: Students can discuss different topics on algorithms in online meeting rooms.
